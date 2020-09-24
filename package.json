@@ -15,8 +15,11 @@
     "cover": "TS_NODE_PROJECT=tsconfig.test.json COVERAGE=1 nyc mocha && open coverage/index.html",
     "ci": "yarn build && yarn test && yarn prettier"
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
+    "@types/chai": "^4.2.12",
+    "@types/react": "^16.9.49",
     "chai": "^4.2.0",
     "mocha": "^8.1.3",
     "nyc": "^15.1.0",
@@ -35,7 +38,10 @@
       "source-map-support/register",
       "ts-node/register"
     ],
-    "watch-files": ["./src/**/*.ts", "./test/**/*.ts"]
+    "watch-files": [
+      "./src/**/*.ts",
+      "./test/**/*.ts"
+    ]
   },
   "nyc": {
     "extension": [
