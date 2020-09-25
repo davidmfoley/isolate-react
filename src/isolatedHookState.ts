@@ -3,7 +3,16 @@ export type IsolatedHookState = ReturnType<typeof createIsolatedHookState>
 
 type HookState<T> = [{ value: T }, (value: T) => void]
 
-export const createIsolatedHookState = () => {
+type IsolatedHookContext = {
+  type: React.Context<any>
+  value: any
+}
+
+export type IsolatedHookOptions = {
+  context?: IsolatedHookContext[]
+}
+
+export const createIsolatedHookState = (options: IsolatedHookOptions) => {
   let dirty = false
   let first = true
 
@@ -59,6 +68,10 @@ export const createIsolatedHookState = () => {
     cleanup: () => {
       layoutEffects.cleanup()
       effects.cleanup()
+    },
+    contextValue: (type: React.Context<any>) => {
+      const match = (options.context || []).find((c) => c.type === type)
+      return match ? match.value : (type as any)._currentValue
     },
   }
 }

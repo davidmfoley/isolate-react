@@ -1,7 +1,10 @@
 import React from 'react'
 
 import { createIsolatedDispatcher } from './dispatcher'
-import { createIsolatedHookState } from './isolatedHookState'
+import {
+  createIsolatedHookState,
+  IsolatedHookOptions,
+} from './isolatedHookState'
 
 const {
   ReactCurrentDispatcher,
@@ -13,9 +16,10 @@ type IsolatedHook<T> = {
 }
 
 export const testInIsolation = <T>(
-  hookInvocation: () => T
+  hookInvocation: () => T,
+  options: IsolatedHookOptions = {}
 ): IsolatedHook<T> => {
-  const hookState = createIsolatedHookState()
+  const hookState = createIsolatedHookState(options)
   const dispatcher = createIsolatedDispatcher(hookState)
 
   let lastResult: T

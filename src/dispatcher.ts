@@ -7,6 +7,7 @@ interface Dispatcher {
   useState: typeof React.useState
   useEffect: typeof React.useEffect
   useLayoutEffect: typeof React.useEffect
+  useContext: typeof React.useContext
 }
 
 export const createIsolatedDispatcher = (
@@ -23,13 +24,6 @@ export const createIsolatedDispatcher = (
     return [state.value, updateState]
   }
   type Deps = any[] | undefined
-  type EffectState = { deps: Deps; cleanup?: Function }
-
-  const dirtyDeps = (a: Deps, b: Deps) => {
-    if (a === undefined || b === undefined) return true
-    if (a === [] && b === []) return false
-    return a.some((value, i) => !Object.is(value, b[i]))
-  }
 
   const useEffectHandler = (effectSet: any) => (
     effect: () => (() => void) | undefined,
@@ -45,5 +39,6 @@ export const createIsolatedDispatcher = (
     useState: useState as any,
     useEffect: useEffect as any,
     useLayoutEffect: useLayoutEffect as any,
+    useContext: (type) => isolatedHookState.contextValue(type),
   }
 }
