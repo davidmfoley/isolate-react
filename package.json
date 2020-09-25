@@ -15,8 +15,7 @@
     "cover": "TS_NODE_PROJECT=tsconfig.test.json COVERAGE=1 nyc mocha && open coverage/index.html",
     "ci": "yarn build && yarn test && yarn prettier"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/chai": "^4.2.12",
     "@types/react": "^16.9.49",
@@ -41,7 +40,8 @@
     "watch-files": [
       "./src/**/*.ts",
       "./test/**/*.ts"
-    ]
+    ],
+    "reporter": "dot"
   },
   "nyc": {
     "extension": [

@@ -1,19 +1,22 @@
 import React from 'react'
 
 import { createIsolatedDispatcher } from './dispatcher'
+import { createIsolatedHookState } from './isolatedHookState'
 
 const {
   ReactCurrentDispatcher,
 } = (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
 
 type IsolatedHook<T> = {
+  cleanup: () => void
   currentValue: () => T
 }
 
 export const testInIsolation = <T>(
   hookInvocation: () => T
 ): IsolatedHook<T> => {
-  const dispatcher = createIsolatedDispatcher()
+  const hookState = createIsolatedHookState()
+  const dispatcher = createIsolatedDispatcher(hookState)
 
   let lastResult: T
 
@@ -21,23 +24,24 @@ export const testInIsolation = <T>(
     const previousDispatcher = ReactCurrentDispatcher.current
     ReactCurrentDispatcher.current = dispatcher
     do {
-      dispatcher.startPass()
-
       lastResult = hookInvocation()
 
-      dispatcher.endPass()
-    } while (dispatcher.dirty())
+      hookState.endPass()
+    } while (hookState.dirty())
     ReactCurrentDispatcher.current = previousDispatcher
   }
 
-  dispatcher.onUpdated(invokeHook)
+  hookState.onUpdated(invokeHook)
 
   invokeHook()
 
   return {
     currentValue: () => {
-      if (dispatcher.dirty()) invokeHook()
+      if (hookState.dirty()) invokeHook()
       return lastResult
+    },
+    cleanup: () => {
+      hookState.cleanup()
     },
   }
 }
