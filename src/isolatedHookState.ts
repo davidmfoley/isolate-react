@@ -27,7 +27,8 @@ export const createIsolatedHookState = () => {
     return [newState, updater(newState)]
   }
 
-  const nextHookState = <T>(): HookState<T> => {
+  const nextHookState = <T>(factory: (() => T) | undefined): HookState<T> => {
+    if (first) return addHookState(factory())
     let state = { ...hookStates.shift() }
     nextHookStates.push(state)
     return [state, updater(state)]
@@ -53,7 +54,6 @@ export const createIsolatedHookState = () => {
     pendingUseLayoutEffects,
     pendingUseEffects,
     endPass,
-    addHookState,
     nextHookState,
     firstPass: () => first,
     dirty: () => dirty,

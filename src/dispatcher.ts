@@ -15,13 +15,10 @@ export const createIsolatedDispatcher = (
   const useState = <T>(
     initialState: T | (() => T)
   ): [state: T, setter: SetState<T>] => {
-    const [state, updateState] = isolatedHookState.firstPass()
-      ? isolatedHookState.addHookState(
-          typeof initialState === 'function'
-            ? (initialState as any)()
-            : initialState
-        )
-      : isolatedHookState.nextHookState()
+    const factory: () => T = ((typeof initialState === 'function'
+      ? initialState
+      : () => initialState) as unknown) as () => T
+    const [state, updateState] = isolatedHookState.nextHookState(factory)
 
     return [state.value, updateState]
   }
@@ -29,7 +26,7 @@ export const createIsolatedDispatcher = (
   type EffectState = { deps: Deps; cleanup?: Function }
 
   const dirtyDeps = (a: Deps, b: Deps) => {
-    if (a === undefined && b === undefined) return true
+    if (a === undefined || b === undefined) return true
     if (a === [] && b === []) return false
     return a.some((value, i) => !Object.is(value, b[i]))
   }
@@ -38,16 +35,13 @@ export const createIsolatedDispatcher = (
     effect: () => (() => void) | undefined,
     deps: Deps
   ) => {
-    if (isolatedHookState.firstPass()) {
-      const [state] = isolatedHookState.addHookState<EffectState>({ deps })
-      queue.push({ effect, state })
-    } else {
-      const [state] = isolatedHookState.nextHookState<EffectState>()
+    const [state] = isolatedHookState.nextHookState<EffectState>(() => ({
+      deps: undefined,
+    }))
 
-      if (dirtyDeps(state.value.deps, deps)) {
-        queue.push({ effect, state })
-        state.value.deps = [...deps]
-      }
+    if (dirtyDeps(state.value.deps, deps)) {
+      queue.push({ effect, state })
+      state.value.deps = [...deps]
     }
   }
 
