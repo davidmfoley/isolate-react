@@ -97,7 +97,7 @@ describe('effects', () => {
   })
 
   describe('useLayoutEffect', () => {
-    it.skip('runs before useEffect', () => {
+    it('runs before useEffect', () => {
       const useEffectOrderExample = () => {
         useEffect(() => {
           invocations.push('useEffect')

@@ -31,24 +31,15 @@ export const createIsolatedDispatcher = (
     return a.some((value, i) => !Object.is(value, b[i]))
   }
 
-  const useEffectHandler = (queue: any[]) => (
+  const useEffectHandler = (effectSet: any) => (
     effect: () => (() => void) | undefined,
     deps: Deps
   ) => {
-    const [state] = isolatedHookState.nextHookState<EffectState>(() => ({
-      deps: undefined,
-    }))
-
-    if (dirtyDeps(state.value.deps, deps)) {
-      queue.push({ effect, state })
-      state.value.deps = [...deps]
-    }
+    effectSet.nextEffect(effect, deps)
   }
 
-  const useEffect = useEffectHandler(isolatedHookState.pendingUseEffects)
-  const useLayoutEffect = useEffectHandler(
-    isolatedHookState.pendingUseLayoutEffects
-  )
+  const useEffect = useEffectHandler(isolatedHookState.effects)
+  const useLayoutEffect = useEffectHandler(isolatedHookState.layoutEffects)
 
   return {
     useState: useState as any,

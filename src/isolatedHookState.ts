@@ -1,3 +1,4 @@
+import { createEffectSet } from './effectSet'
 export type IsolatedHookState = ReturnType<typeof createIsolatedHookState>
 
 type HookState<T> = [{ value: T }, (value: T) => void]
@@ -8,8 +9,9 @@ export const createIsolatedHookState = () => {
 
   let hookStates: any[] = []
   let nextHookStates: any[] = []
-  const pendingUseEffects = []
-  const pendingUseLayoutEffects = []
+
+  const layoutEffects = createEffectSet()
+  const effects = createEffectSet()
 
   let onUpdated = () => {}
 
@@ -34,25 +36,19 @@ export const createIsolatedHookState = () => {
     return [state, updater(state)]
   }
 
-  const flushEffects = (effects) => {
-    while (effects.length) {
-      const next = effects.shift()
-      if (next.state.value.cleanup) next.state.value.cleanup()
-      next.state.value.cleanup = next.effect()
-    }
-  }
-
   const endPass = () => {
     dirty = false
     first = false
-    flushEffects(pendingUseLayoutEffects)
-    flushEffects(pendingUseEffects)
+
+    layoutEffects.flush()
+    effects.flush()
+
     hookStates = nextHookStates
   }
 
   return {
-    pendingUseLayoutEffects,
-    pendingUseEffects,
+    layoutEffects,
+    effects,
     endPass,
     nextHookState,
     firstPass: () => first,
@@ -61,11 +57,8 @@ export const createIsolatedHookState = () => {
       onUpdated = handler
     },
     cleanup: () => {
-      hookStates.forEach((state) => {
-        if (typeof state.value.cleanup === 'function') {
-          state.value.cleanup()
-        }
-      })
+      layoutEffects.cleanup()
+      effects.cleanup()
     },
   }
 }
