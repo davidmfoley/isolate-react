@@ -8,6 +8,7 @@ interface Dispatcher {
   useEffect: typeof React.useEffect
   useLayoutEffect: typeof React.useEffect
   useContext: typeof React.useContext
+  useRef: typeof React.useRef
 }
 
 export const createIsolatedDispatcher = (
@@ -40,5 +41,8 @@ export const createIsolatedDispatcher = (
     useEffect: useEffect as any,
     useLayoutEffect: useLayoutEffect as any,
     useContext: (type) => isolatedHookState.contextValue(type),
+    useRef: (initialValue?: any) => {
+      return { current: initialValue }
+    },
   }
 }
