@@ -13,6 +13,8 @@ const {
 type IsolatedHook<T> = {
   cleanup: () => void
   currentValue: () => T
+  invoke: () => void
+  setRef: (index: number, value?: T) => void
 }
 
 export const testInIsolation = <T>(
@@ -47,5 +49,7 @@ export const testInIsolation = <T>(
     cleanup: () => {
       hookState.cleanup()
     },
+    invoke: invokeHook,
+    setRef: hookState.setRef,
   }
 }

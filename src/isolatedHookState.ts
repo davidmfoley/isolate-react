@@ -12,6 +12,8 @@ export type IsolatedHookOptions = {
   context?: IsolatedHookContext[]
 }
 
+type StateType = 'useRef' | 'useState'
+
 export const createIsolatedHookState = (options: IsolatedHookOptions) => {
   let dirty = false
   let first = true
@@ -32,14 +34,17 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
     }
   }
 
-  const addHookState = <T>(value: T): HookState<T> => {
-    let newState = { value }
+  const addHookState = <T>(type: StateType, value: T): HookState<T> => {
+    let newState = { value, type }
     nextHookStates.push(newState)
     return [newState, updater(newState)]
   }
 
-  const nextHookState = <T>(factory: (() => T) | undefined): HookState<T> => {
-    if (first) return addHookState(factory())
+  const nextHookState = <T>(
+    type: StateType,
+    factory: (() => T) | undefined
+  ): HookState<T> => {
+    if (first) return addHookState(type, factory())
     let state = { ...hookStates.shift() }
     nextHookStates.push(state)
     return [state, updater(state)]
@@ -55,11 +60,17 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
     hookStates = nextHookStates
   }
 
+  const setRef = (index: number, value: any) => {
+    const refs = hookStates.filter((s) => s.type === 'useRef')
+    refs[index].value = value
+  }
+
   return {
     layoutEffects,
     effects,
     endPass,
     nextHookState,
+    setRef,
     firstPass: () => first,
     dirty: () => dirty,
     onUpdated: (handler: () => void) => {

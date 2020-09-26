@@ -15,4 +15,12 @@ describe('useRef', () => {
       testInIsolation(() => useRefExample('trillian')).currentValue()
     ).to.eq('trillian')
   })
+
+  it('can be set', () => {
+    const isolated = testInIsolation(() => useRefExample('arthur'))
+    isolated.setRef(0, 'ford')
+    isolated.invoke()
+
+    expect(isolated.currentValue()).to.eq('ford')
+  })
 })

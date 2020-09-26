@@ -20,7 +20,11 @@ export const createIsolatedDispatcher = (
     const factory: () => T = ((typeof initialState === 'function'
       ? initialState
       : () => initialState) as unknown) as () => T
-    const [state, updateState] = isolatedHookState.nextHookState(factory)
+
+    const [state, updateState] = isolatedHookState.nextHookState(
+      'useState',
+      factory
+    )
 
     return [state.value, updateState]
   }
@@ -42,7 +46,11 @@ export const createIsolatedDispatcher = (
     useLayoutEffect: useLayoutEffect as any,
     useContext: (type) => isolatedHookState.contextValue(type),
     useRef: (initialValue?: any) => {
-      return { current: initialValue }
+      const [ref] = isolatedHookState.nextHookState(
+        'useRef',
+        () => initialValue
+      )
+      return { current: ref.value }
     },
   }
 }
