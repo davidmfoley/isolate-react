@@ -12,7 +12,12 @@ export type IsolatedHookOptions = {
   context?: IsolatedHookContext[]
 }
 
-type StateType = 'useRef' | 'useState' | 'useMemo'
+type StateType =
+  | 'useRef'
+  | 'useState'
+  | 'useMemo'
+  | 'useCallback'
+  | 'useReducer'
 
 export const createIsolatedHookState = (options: IsolatedHookOptions) => {
   let dirty = false

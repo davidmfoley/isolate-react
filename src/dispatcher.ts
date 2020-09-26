@@ -42,16 +42,23 @@ export const createIsolatedDispatcher = (
   const useEffect = useEffectHandler(isolatedHookState.effects)
   const useLayoutEffect = useEffectHandler(isolatedHookState.layoutEffects)
 
+  const memoize = (
+    type: 'useMemo' | 'useCallback',
+    fn: Function,
+    deps: any
+  ) => {
+    const [state] = isolatedHookState.nextHookState(type, () => ({
+      value: fn(),
+      deps,
+    }))
+    if (dirtyDependenciess(deps, state.value.deps)) {
+      state.value.value = fn()
+    }
+    return state.value.value
+  }
   return {
     useMemo: ((fn: any, deps: any) => {
-      const [state] = isolatedHookState.nextHookState('useMemo', () => ({
-        value: fn(),
-        deps,
-      }))
-      if (dirtyDependenciess(deps, state.value.deps)) {
-        state.value.value = fn()
-      }
-      return state.value.value
+      return memoize('useMemo', fn, deps)
     }) as any,
     useState: useState as any,
     useEffect: useEffect as any,
