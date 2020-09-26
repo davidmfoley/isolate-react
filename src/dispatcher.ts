@@ -1,4 +1,5 @@
 import React from 'react'
+import dirtyDependenciess from './dirtyDepenendencies'
 import { IsolatedHookState } from './isolatedHookState'
 
 type SetState<T> = React.Dispatch<React.SetStateAction<T>>
@@ -42,7 +43,16 @@ export const createIsolatedDispatcher = (
   const useLayoutEffect = useEffectHandler(isolatedHookState.layoutEffects)
 
   return {
-    useMemo: (fn: any, deps: any) => fn(),
+    useMemo: ((fn: any, deps: any) => {
+      const [state] = isolatedHookState.nextHookState('useMemo', () => ({
+        value: fn(),
+        deps,
+      }))
+      if (dirtyDependenciess(deps, state.value.deps)) {
+        state.value.value = fn()
+      }
+      return state.value.value
+    }) as any,
     useState: useState as any,
     useEffect: useEffect as any,
     useLayoutEffect: useLayoutEffect as any,

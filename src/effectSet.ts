@@ -1,3 +1,4 @@
+import dirtyDependencies from './dirtyDepenendencies'
 type Effect = () => void | Function
 
 type EffectState = {
@@ -12,12 +13,6 @@ type Deps = any[] | undefined
 export const createEffectSet = () => {
   let effects: EffectState[] = []
   let nextEffects: EffectState[] = []
-
-  const dirtyDeps = (a: Deps, b: Deps) => {
-    if (a === undefined || b === undefined) return true
-    if (a === [] && b === []) return false
-    return a.some((value, i) => !Object.is(value, b[i]))
-  }
 
   const flush = () => {
     const dirtyEffects = nextEffects.filter((e) => e.dirty)
@@ -45,7 +40,7 @@ export const createEffectSet = () => {
 
       if (!firstTime) {
         const existing = effects.shift()
-        nextEffect.dirty = dirtyDeps(existing.deps, deps)
+        nextEffect.dirty = dirtyDependencies(existing.deps, deps)
         nextEffect.cleanup = existing.cleanup
       }
 
