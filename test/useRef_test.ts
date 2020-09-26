@@ -1,8 +1,8 @@
-import { describe, it, beforeEach, afterEach } from 'mocha'
+import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
 import { testInIsolation } from '../src'
-import { useRef, createRef } from 'react'
+import { useRef } from 'react'
 
 describe('useRef', () => {
   const useRefExample = (refValue: string) => {

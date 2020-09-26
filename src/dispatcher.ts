@@ -4,6 +4,7 @@ import { IsolatedHookState } from './isolatedHookState'
 type SetState<T> = React.Dispatch<React.SetStateAction<T>>
 
 interface Dispatcher {
+  useMemo: typeof React.useMemo
   useState: typeof React.useState
   useEffect: typeof React.useEffect
   useLayoutEffect: typeof React.useEffect
@@ -41,6 +42,7 @@ export const createIsolatedDispatcher = (
   const useLayoutEffect = useEffectHandler(isolatedHookState.layoutEffects)
 
   return {
+    useMemo: (fn: any, deps: any) => fn(),
     useState: useState as any,
     useEffect: useEffect as any,
     useLayoutEffect: useLayoutEffect as any,
