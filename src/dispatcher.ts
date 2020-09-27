@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Dispatch } from 'react'
 import dirtyDependencies from './dirtyDepenendencies'
 import { IsolatedHookState } from './isolatedHookState'
 
@@ -12,6 +12,7 @@ interface Dispatcher {
   useLayoutEffect: typeof React.useEffect
   useMemo: typeof React.useMemo
   useState: typeof React.useState
+  useReducer: typeof React.useReducer
   useImperativeHandle: typeof React.useImperativeHandle
   useRef: typeof React.useRef
 }
@@ -31,7 +32,27 @@ export const createIsolatedDispatcher = (
       factory
     )
 
-    return [state.value, updateState]
+    return [state.value, (next: T) => updateState(() => next)]
+  }
+
+  const useReducer = <S, A>(
+    reducer: (state: S, action: A) => S,
+    initialState: S | (() => S)
+  ): [state: S, dispatch: Dispatch<A>] => {
+    const factory: () => S = ((typeof initialState === 'function'
+      ? initialState
+      : () => initialState) as unknown) as () => S
+
+    const [state, updateState] = isolatedHookState.nextHookState(
+      'useReducer',
+      factory
+    )
+
+    const dispatch = (action: A) => {
+      updateState((prev: S) => reducer(prev, action))
+    }
+
+    return [state.value, dispatch]
   }
   type Deps = any[] | undefined
 
@@ -70,6 +91,7 @@ export const createIsolatedDispatcher = (
     useDebugValue: () => {},
     useImperativeHandle: () => {},
     useState: useState as any,
+    useReducer: useReducer as any,
     useEffect: useEffect as any,
     useLayoutEffect: useLayoutEffect as any,
     useContext: (type) => isolatedHookState.contextValue(type),

@@ -62,5 +62,17 @@ describe('useState', () => {
       const value = rendered.currentValue()
       expect(value).to.equal('B3')
     })
+
+    it('can set multiple values', () => {
+      const rendered = testInIsolation(useStateExample)
+      setLetter('A')
+      setLetter('B')
+      setLetter('C')
+      setNumber(7)
+      setNumber(8)
+
+      const value = rendered.currentValue()
+      expect(value).to.equal('C8')
+    })
   })
 })

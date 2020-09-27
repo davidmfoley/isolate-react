@@ -1,7 +1,7 @@
 import { createEffectSet } from './effectSet'
 export type IsolatedHookState = ReturnType<typeof createIsolatedHookState>
 
-type HookState<T> = [{ value: T }, (value: T) => void]
+type HookState<T> = [{ value: T }, (value: (previous: T) => T) => void]
 
 type IsolatedHookContext = {
   type: React.Context<any>
@@ -31,8 +31,8 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
 
   let onUpdated = () => {}
 
-  const updater = (target: any) => (nextValue: any) => {
-    target.value = nextValue
+  const updater = (target: any) => (nextValue: (previous: any) => any) => {
+    target.value = nextValue(target.value)
     if (!dirty) {
       dirty = true
       onUpdated()
@@ -47,10 +47,10 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
 
   const nextHookState = <T>(
     type: StateType,
-    factory: (() => T) | undefined
+    factory: () => T
   ): HookState<T> => {
     if (first) return addHookState(type, factory())
-    let state = { ...hookStates.shift() }
+    let state = hookStates.shift()
     nextHookStates.push(state)
     return [state, updater(state)]
   }
