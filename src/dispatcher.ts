@@ -11,6 +11,7 @@ interface Dispatcher {
   useEffect: typeof React.useEffect
   useLayoutEffect: typeof React.useEffect
   useContext: typeof React.useContext
+  useDebugValue: typeof React.useDebugValue
   useRef: typeof React.useRef
 }
 
@@ -65,6 +66,7 @@ export const createIsolatedDispatcher = (
     useCallback: ((fn: any, deps: any) => {
       return memoize('useCallback', () => fn, deps)
     }) as any,
+    useDebugValue: () => {},
     useState: useState as any,
     useEffect: useEffect as any,
     useLayoutEffect: useLayoutEffect as any,
