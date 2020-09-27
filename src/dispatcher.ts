@@ -5,13 +5,14 @@ import { IsolatedHookState } from './isolatedHookState'
 type SetState<T> = React.Dispatch<React.SetStateAction<T>>
 
 interface Dispatcher {
-  useMemo: typeof React.useMemo
   useCallback: typeof React.useCallback
-  useState: typeof React.useState
-  useEffect: typeof React.useEffect
-  useLayoutEffect: typeof React.useEffect
   useContext: typeof React.useContext
   useDebugValue: typeof React.useDebugValue
+  useEffect: typeof React.useEffect
+  useLayoutEffect: typeof React.useEffect
+  useMemo: typeof React.useMemo
+  useState: typeof React.useState
+  useImperativeHandle: typeof React.useImperativeHandle
   useRef: typeof React.useRef
 }
 
@@ -67,6 +68,7 @@ export const createIsolatedDispatcher = (
       return memoize('useCallback', () => fn, deps)
     }) as any,
     useDebugValue: () => {},
+    useImperativeHandle: () => {},
     useState: useState as any,
     useEffect: useEffect as any,
     useLayoutEffect: useLayoutEffect as any,
