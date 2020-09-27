@@ -1,11 +1,12 @@
 import React from 'react'
-import dirtyDependenciess from './dirtyDepenendencies'
+import dirtyDependencies from './dirtyDepenendencies'
 import { IsolatedHookState } from './isolatedHookState'
 
 type SetState<T> = React.Dispatch<React.SetStateAction<T>>
 
 interface Dispatcher {
   useMemo: typeof React.useMemo
+  useCallback: typeof React.useCallback
   useState: typeof React.useState
   useEffect: typeof React.useEffect
   useLayoutEffect: typeof React.useEffect
@@ -51,14 +52,18 @@ export const createIsolatedDispatcher = (
       value: fn(),
       deps,
     }))
-    if (dirtyDependenciess(deps, state.value.deps)) {
+    if (dirtyDependencies(deps, state.value.deps)) {
       state.value.value = fn()
+      state.value.deps = deps
     }
     return state.value.value
   }
   return {
     useMemo: ((fn: any, deps: any) => {
       return memoize('useMemo', fn, deps)
+    }) as any,
+    useCallback: ((fn: any, deps: any) => {
+      return memoize('useCallback', () => fn, deps)
     }) as any,
     useState: useState as any,
     useEffect: useEffect as any,
