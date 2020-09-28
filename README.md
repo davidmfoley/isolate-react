@@ -1,10 +1,11 @@
-###
+### isolate-hooks
 
 Isolates your react hooks for fast and predictable testing.
 
 ## Basic Usage
 
 ```
+import isolateHooks from 'isolate-hooks'
 const isolated = isolateHooks(useSomeHook, options)
 console.log(isolated.currentValue())
 ```
