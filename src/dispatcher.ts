@@ -9,11 +9,11 @@ interface Dispatcher {
   useContext: typeof React.useContext
   useDebugValue: typeof React.useDebugValue
   useEffect: typeof React.useEffect
+  useImperativeHandle: typeof React.useImperativeHandle
   useLayoutEffect: typeof React.useEffect
   useMemo: typeof React.useMemo
   useState: typeof React.useState
   useReducer: typeof React.useReducer
-  useImperativeHandle: typeof React.useImperativeHandle
   useRef: typeof React.useRef
 }
 
