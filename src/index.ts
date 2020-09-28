@@ -17,7 +17,7 @@ type IsolatedHook<T> = {
   setRef: (index: number, value?: T) => void
 }
 
-export const testInIsolation = <T>(
+export const isolateHooks = <T>(
   hookInvocation: () => T,
   options: IsolatedHookOptions = {}
 ): IsolatedHook<T> => {

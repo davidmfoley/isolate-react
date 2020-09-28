@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
-import { testInIsolation } from '../src'
+import { isolateHooks } from '../src'
 import { useRef } from 'react'
 
 describe('useRef', () => {
@@ -11,13 +11,13 @@ describe('useRef', () => {
   }
 
   it('starts out as the inital value', () => {
-    expect(
-      testInIsolation(() => useRefExample('trillian')).currentValue()
-    ).to.eq('trillian')
+    expect(isolateHooks(() => useRefExample('trillian')).currentValue()).to.eq(
+      'trillian'
+    )
   })
 
   it('can be set', () => {
-    const isolated = testInIsolation(() => useRefExample('arthur'))
+    const isolated = isolateHooks(() => useRefExample('arthur'))
     isolated.setRef(0, 'ford')
     isolated.invoke()
 

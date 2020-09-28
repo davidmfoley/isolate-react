@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
-import { testInIsolation } from '../src'
+import { isolateHooks } from '../src'
 import { useImperativeHandle, useRef } from 'react'
 
 describe('useDebugValue', () => {
@@ -13,6 +13,6 @@ describe('useDebugValue', () => {
       return 42
     }
 
-    expect(testInIsolation(useImperativeHandleExample).currentValue()).to.eq(42)
+    expect(isolateHooks(useImperativeHandleExample).currentValue()).to.eq(42)
   })
 })

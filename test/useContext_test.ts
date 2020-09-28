@@ -1,14 +1,14 @@
 import { describe, it, beforeEach, afterEach } from 'mocha'
 import { expect } from 'chai'
 
-import { testInIsolation } from '../src'
+import { isolateHooks } from '../src'
 import { useContext, createContext } from 'react'
 
 describe('useContext', () => {
   const ExampleContext = createContext<string>('yah')
 
   it('has default value if no context specified', () => {
-    const result = testInIsolation(() => {
+    const result = isolateHooks(() => {
       return useContext(ExampleContext)
     })
 
@@ -16,7 +16,7 @@ describe('useContext', () => {
   })
 
   it('has specified value if one passed', () => {
-    const result = testInIsolation(
+    const result = isolateHooks(
       () => {
         return useContext(ExampleContext)
       },
