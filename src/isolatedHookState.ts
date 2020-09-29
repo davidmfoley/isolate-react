@@ -6,15 +6,15 @@ type HookState<T> = [{ value: T }, (value: (previous: T) => T) => void]
 /**
  * A context value used for testing useContext
  */
-type IsolatedHookContext<T> = {
+interface IsolatedHookContext {
   /**
    * The type of context. The return value of `React.CreateContext`.
    */
-  type: React.Context<T>
+  type: React.Context<any>
   /**
    * Value for the context.
    */
-  value: T
+  value: any
 }
 
 /**
@@ -24,7 +24,7 @@ export type IsolatedHookOptions = {
   /**
    * An array of context values, useful when testing useContext
    */
-  context?: IsolatedHookContext<unknown>[]
+  context?: IsolatedHookContext[]
 }
 
 type StateType =
@@ -107,4 +107,4 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
   }
 }
 
-export default isolatedHookState
+export default createIsolatedHookState

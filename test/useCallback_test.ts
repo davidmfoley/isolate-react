@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
-import { isolateHooks } from '../src'
+import isolateHooks from '../src'
 import { useCallback, useState } from 'react'
 
 describe('useCallback', () => {

@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
-import { isolateHooks } from '../src'
+import isolateHooks from '../src'
 import { useMemo } from 'react'
 
 describe('useMemo', () => {

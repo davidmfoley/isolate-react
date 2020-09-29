@@ -39,7 +39,7 @@ type IsolatedHook<T> = {
  * @param hookInvocation The hook invocation -- a function that calls a hook.
  * @param options Optional options, for specifying context values.
  */
-export const isolateHooks = <T>(
+const isolateHooks = <T>(
   hookInvocation: () => T,
   options: IsolatedHookOptions = {}
 ): IsolatedHook<T> => {
