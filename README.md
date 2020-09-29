@@ -18,7 +18,7 @@ const isolated = isolateHooks(useSomeHook)
 console.log(isolated.currentValue())
 ```
 
-#### Usage with Options
+#### Options
 
 Options can be used to set context values for testing (see useContext note below).
 
@@ -62,7 +62,7 @@ If you have a problem with any particular hook, please submit an issue!
 
 #### useReducer
 
-### Partially supported/supported with caveats:
+### Partially supported hooks/supported with caveats:
 
 #### useContext
 
