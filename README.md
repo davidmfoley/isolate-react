@@ -33,6 +33,9 @@ import isolateHooks from 'isolate-hooks'
 
 const isolated = isolateHooks(useSomeHook)
 
+// log the current value returned by the hook
+console.log(isolated())
+
 ```
 
 #### Options
