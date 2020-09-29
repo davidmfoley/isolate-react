@@ -1,10 +1,10 @@
 ### isolate-hooks
 
-[on npm](https://www.npmjs.com/package/isolate-hooks)
-
 Isolates your react hooks for fast and predictable unit-testing.
 
 ### Why do I need this?
+
+[npm](https://www.npmjs.com/package/isolate-hooks)
 
 React hooks offer an idiomatic and convenient way to manage react side effects and state, but can be difficult to test.
 
