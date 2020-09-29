@@ -10,13 +10,35 @@ const {
   ReactCurrentDispatcher,
 } = (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
 
+/**
+ *  A hook running in isolation.
+ */
 type IsolatedHook<T> = {
+  /**
+   * Unmount the hook and runs all associated cleanup code from effects.
+   */
   cleanup: () => void
+  /**
+   * Get the value returned by the most recent hook invocation
+   */
   currentValue: () => T
+  /**
+   * Force hook to run
+   */
   invoke: () => void
-  setRef: (index: number, value?: T) => void
+  /**
+   * Set the current value of a ref
+   * @param index The zero-based index of the ref (zero for the first useRef, one for the second, etc.)
+   * @param value Value to set.
+   */
+  setRef: (index: number, value?: any) => void
 }
 
+/**
+ * Run a react hook in isolation
+ * @param hookInvocation The hook invocation -- a function that calls a hook.
+ * @param options Optional options, for specifying context values.
+ */
 export const isolateHooks = <T>(
   hookInvocation: () => T,
   options: IsolatedHookOptions = {}
@@ -53,3 +75,5 @@ export const isolateHooks = <T>(
     setRef: hookState.setRef,
   }
 }
+
+export default isolateHooks
