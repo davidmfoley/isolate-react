@@ -1,5 +1,7 @@
 ### isolate-hooks
 
+[on npm](https://www.npmjs.com/package/isolate-hooks)
+
 Isolates your react hooks for fast and predictable unit-testing.
 
 ### Why do I need this?
@@ -64,21 +66,18 @@ Forces an invocation of the hook.
 Updates the current value of a ref used (via useRef) in the hook for testing purposes.
 The index is 0 for the first useRef in the hook, 1 for the second, etc.
 
-## Hook Support
+## Supported hooks
 
 If you have a problem with any particular hook, please submit an issue!
 
-### Fully supported hooks:
+#### useCallback and useMemo
 
-#### useCallback
+Should work as you expect
 
-#### useMemo
+#### useState and useReducer
 
-#### useState
-
-#### useReducer
-
-### Partially supported hooks/supported with caveats:
+These should work as you expect.
+Note that state changes are immediate and synchronous.
 
 #### useContext
 
@@ -86,6 +85,7 @@ You can specify context values in the optional `options` argument, as follows:
 
 ```
 const ExampleContext = React.createContext(0)
+const useContextExample = () => useContext(ExampleContext)
 
 const isolatedHook = isolate(() => useContextExample, {
   context: [
@@ -95,6 +95,9 @@ const isolatedHook = isolate(() => useContextExample, {
     }
   ]
 })
+
+console.log(isolatedHook.currentValue()) // => 42
+
 ```
 
 #### useEffect and useLayoutEffect
@@ -107,7 +110,7 @@ When `.cleanup()` is called, all useLayoutEfect effects are cleaned up in the or
 
 #### useRef
 
-You can set ref `current` using `setRef`. It takes a zero-based index and a value.
+You can set ref `current` using `setRef`. It takes a zero-based index and a value:
 
 ```
 const useRefExample = (refValue: string) => {
