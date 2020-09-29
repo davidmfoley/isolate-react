@@ -12,7 +12,7 @@ This package makes it easy to unit test hooks that are composed from other hooks
 
 ## Install
 
-If you are using this for testing, you probably want to install isolateHooks as a devDependency.
+If you are using this for testing, you probably want to install `isolate-hooks` as a devDependency.
 
 With yarn:
 
