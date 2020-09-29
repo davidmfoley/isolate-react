@@ -33,38 +33,66 @@ import isolateHooks from 'isolate-hooks'
 
 const isolated = isolateHooks(useSomeHook)
 
-console.log(isolated.currentValue())
 ```
 
 #### Options
 
-Context values can set - useful for testing hooks that use useContext.
+Context values can set - useful for testing hooks that use useContext (see below)
 
 ```
-const isolated = isolateHooks(useSomeHook, {})
-console.log(isolated.currentValue())
+const isolated = isolatehooks(usesomehook, { context: [...}})
 ```
 
 ### API
 
-an isolated hook offers the following methods:
+'isolateHooks' invokes the hook and returns a function that returns the current state when invoked:
 
-### `currentValue()`
+```
+import isolateHooks from 'isolate-hooks'
 
-Returns the value from the most recent invocation of the hook
+const isolated = isolateHooks(useSomeHook)
+const hookValue = isolated()
+```
+
+The isolated hook is not invoked each time -- it is only invoked when its state changes in response to an effect.
+
+Additionally, an isolated hook offers the following methods:
 
 ### `cleanup()`
 
 "Unmounts" the hook and runs all associated cleanup code from effects.
 
+```
+import isolateHooks from 'isolate-hooks'
+
+const isolated = isolateHooks(useSomeHook)
+isolated.cleanup()
+```
+
 ### `invoke()`
 
 Forces an invocation of the hook.
+This is useful when testing useRef, since updating a ref will not trigger an invocation of the hook.
 
 ### `setRef(index: number, value: any)`
 
 Updates the current value of a ref used (via useRef) in the hook for testing purposes.
 The index is 0 for the first useRef in the hook, 1 for the second, etc.
+
+### `currentValue()`
+
+Returns the value from the most recent invocation of the hook -- this is the same as invoking the function returned by isolateHooks.
+If you prefer not to mix functions and objects, use this.
+
+```
+import isolateHooks from 'isolate-hooks'
+
+const isolated = isolateHooks(useSomeHook)
+
+// the following two lines are equivalent
+console.log(isolated())
+console.log(isolated.currentValue())
+```
 
 ## Supported hooks
 
@@ -87,7 +115,7 @@ You can specify context values in the optional `options` argument, as follows:
 const ExampleContext = React.createContext(0)
 const useContextExample = () => useContext(ExampleContext)
 
-const isolatedHook = isolate(() => useContextExample, {
+const isolated = isolateHook(() => useContextExample, {
   context: [
     {
       type: ExampleContext,
@@ -96,7 +124,7 @@ const isolatedHook = isolate(() => useContextExample, {
   ]
 })
 
-console.log(isolatedHook.currentValue()) // => 42
+console.log(isolated()) // => 42
 
 ```
 
@@ -120,7 +148,7 @@ const useRefExample = (refValue: string) => {
 const isolated = isolateHooks(() => useRefExample('arthur'))
 isolated.setRef(0, 'ford') // the first argument is the index of the ref (zero-based)
 isolated.invoke()
-console.log(isolated.currentValue())
+console.log(isolated())
 ```
 
 #### useDebugValue

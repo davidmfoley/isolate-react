@@ -13,7 +13,8 @@ const {
 /**
  *  A hook running in isolation.
  */
-type IsolatedHook<T> = {
+export type IsolatedHook<T> = {
+  (): T
   /**
    * Unmount the hook and runs all associated cleanup code from effects.
    */
@@ -63,17 +64,18 @@ const isolateHooks = <T>(
 
   invokeHook()
 
-  return {
-    currentValue: () => {
-      if (hookState.dirty()) invokeHook()
-      return lastResult
-    },
+  const currentValue = () => {
+    if (hookState.dirty()) invokeHook()
+    return lastResult
+  }
+  return Object.assign(currentValue, {
+    currentValue,
     cleanup: () => {
       hookState.cleanup()
     },
     invoke: invokeHook,
     setRef: hookState.setRef,
-  }
+  })
 }
 
 export default isolateHooks
