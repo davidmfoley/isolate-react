@@ -1,12 +1,20 @@
 ### isolate-hooks
 
-Isolates your react hooks for fast and predictable testing.
+Isolates your react hooks for fast and predictable unit-testing.
+
+### Why do I need this?
+
+React hooks offer an idiomatic and convenient way to manage react side effects and state, but can be difficult to test.
+
+This package makes it easy to unit test hooks that are composed from other hooks, with tests that run in milliseconds.
 
 ## Basic Usage
 
 ```
 import isolateHooks from 'isolate-hooks'
-const isolated = isolateHooks(useSomeHook, options)
+
+const isolated = isolateHooks(useSomeHook)
+
 console.log(isolated.currentValue())
 ```
 
@@ -25,7 +33,7 @@ an isolated hook offers the following methods:
 
 ### `currentValue()`
 
-returns the value from the last invocation of the hook
+Returns the value from the most recent invocation of the hook
 
 ### `cleanup()`
 
@@ -39,14 +47,6 @@ Forces an invocation of the hook.
 
 Updates the current value of a ref used (via useRef) in the hook for testing purposes.
 The index is 0 for the first useRef in the hook, 1 for the second, etc.
-
-##
-
-### Why use this?
-
-React hooks offer an idiomatic and convenient way to manage react side effects and state, but can be difficult to test.
-
-This package makes it easy to unit test hooks that are composed from other hooks.
 
 ## Hook Support
 
