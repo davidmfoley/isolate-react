@@ -1,4 +1,4 @@
-import dirtyDependencies from './dirtyDepenendencies'
+import dirtyDependencies from './dirtyDependencies'
 type Effect = () => void | Function
 
 type EffectState = {

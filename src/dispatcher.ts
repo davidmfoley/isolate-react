@@ -1,5 +1,5 @@
 import React, { Dispatch } from 'react'
-import dirtyDependencies from './dirtyDepenendencies'
+import dirtyDependencies from './dirtyDependencies'
 import { IsolatedHookState } from './isolatedHookState'
 
 type SetState<T> = React.Dispatch<React.SetStateAction<T>>
