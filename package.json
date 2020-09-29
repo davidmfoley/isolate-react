@@ -9,6 +9,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "clean": "rm -rf ./lib/",
+    "docs": "typedoc --tsconfig tsconfig.build.json --excludeNotDocumented --mode modules --out docs src/index.ts",
     "test": "TS_NODE_PROJECT=tsconfig.test.json mocha",
     "test:watch": "nodemon -q -e ts --exec \"yarn test\" --watch src --watch test",
     "prettier": "prettier -c '{src,test}/**/*.ts'",
