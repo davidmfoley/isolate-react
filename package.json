@@ -1,6 +1,7 @@
 {
   "name": "isolate-hooks",
   "version": "1.0.1",
+  "repository": "https://github.com/davidmfoley/isolated-hooks",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "author": "davidmfoley@gmail.com",
