@@ -1,0 +1,13 @@
+name: isolated-hooks
+on: [push]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: CI
+        uses: actions/setup-node@v1
+      - run: yarn
+      - run: yarn ci
