@@ -6,7 +6,23 @@ Isolates your react hooks for fast and predictable unit-testing.
 
 React hooks offer an idiomatic and convenient way to manage react side effects and state, but can be difficult to test.
 
-This package makes it easy to unit test hooks that are composed from other hooks, with tests that run in milliseconds.
+This package makes it easy to unit test hooks that are composed from other hooks, with tests that run predictably and fast.
+
+## Install
+
+If you are using this for testing, you probably want to install isolateHooks as a devDependency.
+
+With yarn:
+
+```
+yarn add isolated-hooks --dev
+```
+
+or with npm:
+
+```
+npm install --save-dev
+```
 
 ## Basic Usage
 
@@ -20,7 +36,7 @@ console.log(isolated.currentValue())
 
 #### Options
 
-Options can be used to set context values for testing (see useContext note below).
+Context values can set - useful for testing hooks that use useContext.
 
 ```
 const isolated = isolateHooks(useSomeHook, {})
@@ -110,4 +126,4 @@ Does nothing. In the future this may be used for tracing hook execution.
 
 #### useImperativeHandle
 
-Does nothing. I don't what the case would be for testing this in isolation. If you have a use case for this, let me know!
+Does nothing. I don't what the case would be for testing hook that uses `useImperativeHandle` in isolation. If you have a use case for this, let me know!
