@@ -18,7 +18,7 @@
     "prettier": "prettier -c '{src,test}/**/*.ts'",
     "fix:prettier": "prettier --write '{src,test}/**/*.ts'",
     "cover": "TS_NODE_PROJECT=tsconfig.test.json COVERAGE=1 nyc mocha && open coverage/index.html",
-    "ci": "yarn build && yarn test && yarn prettier"
+    "ci": "yarn build && yarn test && yarn examples && yarn prettier"
   },
   "dependencies": {},
   "devDependencies": {
