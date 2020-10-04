@@ -41,21 +41,46 @@ console.log(isolated())
 
 ### API
 
-'isolateHooks' invokes the hook and returns a function that returns the current state when invoked:
+'isolateHooks' takes a hook function and returns a function with the same signature that is "isolated" with local state,
+similar to how it would behave if invoked inside a react function component.
+
 
 ```
 import isolateHooks from 'isolate-hooks'
 
 const useCounter = () => {
   const [count, setCount] = useState(0)
-  return () => {
-    () => setCount(count => count+1)
-    return [count
-  }
+  return [ count, () => setCount(count => count+1)]
 }
 
 const isolated = isolateHooks(useCounter)
-console.log(isolated()) => 
+const [count, increment] = isolated()
+
+
+console.log(count) // => 0
+
+increment()
+
+const [updatedCount] = isolated()
+
+console.log(updatedCount) // => 1
+
+```
+
+Hooks that take parameters can also be isolated:
+
+```
+const useHelloGoodbye = (name) => {
+  useEffect(() => {
+    console.log(`hello ${name}`)
+    return () => {
+      console.log(`goodbye ${name}`)
+    }
+  }, [name])
+}
+
+const isolatedHelloGoodbye = isolateHooks(useHelloGoodbye)
+isolatedHelloGoodbye('arthur'
 
 ```
 
