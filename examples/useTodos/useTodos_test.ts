@@ -4,7 +4,7 @@ import { TodoState, useTodos } from './useTodos'
 import isolateHooks, { IsolatedHook } from '../../src'
 
 describe('useTodos', () => {
-  let isolated: IsolatedHook<TodoState>
+  let isolated: IsolatedHook<() => TodoState>
 
   beforeEach(() => {
     isolated = isolateHooks(useTodos)
