@@ -1,4 +1,4 @@
-import { describe, it, beforeEach, afterEach } from 'mocha'
+import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
 import isolateHooks from '../src'
@@ -12,9 +12,10 @@ describe('useContext', () => {
       return useContext(ExampleContext)
     })
 
-    expect(result.currentValue()).to.eq('yah')
+    expect(result()).to.eq('yah')
   })
 
+  // deprecated way
   it('has specified value if one passed', () => {
     const result = isolateHooks(
       () => {
@@ -30,6 +31,17 @@ describe('useContext', () => {
       }
     )
 
-    expect(result.currentValue()).to.eq('nah')
+    expect(result()).to.eq('nah')
+  })
+
+  // new way
+  it('has specified value if one is set', () => {
+    const isolated = isolateHooks(() => {
+      return useContext(ExampleContext)
+    })
+
+    isolated.setContext(ExampleContext, 'nah')
+
+    expect(isolated()).to.eq('nah')
   })
 })

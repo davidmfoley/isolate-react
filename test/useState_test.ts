@@ -11,9 +11,9 @@ describe('useState', () => {
       return value
     }
 
-    const rendered = isolateHooks(useStateExample)
+    const isolated = isolateHooks(useStateExample)
 
-    const value = rendered.currentValue()
+    const value = isolated()
     expect(value).to.equal('initial')
   })
 
@@ -26,10 +26,11 @@ describe('useState', () => {
       return value
     }
 
-    const rendered = isolateHooks(useStateExample)
+    const isolated = isolateHooks(useStateExample)
+    isolated()
     setValue('updated')
 
-    const value = rendered.currentValue()
+    const value = isolated()
     expect(value).to.equal('updated')
   })
 
@@ -48,30 +49,32 @@ describe('useState', () => {
     }
 
     it('has initial values', () => {
-      const rendered = isolateHooks(useStateExample)
+      const isolated = isolateHooks(useStateExample)
 
-      const value = rendered.currentValue()
+      const value = isolated()
       expect(value).to.equal('A42')
     })
 
     it('can set values', () => {
-      const rendered = isolateHooks(useStateExample)
+      const isolated = isolateHooks(useStateExample)
+      isolated()
       setLetter('B')
       setNumber(3)
 
-      const value = rendered.currentValue()
+      const value = isolated()
       expect(value).to.equal('B3')
     })
 
     it('can set multiple values', () => {
-      const rendered = isolateHooks(useStateExample)
+      const isolated = isolateHooks(useStateExample)
+      isolated()
       setLetter('A')
       setLetter('B')
       setLetter('C')
       setNumber(7)
       setNumber(8)
 
-      const value = rendered.currentValue()
+      const value = isolated()
       expect(value).to.equal('C8')
     })
   })

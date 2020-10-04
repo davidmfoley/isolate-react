@@ -13,20 +13,20 @@ describe('useReducer', () => {
 
   it('has initial value', () => {
     const isolated = isolateHooks(() => useReducer(counter, 0))
-    const [count] = isolated.currentValue()
+    const [count] = isolated()
     expect(count).to.eq(0)
   })
 
   it('handles dispatch', () => {
     const isolated = isolateHooks(() => useReducer(counter, 0))
-    const [_, dispatch] = isolated.currentValue()
+    const [_, dispatch] = isolated()
     dispatch('++')
     dispatch('++')
     dispatch('++')
     dispatch('--')
     dispatch('++')
 
-    const [count] = isolated.currentValue()
+    const [count] = isolated()
     expect(count).to.eq(3)
   })
 })

@@ -9,9 +9,9 @@ describe('useCallback', () => {
     const useCallbackExample = () => useCallback(() => {}, [])
 
     const isolated = isolateHooks(useCallbackExample)
-    const first = isolated.currentValue()
-    isolated.invoke()
-    expect(first).to.eq(isolated.currentValue())
+    const first = isolated()
+    isolated()
+    expect(first).to.eq(isolated())
   })
 
   it('is a new instance when deps change', () => {
@@ -24,11 +24,11 @@ describe('useCallback', () => {
     }
 
     const isolated = isolateHooks(useCallbackExample)
-    const first = isolated.currentValue()
+    const first = isolated()
     setValue(1)
-    expect(first).not.to.eq(isolated.currentValue())
+    expect(first).not.to.eq(isolated())
     expect(first()).to.eq(0)
-    expect(isolated.currentValue()()).to.eq(1)
+    expect(isolated()()).to.eq(1)
   })
 
   it('is the same instance when deps do not change', () => {
@@ -40,11 +40,13 @@ describe('useCallback', () => {
     }
 
     const isolated = isolateHooks(useCallbackExample)
+    isolated()
+
     setValue(1)
-    const first = isolated.currentValue()
+    const first = isolated()
     setValue(1)
     expect(first()).to.eq(1)
-    expect(isolated.currentValue()()).to.eq(1)
-    expect(first).to.eq(isolated.currentValue())
+    expect(isolated()()).to.eq(1)
+    expect(first).to.eq(isolated())
   })
 })

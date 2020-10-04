@@ -15,7 +15,7 @@ describe('useMemo', () => {
       }, [])
 
     const isolated = isolateHooks(useMemoExample)
-    expect(isolated.currentValue()).to.eq(1)
+    expect(isolated()).to.eq(1)
   })
 
   it('is not computed on next render if deps unchanged', () => {
@@ -28,8 +28,7 @@ describe('useMemo', () => {
       }, [])
 
     const isolated = isolateHooks(useMemoExample)
-    isolated.invoke()
-    expect(isolated.currentValue()).to.eq(1)
+    expect(isolated()).to.eq(1)
   })
 
   it('is not computed on next render if deps unchanged', () => {
@@ -42,7 +41,7 @@ describe('useMemo', () => {
       }, [count])
 
     const isolated = isolateHooks(useMemoExample)
-    isolated.invoke()
-    expect(isolated.currentValue()).to.eq(2)
+    isolated()
+    expect(isolated()).to.eq(2)
   })
 })

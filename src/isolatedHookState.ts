@@ -40,9 +40,16 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
 
   let hookStates: any[] = []
   let nextHookStates: any[] = []
+  const context = new Map<React.Context<any>, any>()
 
   const layoutEffects = createEffectSet()
   const effects = createEffectSet()
+
+  if (options.context) {
+    options.context.forEach((c) => {
+      context.set(c.type, c.value)
+    })
+  }
 
   let onUpdated = () => {}
 
@@ -85,11 +92,16 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
     refs[index].value = value
   }
 
+  const setContext = (contextType: React.Context<any>, value: any) => {
+    context.set(contextType, value)
+  }
+
   return {
     layoutEffects,
     effects,
     endPass,
     nextHookState,
+    setContext,
     setRef,
     firstPass: () => first,
     dirty: () => dirty,
@@ -100,10 +112,8 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
       layoutEffects.cleanup()
       effects.cleanup()
     },
-    contextValue: (type: React.Context<any>) => {
-      const match = (options.context || []).find((c) => c.type === type)
-      return match ? match.value : (type as any)._currentValue
-    },
+    contextValue: (type: React.Context<any>): any =>
+      context.has(type) ? context.get(type) : (type as any)._currentValue,
   }
 }
 

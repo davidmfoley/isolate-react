@@ -10,29 +10,34 @@ const {
   ReactCurrentDispatcher,
 } = (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
 
+type Parameters<T> = T extends (...args: infer T) => any ? T : never
+type WrappedFunction<F extends (...args: any) => any> = (
+  ...args: Parameters<F>
+) => ReturnType<F>
+
 /**
  *  A hook running in isolation.
  */
-export type IsolatedHook<T> = {
-  (): T
+export type IsolatedHook<F extends (...args: any) => any> = F & {
   /**
-   * Unmount the hook and runs all associated cleanup code from effects.
+   * Unmount the hook and run all associated cleanup code from effects.
    */
   cleanup: () => void
   /**
    * Get the value returned by the most recent hook invocation
    */
-  currentValue: () => T
+  currentValue: () => ReturnType<F>
   /**
    * Force hook to run
    */
-  invoke: () => void
+  invoke: WrappedFunction<F>
   /**
    * Set the current value of a ref
    * @param index The zero-based index of the ref (zero for the first useRef, one for the second, etc.)
    * @param value Value to set.
    */
   setRef: (index: number, value?: any) => void
+  setContext: <T>(contextType: React.Context<T>, value: T) => void
 }
 
 /**
@@ -40,41 +45,41 @@ export type IsolatedHook<T> = {
  * @param hookInvocation The hook invocation -- a function that calls a hook.
  * @param options Optional options, for specifying context values.
  */
-const isolateHooks = <T>(
-  hookInvocation: () => T,
+const isolateHooks = <F extends (...args: any[]) => any>(
+  hookInvocation: F,
   options: IsolatedHookOptions = {}
-): IsolatedHook<T> => {
+): IsolatedHook<F> => {
   const hookState = createIsolatedHookState(options)
   const dispatcher = createIsolatedDispatcher(hookState)
+  let lastArgs: Parameters<F>
 
-  let lastResult: T
+  let lastResult: ReturnType<F>
 
-  const invokeHook = () => {
+  const invokeHook = (...args: Parameters<F>): ReturnType<F> => {
     const previousDispatcher = ReactCurrentDispatcher.current
     ReactCurrentDispatcher.current = dispatcher
     do {
-      lastResult = hookInvocation()
+      lastResult = hookInvocation(...args)
 
       hookState.endPass()
     } while (hookState.dirty())
     ReactCurrentDispatcher.current = previousDispatcher
+
+    return lastResult
   }
 
   hookState.onUpdated(invokeHook)
 
-  invokeHook()
+  const currentValue = () => lastResult
 
-  const currentValue = () => {
-    if (hookState.dirty()) invokeHook()
-    return lastResult
-  }
-  return Object.assign(currentValue, {
+  return Object.assign((invokeHook as any) as F, {
     currentValue,
     cleanup: () => {
       hookState.cleanup()
     },
-    invoke: invokeHook,
+    invoke: () => invokeHook(...(lastArgs || ([] as any))),
     setRef: hookState.setRef,
+    setContext: hookState.setContext,
   })
 }
 

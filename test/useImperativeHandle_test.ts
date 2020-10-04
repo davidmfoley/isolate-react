@@ -4,7 +4,7 @@ import { expect } from 'chai'
 import isolateHooks from '../src'
 import { useImperativeHandle, useRef } from 'react'
 
-describe('useDebugValue', () => {
+describe('useImerativeHandle', () => {
   it("doesn't throw", () => {
     // todo: implement tracing, for now just no-op
     const useImperativeHandleExample = () => {
@@ -13,6 +13,6 @@ describe('useDebugValue', () => {
       return 42
     }
 
-    expect(isolateHooks(useImperativeHandleExample).currentValue()).to.eq(42)
+    expect(isolateHooks(useImperativeHandleExample)()).to.eq(42)
   })
 })

@@ -12,6 +12,7 @@ describe('useDebugValue', () => {
       return 42
     }
 
-    expect(isolateHooks(useDebugValueExample).currentValue()).to.eq(42)
+    const isolated = isolateHooks(useDebugValueExample)
+    expect(isolated()).to.eq(42)
   })
 })

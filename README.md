@@ -26,7 +26,7 @@ or with npm:
 npm install --save-dev
 ```
 
-## Basic Usage
+## Usage
 
 ```
 import isolateHooks from 'isolate-hooks'
@@ -38,13 +38,6 @@ console.log(isolated())
 
 ```
 
-#### Options
-
-Context values can set - useful for testing hooks that use useContext (see below)
-
-```
-const isolated = isolatehooks(usesomehook, { context: [...}})
-```
 
 ### API
 
@@ -53,11 +46,19 @@ const isolated = isolatehooks(usesomehook, { context: [...}})
 ```
 import isolateHooks from 'isolate-hooks'
 
-const isolated = isolateHooks(useSomeHook)
-const hookValue = isolated()
+const useCounter = () => {
+  const [count, setCount] = useState(0)
+  return () => {
+    () => setCount(count => count+1)
+    return [count
+  }
+}
+
+const isolated = isolateHooks(useCounter)
+console.log(isolated()) => 
+
 ```
 
-The isolated hook is not invoked each time -- it is only invoked when its state changes in response to an effect.
 
 Additionally, an isolated hook offers the following methods:
 
@@ -68,14 +69,30 @@ Additionally, an isolated hook offers the following methods:
 ```
 import isolateHooks from 'isolate-hooks'
 
+const useCleanupExample = () => {
+  useEffect(
+    () => {
+      console.log('mount')
+      return () => { console.log('unmount') }
+    }, [])
+}
+
 const isolated = isolateHooks(useSomeHook)
+// => 'mount'
+
 isolated.cleanup()
+// => 'unmout'
+
 ```
 
 ### `invoke()`
 
-Forces an invocation of the hook.
+Forces an invocation of the hook with the last set of arguments.
 This is useful when testing useRef, since updating a ref will not trigger an invocation of the hook.
+
+### `setContext<T>(type: React.Context<T>, value: T)`
+
+Set a context value that will be exposed in the isolated hook via `useContext`.
 
 ### `setRef(index: number, value: any)`
 
@@ -84,18 +101,7 @@ The index is 0 for the first useRef in the hook, 1 for the second, etc.
 
 ### `currentValue()`
 
-Returns the value from the most recent invocation of the hook -- this is the same as invoking the function returned by isolateHooks.
-If you prefer not to mix functions and objects, use this.
-
-```
-import isolateHooks from 'isolate-hooks'
-
-const isolated = isolateHooks(useSomeHook)
-
-// the following two lines are equivalent
-console.log(isolated())
-console.log(isolated.currentValue())
-```
+Returns the value from the most recent invocation of the hook.
 
 ## Supported hooks
 

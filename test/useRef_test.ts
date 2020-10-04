@@ -11,13 +11,12 @@ describe('useRef', () => {
   }
 
   it('starts out as the inital value', () => {
-    expect(isolateHooks(() => useRefExample('trillian')).currentValue()).to.eq(
-      'trillian'
-    )
+    expect(isolateHooks(() => useRefExample('trillian'))()).to.eq('trillian')
   })
 
   it('can be set', () => {
     const isolated = isolateHooks(() => useRefExample('arthur'))
+    isolated()
     isolated.setRef(0, 'ford')
     isolated.invoke()
 
