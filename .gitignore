@@ -1,0 +1,7 @@
+node_modules
+tmp
+coverage
+lib
+*.log
+.nyc_output
+docs
