@@ -80,7 +80,14 @@ const useHelloGoodbye = (name) => {
 }
 
 const isolatedHelloGoodbye = isolateHooks(useHelloGoodbye)
-isolatedHelloGoodbye('arthur'
+
+isolatedHelloGoodbye('arthur')
+// => 'hello arthur'
+
+isolatedHelloGoodbye('trillian')
+// => 'goodbye arthur' (triggered by the effect cleaning up after itself)
+// => 'hello trillian'
+
 
 ```
 
