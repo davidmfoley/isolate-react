@@ -3,7 +3,7 @@ import isolateHooks from 'isolate-hooks'
 type FindSpec = string | React.FC<any>
 
 interface IsolatedNode<P> {
-  type: any // TODO
+  type: React.FC<P> | string
   props: P
 }
 
@@ -18,7 +18,6 @@ export const isolateComponent = <P>(
 ): IsolatedComponent<P> => {
   let lastResult: React.ReactNode
   const allNodes = (e: any) => [e]
-  const isolated = isolateHooks(componentElement.type)
   let props = componentElement.props
 
   const nodeMatches = (spec: FindSpec | null, node: any) => {
@@ -26,9 +25,9 @@ export const isolateComponent = <P>(
     return node.type === spec
   }
 
-  const render = () => {
-    lastResult = isolated(props)
-  }
+  const render = isolateHooks(() => {
+    lastResult = componentElement.type(props)
+  })
 
   render()
 
