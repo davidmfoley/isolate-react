@@ -15,6 +15,8 @@ See the [project tracker](https://github.com/davidmfoley/isolate-components/proj
 
 ### Usage
 
+See [documentation](https://davidmfoley.github.io/isolated-components)
+
 ```
 import { isolateComponent } from 'isolate-components'
 const MyComponent = (props) => (
