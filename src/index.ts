@@ -10,11 +10,36 @@ interface IsolatedNode<P> {
 }
 */
 
-interface IsolatedComponent<P> {
-  findAll: (spec?: FindSpec) => TreeNode[]
-  findOne: (spec?: FindSpec) => TreeNode
-  mergeProps: (props: Partial<P>) => void
-  setProps: (props: P) => void
+/**
+ * Return value from isolateComponent
+ *
+ * @interface
+ * @typeparam P - Type of the component's props
+ */
+export interface IsolatedComponent<P> {
+  /**
+   * Find all child nodes that match.
+   * @param spec string or component
+   * @returns - all matching nodes in the tree, or an empty array if none match
+   */
+  findAll(spec?: FindSpec): TreeNode[]
+  /**
+   * Find a single child node that matches, and throw if not found.
+   * @param spec string or component
+   * @returns - the matching node
+   * @throws - if no matching node found
+   */
+  findOne(spec?: FindSpec): TreeNode
+  /**
+   * Set a subset of props, and re-render the component under test
+   * @param props - A partial set of props. Unspecified props will not be changed.
+   */
+  mergeProps(props: Partial<P>): void
+  /**
+   * Replace all props, and re-render the component under test
+   * @param props - New props. Replaces existing props.
+   */
+  setProps(props: P): void
 }
 
 const allNodes = (e: any) => {
@@ -23,6 +48,12 @@ const allNodes = (e: any) => {
   return [e].concat(children.flatMap(allNodes))
 }
 
+/**
+ * Isolate a component for testing
+ * @param componentElement - A react element, usually created with JSX, like: <MyComponent someProp="value" />
+ * @returns IsolatedComponent
+ * @typeparam P - Type of the component's props
+ **/
 export const isolateComponent = <P>(
   componentElement: React.ReactElement<P, any>
 ): IsolatedComponent<P> => {
