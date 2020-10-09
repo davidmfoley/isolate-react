@@ -1,4 +1,5 @@
 ## isolate-components
+[![npm badge](https://img.shields.io/npm/v/isolate-components)](https://npmjs.com/package/isolate-components)
 
 Isolate and test your modern react components without the need for DOM emulators.
 
