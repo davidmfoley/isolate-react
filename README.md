@@ -15,7 +15,7 @@ See the [project tracker](https://github.com/davidmfoley/isolate-components/proj
 
 ### Usage
 
-See [documentation](https://davidmfoley.github.io/isolated-components)
+See [documentation](https://davidmfoley.github.io/isolate-components/modules/_index_.html)
 
 ```
 import { isolateComponent } from 'isolate-components'
