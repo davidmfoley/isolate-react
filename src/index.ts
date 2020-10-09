@@ -55,7 +55,7 @@ const allNodes = (e: any) => {
  * @typeparam P - Type of the component's props
  **/
 export const isolateComponent = <P>(
-  componentElement: React.ReactElement<P, any>kk
+  componentElement: React.ReactElement<P, any>
 ): IsolatedComponent<P> => {
   let lastResult: React.ReactNode
   let props = componentElement.props
