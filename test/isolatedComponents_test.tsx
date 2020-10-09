@@ -8,6 +8,9 @@ describe('isolateComponents ', () => {
     const ExampleFC = ({ name }: { name: string }) => <span>{name}</span>
     const JustADiv = () => <div className="the-thing" />
     const JustAnFC = () => <ExampleFC name="trillian" />
+    const ChildrenExample: React.FC<{}> = ({ children }) => (
+      <div>{children}</div>
+    )
 
     describe('findOne', () => {
       it('can find by tag', () => {
@@ -30,6 +33,16 @@ describe('isolateComponents ', () => {
         expect(child.type).to.eq(ExampleFC)
         expect(child.props.name).to.eq('trillian')
       })
+
+      it('can find a deeper component', () => {
+        const component = isolateComponent(
+          <ChildrenExample>
+            <JustAnFC />
+          </ChildrenExample>
+        )
+        const child = component.findOne(JustAnFC)
+        expect(child.type).to.eq(JustAnFC)
+      })
     })
 
     describe('findAll', () => {
@@ -51,13 +64,29 @@ describe('isolateComponents ', () => {
       })
     })
 
-    describe('setProps', () => {
-      it('updates and re-renders', () => {
-        const component = isolateComponent(<ExampleFC name="arthur" />)
-        expect(component.findOne('span').props.children).to.eq('arthur')
+    describe('updating props', () => {
+      const Name = (props: { first: string; last: string }) => (
+        <span>
+          {props.first} {props.last}
+        </span>
+      )
 
-        component.mergeProps({ name: 'trillian' })
-        expect(component.findOne('span').props.children).to.eq('trillian')
+      it('updates and re-renders upon mergeProps', () => {
+        const component = isolateComponent(<Name first="eddard" last="stark" />)
+
+        expect(component.findOne('span').content()).to.eq('eddard stark')
+
+        component.mergeProps({ first: 'ned' })
+        expect(component.findOne('span').content()).to.eq('ned stark')
+      })
+
+      it('updates and re-renders upon setProps', () => {
+        const component = isolateComponent(<Name first="eddard" last="stark" />)
+
+        expect(component.findOne('span').content()).to.eq('eddard stark')
+
+        component.setProps({ first: 'catelyn', last: 'tully' })
+        expect(component.findOne('span').content()).to.eq('catelyn tully')
       })
     })
   })
