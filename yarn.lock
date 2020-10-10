@@ -1225,10 +1225,10 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
-isolate-hooks@1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/isolate-hooks/-/isolate-hooks-1.1.2.tgz#1e1fd78725e58a6ec8282ef946867eda5264d3f1"
-  integrity sha512-DN6M2wdiv46XXjIELVVmGJbyznfYMfyDTuGL1NYGRi6bZqD9Pc0RnFP/uGqlwdmxcNs9jNOmqil6E6Q2wew8Gw==
+isolate-hooks@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/isolate-hooks/-/isolate-hooks-1.1.4.tgz#9d9e690fde1830775f96a363b72e1ccf60e52501"
+  integrity sha512-guAX08WrKCH/vGFA7cfsKpezwBGSvgqXmjMocTMKRQmCfHhwpymnfU+LmJX8SNGykbD33thxygVPq+g826x9gg==
 
 istanbul-lib-coverage@^3.0.0, istanbul-lib-coverage@^3.0.0-alpha.1:
   version "3.0.0"
