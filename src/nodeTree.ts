@@ -1,11 +1,11 @@
 type InputNode = any //ReturnType<typeof React.createElement>
 
 export interface TreeNode {
-  nodeType: 'react' | 'html' | 'string'
+  nodeType: 'react' | 'html' | 'string' | 'null'
   type: InputNode['type']
   children: TreeNode[]
   props: any
-  content: () => string
+  content: () => string | null
 }
 
 type NodePredicate = (node: TreeNode) => boolean
@@ -25,6 +25,15 @@ const getNodeType = (node: InputNode) => {
 }
 
 const parse = (node: InputNode): TreeNode => {
+  if (node === null) {
+    return {
+      nodeType: 'null',
+      type: 'null',
+      children: [],
+      props: {},
+      content: () => null,
+    }
+  }
   if (typeof node === 'string')
     return {
       nodeType: 'string',

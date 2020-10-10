@@ -40,6 +40,10 @@ export interface IsolatedComponent<P> {
    * @param props - New props. Replaces existing props.
    */
   setProps(props: P): void
+  /**
+   * Returns the content of the component as string
+   */
+  content(): null | string
 }
 
 const allNodes = (e: any) => {
@@ -90,5 +94,6 @@ export const isolateComponent = <P>(
       props = nextProps
       render()
     },
+    content: () => tree.root().content(),
   }
 }

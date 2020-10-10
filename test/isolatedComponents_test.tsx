@@ -4,6 +4,17 @@ import { isolateComponent } from '../src'
 import { expect } from 'chai'
 
 describe('isolateComponents ', () => {
+  it('handles null', () => {
+    const MaybeNull = (props: { nullify: boolean }) =>
+      props.nullify ? null : <div>not null</div>
+    const component = isolateComponent(<MaybeNull nullify={true} />)
+    expect(component.content()).to.eq(null)
+    component.setProps({
+      nullify: false,
+    })
+    expect(component.findOne('div').content()).to.eq('not null')
+  })
+
   describe('finding child elements', () => {
     const ExampleFC = ({ name }: { name: string }) => <span>{name}</span>
     const JustADiv = () => <div className="the-thing" />
