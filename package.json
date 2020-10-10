@@ -11,17 +11,18 @@
     "lib/**/*"
   ],
   "scripts": {
-    "build": "yarn build:tsc && yarn build:docs",
-    "build:tsc": "tsc -p tsconfig.build.json",
-    "build:docs": "typedoc --tsconfig tsconfig.build.json --excludeNotDocumented --mode modules --out docs src/index.ts",
+    "build":  "tsc -p tsconfig.build.json",
+    "docs": "yarn docs:typedoc && yarn docs:gh-pages",
+    "docs:typedoc": "typedoc --tsconfig tsconfig.build.json --excludeNotDocumented --mode modules --out docs src/index.ts",
+    "docs:gh-pages": "echo 'this file force gh pages to allow access to underscore-named files' > docs/.nojekyll",
     "clean": "rm -rf ./lib/",
     "test": "mocha",
     "test:watch": "nodemon -q -e ts,tsx --exec \"yarn test\" --watch src --watch test",
     "prettier": "prettier -c '{src,test}/**/*.ts'",
-    "prepublish": "yarn build",
+    "prepublish": "yarn clean && yarn build",
     "fix:prettier": "prettier --write '{src,test}/**/*.ts'",
     "cover": "COVERAGE=1 nyc mocha && open coverage/index.html",
-    "ci": "yarn build && yarn test  && yarn prettier"
+    "ci": "yarn build && yarn test && yarn prettier"
   },
   "dependencies": {
     "isolate-hooks": "^1.1.4"
