@@ -38,4 +38,24 @@ describe('nodeTree ', () => {
     expect(root.children.length).to.eql(1)
     expect(root.children[0].type).to.eql(Child)
   })
+
+  it('exposes content via content() and toString()', () => {
+    const List: React.FC<{ className: string }> = () => null
+    const ListItem: React.FC<{}> = () => null
+    const tree = nodeTree(
+      <List className="listy-list">
+        <ListItem>Arthur</ListItem>
+        <ListItem>Trillian</ListItem>
+      </List>
+    )
+    const root = tree.root()
+
+    expect(root.content()).to.eq(
+      '<ListItem>Arthur</ListItem><ListItem>Trillian</ListItem>'
+    )
+
+    expect(root.toString()).to.eq(
+      '<List className="listy-list"><ListItem>Arthur</ListItem><ListItem>Trillian</ListItem></List>'
+    )
+  })
 })
