@@ -69,8 +69,10 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A node rendered by a component</p>
+						<p>A node -- react component, html element, or string -- that was rendered by the component under test.</p>
 					</div>
+					<p>Useful for getting access to props to assert that they have the correct value, or to trigger handlers like <code>onClick</code> or <code>onChange</code> to exercise the component.</p>
+					<p>Also provides <code>toString()</code> and <code>content()</code> helpers for debugging.</p>
 					<dl class="tsd-comment-tags">
 						<dt>interface</dt>
 						<dd></dd>
@@ -93,11 +95,16 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="treenode.html#children" class="tsd-kind-icon">children</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="treenode.html#content" class="tsd-kind-icon">content</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="treenode.html#nodetype" class="tsd-kind-icon">node<wbr>Type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="treenode.html#props" class="tsd-kind-icon">props</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="treenode.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="treenode.html#type" class="tsd-kind-icon">type</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="treenode.html#content" class="tsd-kind-icon">content</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="treenode.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 							</ul>
 						</section>
 					</div>
@@ -111,7 +118,7 @@
 					<div class="tsd-signature tsd-kind-icon">children<span class="tsd-signature-symbol">:</span> <a href="treenode.html" class="tsd-signature-type">TreeNode</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/62854df/src/nodeTree.ts#L22">nodeTree.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/e4627ce/src/nodeTree.ts#L28">nodeTree.ts:28</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -121,42 +128,12 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="content" class="tsd-anchor"></a>
-					<h3>content</h3>
-					<div class="tsd-signature tsd-kind-icon">content<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/62854df/src/nodeTree.ts#L30">nodeTree.ts:30</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>the inner content of the node, formatted for debugging</p>
-						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-signature">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="nodetype" class="tsd-anchor"></a>
 					<h3>node<wbr>Type</h3>
 					<div class="tsd-signature tsd-kind-icon">node<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"react"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"html"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"null"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/62854df/src/nodeTree.ts#L11">nodeTree.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/e4627ce/src/nodeTree.ts#L17">nodeTree.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -171,7 +148,7 @@
 					<div class="tsd-signature tsd-kind-icon">props<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/62854df/src/nodeTree.ts#L26">nodeTree.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/e4627ce/src/nodeTree.ts#L32">nodeTree.ts:32</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -181,52 +158,69 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="tostring" class="tsd-anchor"></a>
-					<h3>to<wbr>String</h3>
-					<div class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/62854df/src/nodeTree.ts#L34">nodeTree.ts:34</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>the outer content of the node (including its tag and props), formatted for debugging</p>
-						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-signature">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="type" class="tsd-anchor"></a>
 					<h3>type</h3>
 					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">InputNode</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"type"</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/62854df/src/nodeTree.ts#L18">nodeTree.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/e4627ce/src/nodeTree.ts#L24">nodeTree.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The <code>type</code> as returned from React.createElement
 								For a react FC, the component function.
-								For an html node, the tag name
-							For a string, the string</p>
+								For an html node, the tag name.
+							For a string, the string.</p>
 						</div>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="content" class="tsd-anchor"></a>
+					<h3>content</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">content<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/e4627ce/src/nodeTree.ts#L36">nodeTree.ts:36</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>the inner content of the node, formatted for debugging</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="tostring" class="tsd-anchor"></a>
+					<h3>to<wbr>String</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/e4627ce/src/nodeTree.ts#L40">nodeTree.ts:40</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>the outer content of the node (including its tag and props), formatted for debugging</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -252,19 +246,19 @@
 								<a href="treenode.html#children" class="tsd-kind-icon">children</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="treenode.html#content" class="tsd-kind-icon">content</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="treenode.html#nodetype" class="tsd-kind-icon">node<wbr>Type</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="treenode.html#props" class="tsd-kind-icon">props</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="treenode.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="treenode.html#type" class="tsd-kind-icon">type</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="treenode.html#content" class="tsd-kind-icon">content</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="treenode.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
 							</li>
 						</ul>
 					</li>

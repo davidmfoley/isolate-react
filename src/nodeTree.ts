@@ -1,8 +1,14 @@
 type InputNode = any //ReturnType<typeof React.createElement>
 
 /**
- * A node rendered by a component
+ * A node -- react component, html element, or string -- that was rendered by the component under test.
+ *
+ * Useful for getting access to props to assert that they have the correct value, or to trigger handlers like `onClick` or `onChange` to exercise the component.
+ *
+ * Also provides `toString()` and `content()` helpers for debugging.
+ *
  * @interface
+ *
  */
 export interface TreeNode {
   /**
@@ -25,13 +31,13 @@ export interface TreeNode {
    */
   props: any
   /**
-   * the inner content of the node, formatted for debugging
+   * Returns the inner content of the node, formatted for debugging
    */
-  content: () => string | null
+  content(): string | null
   /**
-   * the outer content of the node (including its tag and props), formatted for debugging
+   * Returns the outer content of the node (including its tag and props), formatted for debugging
    */
-  toString: () => string
+  toString(): string
 }
 
 type NodePredicate = (node: TreeNode) => boolean
