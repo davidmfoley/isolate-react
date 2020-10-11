@@ -13,7 +13,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "docs": "yarn docs:typedoc && yarn docs:gh-pages",
-    "docs:typedoc": "typedoc --tsconfig tsconfig.build.json --excludeNotDocumented --mode modules --out docs src/index.ts",
+    "docs:typedoc": "typedoc --tsconfig tsconfig.build.json --mode library --out docs src/index.ts ",
     "docs:gh-pages": "echo 'this file force gh pages to allow access to underscore-named files' > docs/.nojekyll",
     "clean": "rm -rf ./lib/",
     "test": "mocha",
@@ -40,7 +40,7 @@
     "source-map-support": "^0.5.19",
     "ts-mocha": "^7.0.0",
     "ts-node": "^9.0.0",
-    "typedoc": "^0.19.2",
+    "typedoc": "^0.17.0-3",
     "typescript": "^4.0.3"
   },
   "mocha": {

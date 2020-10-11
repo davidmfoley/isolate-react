@@ -1,11 +1,36 @@
 type InputNode = any //ReturnType<typeof React.createElement>
 
+/**
+ * A node rendered by a component
+ * @interface
+ */
 export interface TreeNode {
+  /**
+   * The type of node: a react component, html, string or null.
+   */
   nodeType: 'react' | 'html' | 'string' | 'null'
+  /**
+   * The `type` as returned from React.createElement
+   * For a react FC, the component function.
+   * For an html node, the tag name.
+   * For a string, the string.
+   */
   type: InputNode['type']
+  /**
+   * Children, if present, or else an empty array
+   */
   children: TreeNode[]
+  /**
+   * React or html props, excluding children.
+   */
   props: any
+  /**
+   * the inner content of the node, formatted for debugging
+   */
   content: () => string | null
+  /**
+   * the outer content of the node (including its tag and props), formatted for debugging
+   */
   toString: () => string
 }
 

@@ -1,17 +1,14 @@
 import isolateHooks from 'isolate-hooks'
 import { nodeTree, NodeTree, TreeNode } from './nodeTree'
+export { TreeNode }
 
 type FindSpec = string | React.FC<any>
 
-/*
-interface IsolatedNode<P> {
-  type: React.FC<P> | string
-  props: P
-}
-*/
-
 /**
- * Return value from isolateComponent
+ * Return value from isolateComponent.
+ *
+ * Allows exploring the component's children, changing its props, and
+ * otherwise testing its behavior.
  *
  * @interface
  * @typeparam P - Type of the component's props
