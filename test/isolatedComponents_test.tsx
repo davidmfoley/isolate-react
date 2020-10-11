@@ -9,10 +9,13 @@ describe('isolateComponents ', () => {
       props.nullify ? null : <div>not null</div>
     const component = isolateComponent(<MaybeNull nullify={true} />)
     expect(component.content()).to.eq(null)
+    expect(component.toString()).to.eq('')
     component.setProps({
       nullify: false,
     })
+
     expect(component.findOne('div').content()).to.eq('not null')
+    expect(component.findOne('div').toString()).to.eq(`<div>not null</div>`)
   })
 
   describe('finding child elements', () => {

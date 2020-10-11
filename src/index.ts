@@ -41,9 +41,14 @@ export interface IsolatedComponent<P> {
    */
   setProps(props: P): void
   /**
-   * Returns the content of the component as string
+   * Returns the content of the component.
+   * If the component returned null, this is null, otherwise it is a string representation of the content.
    */
   content(): null | string
+  /**
+   * Returns a string representation of the component and all children, useful for debugging.
+   */
+  toString(): string
 }
 
 const allNodes = (e: any) => {
@@ -95,5 +100,6 @@ export const isolateComponent = <P>(
       render()
     },
     content: () => tree.root().content(),
+    toString: () => tree.root().toString(),
   }
 }
