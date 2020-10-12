@@ -114,13 +114,15 @@ const componentToString = (value: any, children: TreeNode[], props: any) => {
   }`
 }
 
-const parseChildren = (children: InputNode[]) => 
-   normalizeChildren(children).map(parse)
+const parseChildren = (children: InputNode[]) =>
+  normalizeChildren(children).map(parse)
 
 const parse = (node: InputNode): TreeNode => {
   if (node === null) return nullNode()
 
+  // for now, treat array as fragment
   if (Array.isArray(node)) return fragmentNode(parseChildren(node))
+
   if (typeof node === 'string' || typeof node === 'number')
     return valueNode(node)
 
