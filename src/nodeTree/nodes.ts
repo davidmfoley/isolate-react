@@ -55,6 +55,7 @@ export const fragmentNode = (children: TreeNode[]): TreeNode => ({
   content: () => formatChildren(children),
   toString: () => formatChildren(children),
 })
+
 export const reactNode = (
   fc: React.FC<any>,
   props: any,
