@@ -11,7 +11,7 @@ Supports hooks and has no dependency on DOM emulators.
 
 ### Usage
 
-See [API documentation](https://davidmfoley.github.io/isolate-components/modules/globals.html)
+See [API documentation](https://davidmfoley.github.io/isolate-components/globals.html)
 
 ```
 import { isolateComponent } from 'isolate-components'
