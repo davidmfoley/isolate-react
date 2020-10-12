@@ -28,5 +28,5 @@ This is relatively new -- your feature requests and feedback are appreciated.
 
 See the [project tracker](https://github.com/davidmfoley/isolate-components/projects/1) for project progress.
 
-File an [issue](https://github.com/davidmfoley/isolate-components/issue) if you have a suggestion or request.
+File an [issue](https://github.com/davidmfoley/isolate-components/issues) if you have a suggestion or request.
 
