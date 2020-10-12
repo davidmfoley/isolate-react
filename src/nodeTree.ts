@@ -14,7 +14,7 @@ export interface TreeNode {
   /**
    * The type of node: a react component, html, string or null.
    */
-  nodeType: 'react' | 'html' | 'string' | 'null'
+  nodeType: 'react' | 'html' | 'string' | 'number' | 'null' | 'fragment'
   /**
    * The `type` as returned from React.createElement
    * For a react FC, the component function.
@@ -65,20 +65,31 @@ const nullNode = (): TreeNode => ({
   toString: () => '',
 })
 
-const stringNode = (value: string): TreeNode => ({
-  nodeType: 'string',
+const valueNode = (value: string | number): TreeNode => ({
+  nodeType: typeof value as any,
   type: value,
   children: [],
   props: {},
-  content: () => value as string,
-  toString: () => value,
+  content: () => ('' + value) as string,
+  toString: () => '' + value,
 })
 
 const displayName = (type: any): string => {
-  if (typeof type === 'string') return type
+  if (typeof type === 'string' || typeof type === 'number') return '' + type
 
   return type.displayName || type.name
 }
+const isFragment = (node: InputNode) =>
+  node.type.toString() === 'Symbol(react.fragment)'
+
+const fragmentNode = (children: InputNode[]): TreeNode => ({
+  nodeType: 'fragment',
+  type: 'fragment',
+  children,
+  props: {},
+  content: () => formatChildren(children),
+  toString: () => formatChildren(children),
+})
 
 const formatPropValue = (v: any) => {
   if (typeof v === 'string') return `"${v}"`
@@ -91,22 +102,33 @@ const formatProps = (props: any) => {
   return ` ${keys.map((k) => `${k}=${formatPropValue(props[k])}`).join(' ')}`
 }
 
+const formatChildren = (children: any[]) =>
+  children.map((c: TreeNode) => c.toString()).join('')
+
 const componentToString = (value: any, children: TreeNode[], props: any) => {
   const formattedProps = formatProps(props)
-  const formattedChildren = children.map((c: TreeNode) => c.toString()).join('')
+  const formattedChildren = formatChildren(children)
   const name = displayName(value)
   return `<${name}${formattedProps}${
     children.length ? `>${formattedChildren}</${name}>` : `/>`
   }`
 }
 
+const parseChildren = (children: InputNode[]) => 
+   normalizeChildren(children).map(parse)
+
 const parse = (node: InputNode): TreeNode => {
   if (node === null) return nullNode()
-  if (typeof node === 'string') return stringNode(node)
 
-  const { children, ...props } = node.props as any
+  if (Array.isArray(node)) return fragmentNode(parseChildren(node))
+  if (typeof node === 'string' || typeof node === 'number')
+    return valueNode(node)
 
-  const parsedChildren = normalizeChildren(children).map(parse)
+  const { children, ...props } = (node.props || {}) as any
+
+  const parsedChildren = parseChildren(children)
+  if (isFragment(node)) return fragmentNode(parsedChildren)
+
   return {
     nodeType: getNodeType(node),
     type: node.type,

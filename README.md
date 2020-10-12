@@ -5,21 +5,13 @@ Isolate and test your modern react components without the need for DOM emulators
 
 Supports hooks and has no dependency on DOM emulators.
 
-### Project progress
-
-This is relatively new -- your feature requests and feedback are appreciated.
-
-See the [project tracker](https://github.com/davidmfoley/isolate-components/projects/1) for project progress.
-
-File an [issue](https://github.com/davidmfoley/isolate-components/issue) if you have a suggestion or request.
-
 ### Installation
 
 `yarn add --dev isolate-components` or `npm install -D isolate-components`
 
 ### Usage
 
-See [documentation](https://davidmfoley.github.io/isolate-components/modules/_index_.html)
+See [API documentation](https://davidmfoley.github.io/isolate-components/modules/globals.html)
 
 ```
 import { isolateComponent } from 'isolate-components'
@@ -31,3 +23,12 @@ console.log(component.findOne('span').content()) // => 'Hello Trillian'
 component.setProps({name: 'Zaphod'})
 console.log(component.findOne('span').content()) // => 'Hello Zaphod'
 ```
+
+### Project progress
+
+This is relatively new -- your feature requests and feedback are appreciated.
+
+See the [project tracker](https://github.com/davidmfoley/isolate-components/projects/1) for project progress.
+
+File an [issue](https://github.com/davidmfoley/isolate-components/issue) if you have a suggestion or request.
+

@@ -2,7 +2,14 @@ import isolateHooks from 'isolate-hooks'
 import { nodeTree, NodeTree, TreeNode } from './nodeTree'
 export { TreeNode }
 
-type FindSpec = string | React.FC<any>
+/**
+ * Spec for finding a child node of a component under test, used with `findOne` and `findAll`.
+ *
+ * Use a string to find html nodes like "div".
+ * Use a component function to find react components.
+ *
+ */
+export type FindSpec = string | React.FC<any>
 
 /**
  * Return value from isolateComponent.
