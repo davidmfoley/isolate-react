@@ -1,6 +1,6 @@
 import isolateHooks from 'isolate-hooks'
 import { nodeTree, NodeTree, TreeNode } from './nodeTree'
-export { TreeNode }
+export { TreeNode, FindSpec }
 
 /**
  * Spec for finding a child node of a component under test, used with `findOne` and `findAll`.
@@ -9,7 +9,7 @@ export { TreeNode }
  * Use a component function to find react components.
  *
  */
-export type FindSpec = string | React.FC<any>
+type FindSpec = string | React.FC<any>
 
 /**
  * Return value from isolateComponent.
@@ -32,16 +32,27 @@ export interface IsolatedComponent<P> {
    * @param spec string or component
    * @returns - the matching node
    * @throws - if no matching node found
+   *
    */
   findOne(spec?: FindSpec): TreeNode
+
   /**
    * Set a subset of props, and re-render the component under test
    * @param props - A partial set of props. Unspecified props will not be changed.
+   * @example
+   * const component = isolateComponent(<MyComponent someProp="value" otherProp="another value/>)
+   * component.mergeProps({ someProp: 'updated value') // otherProp is unchanged
+   *
    */
   mergeProps(props: Partial<P>): void
   /**
    * Replace all props, and re-render the component under test
    * @param props - New props. Replaces existing props.
+   *
+   * @example
+   * const component = isolateComponent(<MyComponent someProp="value" otherProp="another value/>)
+   * component.setProps({ someProp: 'updated value', otherProps: 'yet another value' })
+   *
    */
   setProps(props: P): void
   /**
@@ -53,6 +64,14 @@ export interface IsolatedComponent<P> {
    * Returns a string representation of the component and all children, useful for debugging.
    */
   toString(): string
+  /**
+   * Clean up the component and runs all effect cleanups (functions returned by useEffect handlers).
+   *
+   * @example
+   * const component = isolateComponent(<MyComponent someProp="value" otherProp="another value/>)
+   * component.cleanup()
+   */
+  cleanup(): void
 }
 
 const allNodes = (e: any) => {
@@ -63,8 +82,11 @@ const allNodes = (e: any) => {
 
 /**
  * Isolate a component for testing
- * @param componentElement - A react element, usually created with JSX, like: <MyComponent someProp="value" />
- * @returns IsolatedComponent
+ * @param componentElement - A react element, usually created with JSX.
+ * @example <caption>Basic usage</caption>
+ * const component = isolateComponent(<MyComponent someProp="value" />)
+ *
+ * @returns IsolatedComponen
  * @typeparam P - Type of the component's props
  **/
 export const isolateComponent = <P>(
@@ -105,5 +127,6 @@ export const isolateComponent = <P>(
     },
     content: () => tree.root().content(),
     toString: () => tree.root().toString(),
+    cleanup: () => render.cleanup(),
   }
 }
