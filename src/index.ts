@@ -80,7 +80,7 @@ export interface IsolatedComponent<P> {
    */
   toString(): string
   /**
-   * Clean up the component and runs all effect cleanups (functions returned by useEffect handlers).
+   * Cleans up the component and runs all effect cleanups (functions returned by useEffect handlers).
    *
    * @example
    * ```typescript
