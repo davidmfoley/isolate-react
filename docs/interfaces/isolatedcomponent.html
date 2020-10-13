@@ -131,7 +131,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/67f0fdf/src/index.ts#L94">index.ts:94</a></li>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/e2db814/src/index.ts#L94">index.ts:94</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -140,8 +140,8 @@
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
-									<dd><pre><code class="language-typescript">const component = isolateComponent(
-  &lt;MyComponent someProp="value" otherProp="another value /&gt;
+									<dd><pre><code class="language-js"><span class="hljs-keyword">const</span> component = isolateComponent(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> <span class="hljs-attr">someProp</span>=<span class="hljs-string">"value"</span> <span class="hljs-attr">otherProp</span>=<span class="hljs-string">"another value /&gt;</span></span></span>
 )
 
 component.cleanup()</code></pre>
@@ -162,7 +162,7 @@ component.cleanup()</code></pre>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/67f0fdf/src/index.ts#L77">index.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/e2db814/src/index.ts#L77">index.ts:77</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -185,7 +185,7 @@ component.cleanup()</code></pre>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/67f0fdf/src/index.ts#L29">index.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/e2db814/src/index.ts#L29">index.ts:29</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -219,7 +219,7 @@ component.cleanup()</code></pre>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/67f0fdf/src/index.ts#L37">index.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/e2db814/src/index.ts#L37">index.ts:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -260,7 +260,7 @@ component.cleanup()</code></pre>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/67f0fdf/src/index.ts#L55">index.ts:55</a></li>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/e2db814/src/index.ts#L55">index.ts:55</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -269,14 +269,14 @@ component.cleanup()</code></pre>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
-									<dd><pre><code class="language-typescript">const component = isolateComponent(
-  &lt;MyComponent someProp="value" otherProp="another value/&gt;
+									<dd><pre><code class="language-js"><span class="hljs-keyword">const</span> component = isolateComponent(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> <span class="hljs-attr">someProp</span>=<span class="hljs-string">"value"</span> <span class="hljs-attr">otherProp</span>=<span class="hljs-string">"another value/&gt;</span></span></span>
 )
 
 component.mergeProps({
-  someProp: 'updated value'
+  <span class="hljs-attr">someProp</span>: <span class="hljs-string">'updated value'</span>
 })
-// otherProp is unchanged</code></pre>
+<span class="hljs-comment">// otherProp is unchanged</span></code></pre>
 									</dd>
 								</dl>
 							</div>
@@ -303,7 +303,7 @@ component.mergeProps({
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/67f0fdf/src/index.ts#L72">index.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/e2db814/src/index.ts#L72">index.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -312,12 +312,12 @@ component.mergeProps({
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
-									<dd><pre><code class="language-typescript">const component = isolateComponent(
-  &lt;MyComponent someProp="value" otherProp="another value/&gt;
+									<dd><pre><code class="language-js"><span class="hljs-keyword">const</span> component = isolateComponent(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> <span class="hljs-attr">someProp</span>=<span class="hljs-string">"value"</span> <span class="hljs-attr">otherProp</span>=<span class="hljs-string">"another value/&gt;</span></span></span>
 )
 component.setProps({
-  someProp: 'updated value',
-  otherProps: 'yet another value'
+  <span class="hljs-attr">someProp</span>: <span class="hljs-string">'updated value'</span>,
+  <span class="hljs-attr">otherProps</span>: <span class="hljs-string">'yet another value'</span>
 })</code></pre>
 									</dd>
 								</dl>
@@ -345,7 +345,7 @@ component.setProps({
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/67f0fdf/src/index.ts#L81">index.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/e2db814/src/index.ts#L81">index.ts:81</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

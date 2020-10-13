@@ -40,7 +40,7 @@ export interface IsolatedComponent<P> {
    * Set a subset of props, and re-render the component under test
    * @param props - A partial set of props. Unspecified props will not be changed.
    * @example
-   * ```typescript
+   * ```js
    * const component = isolateComponent(
    *   <MyComponent someProp="value" otherProp="another value/>
    * )
@@ -58,7 +58,7 @@ export interface IsolatedComponent<P> {
    * @param props - New props. Replaces existing props.
    *
    * @example
-   * ```typescript
+   * ```js
    * const component = isolateComponent(
    *   <MyComponent someProp="value" otherProp="another value/>
    * )
@@ -83,7 +83,7 @@ export interface IsolatedComponent<P> {
    * Cleans up the component and runs all effect cleanups (functions returned by useEffect handlers).
    *
    * @example
-   * ```typescript
+   * ```js
    * const component = isolateComponent(
    *   <MyComponent someProp="value" otherProp="another value />
    * )
@@ -104,7 +104,7 @@ const allNodes = (e: any) => {
  * Isolate a component for testing
  * @param componentElement - A react element, usually created with JSX.
  * @example <caption>Basic usage</caption>
- * ```typescript
+ * ```js
  * const component = isolateComponent(<MyComponent someProp="value" />)
  * ```
  *
