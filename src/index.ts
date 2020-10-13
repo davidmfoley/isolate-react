@@ -40,8 +40,16 @@ export interface IsolatedComponent<P> {
    * Set a subset of props, and re-render the component under test
    * @param props - A partial set of props. Unspecified props will not be changed.
    * @example
-   * const component = isolateComponent(<MyComponent someProp="value" otherProp="another value/>)
-   * component.mergeProps({ someProp: 'updated value') // otherProp is unchanged
+   * ```typescript
+   * const component = isolateComponent(
+   *   <MyComponent someProp="value" otherProp="another value/>
+   * )
+   *
+   * component.mergeProps({
+   *   someProp: 'updated value'
+   * })
+   * // otherProp is unchanged
+   * ```
    *
    */
   mergeProps(props: Partial<P>): void
@@ -50,8 +58,15 @@ export interface IsolatedComponent<P> {
    * @param props - New props. Replaces existing props.
    *
    * @example
-   * const component = isolateComponent(<MyComponent someProp="value" otherProp="another value/>)
-   * component.setProps({ someProp: 'updated value', otherProps: 'yet another value' })
+   * ```typescript
+   * const component = isolateComponent(
+   *   <MyComponent someProp="value" otherProp="another value/>
+   * )
+   * component.setProps({
+   *   someProp: 'updated value',
+   *   otherProps: 'yet another value'
+   * })
+   * ```
    *
    */
   setProps(props: P): void
@@ -68,8 +83,13 @@ export interface IsolatedComponent<P> {
    * Clean up the component and runs all effect cleanups (functions returned by useEffect handlers).
    *
    * @example
-   * const component = isolateComponent(<MyComponent someProp="value" otherProp="another value/>)
+   * ```typescript
+   * const component = isolateComponent(
+   *   <MyComponent someProp="value" otherProp="another value />
+   * )
+   *
    * component.cleanup()
+   * ```
    */
   cleanup(): void
 }
@@ -84,7 +104,9 @@ const allNodes = (e: any) => {
  * Isolate a component for testing
  * @param componentElement - A react element, usually created with JSX.
  * @example <caption>Basic usage</caption>
+ * ```typescript
  * const component = isolateComponent(<MyComponent someProp="value" />)
+ * ```
  *
  * @returns IsolatedComponen
  * @typeparam P - Type of the component's props

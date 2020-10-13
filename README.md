@@ -9,7 +9,7 @@ Isolate and test your modern react components without the need for DOM emulators
 
 ### Usage
 
-See [API documentation](https://davidmfoley.github.io/isolate-components/globals.html).
+See [API documentation](https://davidmfoley.github.io/isolate-components/globals.html#isolatecomponent).
 
 ```
 import { isolateComponent } from 'isolate-components'
@@ -18,6 +18,28 @@ import { isolateComponent } from 'isolate-components'
 const MyComponent = (props) => (
   <span>Hello {props.name}</span>
 )
+
+// render the component, in isolation
+const component = isolateComponent(<MyComponent name='Trillian' />)
+console.log(component.findOne('span').content()) // => 'Hello Trillian'
+
+// now update the props
+component.setProps({name: 'Zaphod'})
+console.log(component.findOne('span').content()) // => 'Hello Zaphod'
+```
+
+
+### Usage with hooks
+
+
+```
+import { isolateComponent } from 'isolate-components'
+
+// the component we are going to test
+const Example = (props) => {
+  
+  <span>Hello {props.name}</span>
+}
 
 // render the component, in isolation
 const component = isolateComponent(<MyComponent name='Trillian' />)
