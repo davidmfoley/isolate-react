@@ -6,6 +6,12 @@ import { expect } from 'chai'
 describe('finding child elements', () => {
   const ExampleFC = ({ name }: { name: string }) => <span>{name}</span>
   const JustADiv = () => <div className="the-thing" />
+  const MultipleDivs = () => (
+    <div className="the-thing">
+      <div />
+      <div />
+    </div>
+  )
   const JustAnFC = () => <ExampleFC name="trillian" />
   const ChildrenExample: React.FC<{}> = ({ children }) => <div>{children}</div>
 
@@ -21,6 +27,13 @@ describe('finding child elements', () => {
       const component = isolateComponent(<JustADiv />)
       expect(() => {
         component.findOne('p')
+      }).to.throw()
+    })
+
+    it('throws if multiple matches', () => {
+      const component = isolateComponent(<MultipleDivs />)
+      expect(() => {
+        component.findOne('div')
       }).to.throw()
     })
 
