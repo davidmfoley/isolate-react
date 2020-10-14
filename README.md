@@ -31,28 +31,36 @@ console.log(component.findOne('span').content()) // => 'Hello Zaphod'
 
 ### Usage with hooks
 
+Hooks are supported, including useEffect:
 
-```
-import { isolateComponent } from 'isolate-components'
-
-// the component we are going to test
-const Example = (props) => {
-  
+```js
+// Component with effect
+const ExampleWithHooks = (props) => {
+  useEffect(() => {
+    console.log(`Hello ${props.name}`)
+    // cleanup function
+    return () => {
+      console.log(`Goodbye ${props.name}`)
+    }
+  }, [props.name])
   <span>Hello {props.name}</span>
 }
 
 // render the component, in isolation
 const component = isolateComponent(<MyComponent name='Trillian' />)
-console.log(component.findOne('span').content()) // => 'Hello Trillian'
+// logs: "Hello Trillian"
 
-// now update the props
 component.setProps({name: 'Zaphod'})
-console.log(component.findOne('span').content()) // => 'Hello Zaphod'
+//logs: "Goodbye Trillian" (effect cleanup)
+//logs: "Hello Zaphod" (effect runs because name prop has changed)
+
+component.cleanup()
+//logs: "Goodbye Zaphod"
 ```
 
 ### Project progress
 
-This is relatively new -- your feature requests and feedback are appreciated.
+This is a new project -- your feature requests and feedback are appreciated.
 
 See the [project tracker](https://github.com/davidmfoley/isolate-components/projects/1) for project progress.
 
