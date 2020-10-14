@@ -1,7 +1,7 @@
 import isolateHooks from 'isolate-hooks'
 import { nodeTree, NodeTree, TreeNode } from './nodeTree'
 import nodeMatcher from './nodeMatcher'
-export { TreeNode, FindSpec }
+export { TreeNode }
 
 /**
  * Spec for finding a child node of a component under test, used with `findOne` and `findAll`.
@@ -15,7 +15,7 @@ export { TreeNode, FindSpec }
  * Use a component function  or name to find react components.
  *
  */
-type FindSpec = string | React.FC<any>
+export type Selector = string | React.FC<any>
 
 /**
  * Return value from isolateComponent.
@@ -32,7 +32,7 @@ export interface IsolatedComponent<P> {
    * @param spec string or component
    * @returns - all matching nodes in the tree, or an empty array if none match
    */
-  findAll(spec?: FindSpec): TreeNode[]
+  findAll(spec?: Selector): TreeNode[]
   /**
    * Find a single child node that matches, and throw if not found.
    * @param spec string or component
@@ -40,7 +40,7 @@ export interface IsolatedComponent<P> {
    * @throws - if no matching node found
    *
    */
-  findOne(spec?: FindSpec): TreeNode
+  findOne(spec?: Selector): TreeNode
 
   /**
    * Set a subset of props, and re-render the component under test
@@ -124,12 +124,6 @@ export const isolateComponent = <P>(
   let props = componentElement.props
   let tree: NodeTree
 
-  const nodeMatches = (spec: FindSpec | null, node: any) => {
-    if (!spec) return true
-
-    return node.type === spec || node.name === spec
-  }
-
   const render = isolateHooks(() => {
     lastResult = componentElement.type(props)
     tree = nodeTree(lastResult)
@@ -138,10 +132,10 @@ export const isolateComponent = <P>(
   render()
 
   return {
-    findAll: (spec?: FindSpec) => {
+    findAll: (spec?: Selector) => {
       return tree.filter(nodeMatcher(spec))
     },
-    findOne: (spec?: FindSpec) => {
+    findOne: (spec?: Selector) => {
       const found = tree.filter(nodeMatcher(spec))
       if (found.length === 0)
         throw new Error(`Could not find element matching ${spec}`)
