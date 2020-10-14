@@ -31,6 +31,13 @@ describe('finding child elements', () => {
       expect(child.props.name).to.eq('trillian')
     })
 
+    it('can find component by name', () => {
+      const component = isolateComponent(<JustAnFC />)
+      const child = component.findOne('ExampleFC')
+      expect(child.type).to.eq(ExampleFC)
+      expect(child.props.name).to.eq('trillian')
+    })
+
     it('can find a deeper component', () => {
       const component = isolateComponent(
         <ChildrenExample>
@@ -42,6 +49,31 @@ describe('finding child elements', () => {
     })
   })
 
+  describe('querying by selector', () => {
+    describe('find by id', () => {
+      const component = isolateComponent(
+        <ChildrenExample>
+          <div id="example-id" className="example-class" />
+        </ChildrenExample>
+      )
+      it('can find by id only', () => {
+        const div = component.findOne('#example-id')
+        expect(div.props.className).to.eq('example-class')
+      })
+
+      it('can find by id and tag name', () => {
+        const div = component.findOne('div#example-id')
+        expect(div.props.className).to.eq('example-class')
+      })
+      it('does not match with different tag', () => {
+        expect(component.findAll('div#bogus-id')).to.eql([])
+      })
+
+      it('does not match with different id', () => {
+        expect(component.findAll('span#example-id')).to.eql([])
+      })
+    })
+  })
   describe('findAll', () => {
     it('returns empty array if no matches', () => {
       const component = isolateComponent(<JustADiv />)

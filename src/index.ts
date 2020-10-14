@@ -1,5 +1,6 @@
 import isolateHooks from 'isolate-hooks'
 import { nodeTree, NodeTree, TreeNode } from './nodeTree'
+import nodeMatcher from './nodeMatcher'
 export { TreeNode, FindSpec }
 
 /**
@@ -120,7 +121,8 @@ export const isolateComponent = <P>(
 
   const nodeMatches = (spec: FindSpec | null, node: any) => {
     if (!spec) return true
-    return node.type === spec
+
+    return node.type === spec || node.name === spec
   }
 
   const render = isolateHooks(() => {
@@ -132,12 +134,17 @@ export const isolateComponent = <P>(
 
   return {
     findAll: (spec?: FindSpec) => {
-      return tree.filter((n) => nodeMatches(spec, n))
+      return tree.filter(nodeMatcher(spec))
     },
     findOne: (spec?: FindSpec) => {
-      const found = tree.find((n) => nodeMatches(spec, n))
-      if (!found) throw new Error(`Could not find element matching ${spec}`)
-      return found
+      const found = tree.filter(nodeMatcher(spec))
+      if (found.length === 0)
+        throw new Error(`Could not find element matching ${spec}`)
+      if (found.length > 1)
+        throw new Error(
+          `Expected one element matching ${spec} but found ${found.length}`
+        )
+      return found[0]
     },
     mergeProps: (propsToMerge: Partial<P>) => {
       props = { ...props, ...propsToMerge }

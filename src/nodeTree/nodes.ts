@@ -32,6 +32,7 @@ const componentToString = (value: any, children: TreeNode[], props: any) => {
 export const nullNode = (): TreeNode => ({
   nodeType: 'null',
   type: 'null',
+  name: '',
   children: [],
   props: {},
   content: () => null,
@@ -43,6 +44,7 @@ export const valueNode = (value: string | number): TreeNode => ({
   type: value,
   children: [],
   props: {},
+  name: '',
   content: () => ('' + value) as string,
   toString: () => '' + value,
 })
@@ -51,6 +53,7 @@ export const fragmentNode = (children: TreeNode[]): TreeNode => ({
   nodeType: 'fragment',
   type: 'fragment',
   children,
+  name: '',
   props: {},
   content: () => formatChildren(children),
   toString: () => formatChildren(children),
@@ -63,6 +66,7 @@ export const reactNode = (
 ): TreeNode => ({
   nodeType: 'react',
   type: fc,
+  name: displayName(fc),
   children,
   props,
   content: () => children.map((c: TreeNode) => c.toString()).join(''),
@@ -76,6 +80,7 @@ export const htmlNode = (
 ): TreeNode => ({
   nodeType: 'html',
   type: tag,
+  name: tag,
   children,
   props,
   content: () => children.map((c: TreeNode) => c.toString()).join(''),
