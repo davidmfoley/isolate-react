@@ -7,10 +7,6 @@ const normalizeChildren = (children: any) => {
   return [children]
 }
 
-const allNodes = (e: TreeNode) => {
-  return [e].concat(e.children.map(allNodes).reduce((a, b) => a.concat(b), []))
-}
-
 const isFragment = (node: InputNode) =>
   node.type.toString() === 'Symbol(react.fragment)'
 

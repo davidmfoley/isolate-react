@@ -86,12 +86,6 @@ export interface IsolatedComponent<P> {
   cleanup(): void
 }
 
-const allNodes = (e: any) => {
-  const children = Array.isArray(e.props.children) ? e.props.children : []
-  console.log(';', e, children)
-  return [e].concat(children.flatMap(allNodes))
-}
-
 /**
  * Isolate a component for testing
  * @param componentElement - A react element, usually created with JSX.

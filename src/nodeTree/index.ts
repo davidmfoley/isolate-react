@@ -12,8 +12,6 @@ export const nodeTree = (top: any /* React.ReactElement<any, any> */) => {
   const root = parse(top)
   return {
     root: () => root,
-    all: () => allNodes(root),
-    find: (predicate: NodePredicate) => allNodes(root).find(predicate),
     filter: (predicate: NodePredicate) => allNodes(root).filter(predicate),
   }
 }
