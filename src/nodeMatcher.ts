@@ -8,6 +8,19 @@ const nodeMatcher = (spec: FindSpec | null): ((node: TreeNode) => boolean) => {
       const [tag, id] = spec.split('#')
       return (node) => (!tag || tag === node.name) && id === node.props.id
     }
+    if (spec.includes('.')) {
+      const [tag, className] = spec.split('.')
+      return (node) =>
+        (!tag || tag === node.name) &&
+        node.props.className.split(' ').includes(className)
+    }
+
+    if (/\[.+\]/.test(spec)) {
+      const [name, rest] = spec.split('[')
+      const [key, value] = rest.split(']')[0].split('=')
+      return (node) =>
+        (!name || name === node.name) && node.props[key] === value
+    }
   }
 
   return (node) => node.type === spec || node.name === spec
