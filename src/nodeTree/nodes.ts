@@ -25,7 +25,7 @@ const componentToString = (value: any, children: TreeNode[], props: any) => {
   const formattedChildren = formatChildren(children)
   const name = displayName(value)
   return `<${name}${formattedProps}${
-    children.length ? `>${formattedChildren}</${name}>` : `/>`
+    children.length ? `>${formattedChildren}</${name}>` : ` />`
   }`
 }
 

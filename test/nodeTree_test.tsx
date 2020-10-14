@@ -39,6 +39,18 @@ describe('nodeTree ', () => {
     expect(root.children[0].type).to.eql(Child)
   })
 
+  it('handles stringifying numbers in content', () => {
+    const tree = nodeTree(<span>{3}</span>)
+    expect(tree.root().content()).to.eq('3')
+  })
+
+  it('handles stringifying numbers in props', () => {
+    const MagicNumber = (props: { value: number }) => null
+    const tree = nodeTree(<MagicNumber value={3} />)
+
+    expect(tree.root().toString()).to.eq(`<MagicNumber value={3} />`)
+  })
+
   it('exposes content via content() and toString()', () => {
     const List: React.FC<{ className: string }> = () => null
     const ListItem: React.FC<{}> = () => null
