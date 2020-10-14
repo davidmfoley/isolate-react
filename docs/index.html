@@ -94,25 +94,33 @@ component.setProps({<span class="hljs-attr">name</span>: <span class="hljs-strin
 				<a href="#usage-with-hooks" id="usage-with-hooks" style="color: inherit; text-decoration: none;">
 					<h3>Usage with hooks</h3>
 				</a>
-				<pre><code>import { isolateComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'isolate-components'</span>
-
-<span class="hljs-comment">// the component we are going to test</span>
-const Example = (props) =&gt; {
-
-  &lt;span&gt;Hello {props.<span class="hljs-built_in">name</span>}&lt;/span&gt;
+				<p>Hooks are supported, including useEffect:</p>
+				<pre><code class="language-js">// Component with effect
+const ExampleWithHooks = (props) =&gt; {
+  useEffect(() =&gt; {
+    console.log(`Hello ${props.name}`)
+    // cleanup function
+    return () =&gt; {
+      console.log(`Goodbye ${props.name}`)
+    }
+  }, [props.name])
+  &lt;span&gt;Hello {props.name}&lt;/span&gt;
 }
 
-<span class="hljs-comment">// render the component, in isolation</span>
-const component = isolateComponent(&lt;MyComponent <span class="hljs-built_in">name</span>=<span class="hljs-string">'Trillian'</span> /&gt;)
-console.<span class="hljs-built_in">log</span>(component.findOne(<span class="hljs-string">'span'</span>).content()) <span class="hljs-comment">// =&gt; 'Hello Trillian'</span>
+// render the component, in isolation
+const component = isolateComponent(&lt;MyComponent name='Trillian' /&gt;)
+// logs: "Hello Trillian"
 
-<span class="hljs-comment">// now update the props</span>
-component.setProps({<span class="hljs-built_in">name</span>: <span class="hljs-string">'Zaphod'</span>})
-console.<span class="hljs-built_in">log</span>(component.findOne(<span class="hljs-string">'span'</span>).content()) <span class="hljs-comment">// =&gt; 'Hello Zaphod'</span></code></pre>
+component.setProps({name: 'Zaphod'})
+//logs: "Goodbye Trillian" (effect cleanup)
+//logs: "Hello Zaphod" (effect runs because name prop has changed)
+
+component.cleanup()
+//logs: "Goodbye Zaphod"</code></pre>
 				<a href="#project-progress" id="project-progress" style="color: inherit; text-decoration: none;">
 					<h3>Project progress</h3>
 				</a>
-				<p>This is relatively new -- your feature requests and feedback are appreciated.</p>
+				<p>This is a new project -- your feature requests and feedback are appreciated.</p>
 				<p>See the <a href="https://github.com/davidmfoley/isolate-components/projects/1">project tracker</a> for project progress.</p>
 				<p>File an <a href="https://github.com/davidmfoley/isolate-components/issues">issue</a> if you have a suggestion or request.</p>
 			</div>

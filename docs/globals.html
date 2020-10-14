@@ -97,15 +97,18 @@
 					<div class="tsd-signature tsd-kind-icon">Find<wbr>Spec<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">React.FC</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/e2db814/src/index.ts#L12">index.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/3cc4347/src/index.ts#L18">index.ts:18</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Spec for finding a child node of a component under test, used with <code>findOne</code> and <code>findAll</code>.</p>
 						</div>
-						<p>Use a string to find html nodes like &quot;div&quot;.
-						Use a component function to find react components.</p>
+						<p>Use a string to find html nodes using a subset of selector syntax:</p>
+						<p><code>div#awesome-id</code> and <code>#awesome-id</code> will find <code>&lt;div id=&#39;awesome&#39; /&gt;</code>
+							<code>span.cool</code> and <code>.cool</code> will each find <code>&lt;span className=&#39;cool&#39; /&gt;</code>m
+						<code>[data-test-id=foobar] will find the react element or html element with a</code>data-test-id<code>prop with the value</code>foobar`</p>
+						<p>Use a component function  or name to find react components.</p>
 					</div>
 				</section>
 			</section>
@@ -121,7 +124,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/e2db814/src/index.ts#L114">index.ts:114</a></li>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/3cc4347/src/index.ts#L120">index.ts:120</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
