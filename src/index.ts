@@ -9,6 +9,7 @@ export { TreeNode, Selector }
  * Allows exploring the component's children, changing its props, and
  * otherwise testing its behavior.
  *
+ *
  * @interface
  * @typeparam P - Type of the component's props
  */
@@ -87,26 +88,49 @@ export interface IsolatedComponent<P> {
 }
 
 /**
- * isolateComponent: Isolate a component for testing
- * @param componentElement - A react element, usually created with JSX.
- * @example <caption>Basic usage</caption>
- * ```js
- * const component = isolateComponent(<MyComponent someProp="value" />)
- * ```
+ * This is the type of the main entry point: isolateComponent
  *
- * @returns IsolatedComponent
- * @typeparam P - Type of the component's props
- **/
-export type IsolateComponentFunc = <Props>(
-  componentElement: React.ReactElement<Props, any>
-) => IsolatedComponent<Props>
+ * isolateCompnent is callable as a function, and also exposes a method `withContext`
+ * that returns a new IsolateComponent instance that will set
+ * context values for testing.
+ *
+ * @example <caption>Import like this:</caption>
+ *
+ * ```js
+ * import { isolateComponent } from 'isolate-components'
+ * ```
+ */
+export interface IsolateComponent {
+  /**
+   * isolateComponent: Isolate a component for testing
+   * @param componentElement - A react element, usually created with JSX.
+   * @example <caption>Basic usage</caption>
+   *
+   * ```js
+   * const component = isolateComponent(<MyComponent someProp="value" />)
+   * ```
+   *
+   * @returns IsolatedComponent - see the {@link IsolatedCompoenent} docs for more information.
+   * @typeparam Props - Type of the component's props
+   **/
+  <Props>(componentElement: React.ReactElement<Props, any>): IsolatedComponent<
+    Props
+  >
 
-export interface IsolateComponent extends IsolateComponentFunc {
   /**
    * Set context for isolated components.
-   * Returns a new isolate component function that
+   * @param type - The context type. This is the return value from React.createContext()
+   * @param value - The value of the context, to set for testing.
+   *
+   * Returns a new isolateComponent function that
    * will include the specifed context, making it
    * available to components that use `useContext`.
+   *
+   * @example <caption>set a context value for testing:</caption>
+   *
+   * ```js
+   * const isolatedWithContext = isolateComponent.withContext(MyContext, 'my context value')(<MyComponentThatUsesContext />)
+   * ```
    */
   withContext: <ContextType>(
     type: React.Context<ContextType>,
@@ -178,7 +202,7 @@ const isolateComponentWithContext = (contexts: Contexts) =>
 /**
  * Isolate a component for testing
  *
- * These docs are a work in progress -- the typescript-based doc tool is confused by a function that also has properties. See the docs for {@link IsolateComponentFunc} in the meantime.
+ * These docs are a work in progress -- the typescript-based doc tool is confused by a function that also has properties. Therefore the docs for this are here: {@link IsolateComponent} in the meantime.
  **/
 export const isolateComponent: IsolateComponent = isolateComponentWithContext(
   []

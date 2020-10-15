@@ -66,16 +66,27 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>This is the type of the main entry point: isolateComponent</p>
+					</div>
+					<p>isolateCompnent is callable as a function, and also exposes a method <code>withContext</code>
+						that returns a new IsolateComponent instance that will set
+					context values for testing.</p>
+					<dl class="tsd-comment-tags">
+						<dt>example</dt>
+						<dd><caption>Import like this:</caption>
+							<pre><code class="language-js"><span class="hljs-keyword">import</span> { isolateComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'isolate-components'</span></code></pre>
+						</dd>
+					</dl>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						&lt;Props&gt;<span class="tsd-signature-symbol">(</span>componentElement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReactElement</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Props</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="isolatedcomponent.html" class="tsd-signature-type">IsolatedComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Props</span><span class="tsd-signature-symbol">&gt;</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<span class="target">IsolateComponent</span>
-							</li>
-						</ul>
+						<span class="target">IsolateComponent</span>
 					</li>
 				</ul>
 			</section>
@@ -88,22 +99,43 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/48109ca/src/index.ts#L100">index.ts:100</a></li>
+								<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/6373452/src/index.ts#L103">index.ts:103</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>isolateComponent: Isolate a component for testing</p>
+							</div>
+							<p>isolateCompnent is callable as a function, and also exposes a method <code>withContext</code>
+								that returns a new IsolateComponent instance that will set
+							context values for testing.</p>
+							<dl class="tsd-comment-tags">
+								<dt>example</dt>
+								<dd><caption>Basic usage</caption>
+									<pre><code class="language-js"><span class="hljs-keyword">const</span> component = isolateComponent(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> <span class="hljs-attr">someProp</span>=<span class="hljs-string">"value"</span> /&gt;</span></span>)</code></pre>
+								</dd>
+							</dl>
+						</div>
 						<h4 class="tsd-type-parameters-title">Type parameters</h4>
 						<ul class="tsd-type-parameters">
 							<li>
 								<h4>Props</h4>
+								<div class="tsd-comment tsd-typography">
+									<p>Type of the component&#39;s props</p>
+								</div>
 							</li>
 						</ul>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
 								<h5>componentElement: <span class="tsd-signature-type">ReactElement</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Props</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>A react element, usually created with JSX.</p>
+								</div>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <a href="isolatedcomponent.html" class="tsd-signature-type">IsolatedComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Props</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						<p>IsolatedComponent - see the {@link IsolatedCompoenent} docs for more information.</p>
 					</li>
 				</ul>
 			</section>
@@ -128,13 +160,28 @@
 					<div class="tsd-signature tsd-kind-icon">with<wbr>Context<span class="tsd-signature-symbol">:</span> &lt;ContextType&gt;<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Context</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ContextType</span><span class="tsd-signature-symbol">&gt;</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ContextType</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="isolatecomponent.html" class="tsd-signature-type">IsolateComponent</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/48109ca/src/index.ts#L108">index.ts:108</a></li>
+							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/6373452/src/index.ts#L135">index.ts:135</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Set context for isolated components</p>
+							<p>Set context for isolated components.</p>
 						</div>
+						<dl class="tsd-comment-tags">
+							<dt>param</dt>
+							<dd><p>The context type. This is the return value from React.createContext()</p>
+							</dd>
+							<dt>param</dt>
+							<dd><p>The value of the context, to set for testing.</p>
+								<p>Returns a new isolateComponent function that
+									will include the specifed context, making it
+								available to components that use <code>useContext</code>.</p>
+							</dd>
+							<dt>example</dt>
+							<dd><caption>set a context value for testing:</caption>
+								<pre><code class="language-js"><span class="hljs-keyword">const</span> isolatedWithContext = isolateComponent.withContext(MyContext, <span class="hljs-string">'my context value'</span>)(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponentThatUsesContext</span> /&gt;</span></span>)</code></pre>
+							</dd>
+						</dl>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
@@ -196,9 +243,6 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="treenode.html" class="tsd-kind-icon">Tree<wbr>Node</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#isolatecomponentfunc" class="tsd-kind-icon">Isolate<wbr>Component<wbr>Func</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="../globals.html#selector" class="tsd-kind-icon">Selector</a>
