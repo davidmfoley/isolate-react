@@ -81,9 +81,9 @@
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
-							<h3>Functions</h3>
+							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#isolatecomponent" class="tsd-kind-icon">isolate<wbr>Component</a></li>
+								<li class="tsd-kind-variable"><a href="globals.html#isolatecomponent" class="tsd-kind-icon">isolate<wbr>Component</a></li>
 							</ul>
 						</section>
 					</div>
@@ -97,7 +97,7 @@
 					<div class="tsd-signature tsd-kind-icon">Selector<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">React.FC</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/31865ee/src/nodeMatcher.ts#L17">nodeMatcher.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/56004bd/src/nodeMatcher.ts#L17">nodeMatcher.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -113,49 +113,38 @@
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter">
+				<h2>Variables</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="isolatecomponent" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> isolate<wbr>Component</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">isolate<wbr>Component&lt;P&gt;<span class="tsd-signature-symbol">(</span>componentElement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReactElement</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">P</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/isolatedcomponent.html" class="tsd-signature-type">IsolatedComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">P</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/31865ee/src/index.ts#L106">index.ts:106</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Isolate a component for testing</p>
-								</div>
-							</div>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>P</h4>
-									<div class="tsd-comment tsd-typography">
-										<p>Type of the component&#39;s props</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>componentElement: <span class="tsd-signature-type">ReactElement</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">P</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>A react element, usually created with JSX.</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/isolatedcomponent.html" class="tsd-signature-type">IsolatedComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">P</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>IsolatedComponen</p>
-						</li>
-					</ul>
+					<div class="tsd-signature tsd-kind-icon">isolate<wbr>Component<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IsolateComponent</span><span class="tsd-signature-symbol"> = isolateComponentWithContext([])</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/56004bd/src/index.ts#L186">index.ts:186</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Isolate a component for testing</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>param</dt>
+							<dd><p>A react element, usually created with JSX.</p>
+							</dd>
+							<dt>example</dt>
+							<dd><caption>Basic usage</caption>
+								```js
+								const component = isolateComponent(<MyComponent someProp="value" />)
+									```
+							</dd>
+							<dt>returns</dt>
+							<dd><p>IsolatedComponent</p>
+							</dd>
+							<dt>typeparam</dt>
+							<dd><p>Type of the component&#39;s props</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -178,7 +167,7 @@
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#selector" class="tsd-kind-icon">Selector</a>
 					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
+					<li class=" tsd-kind-variable">
 						<a href="globals.html#isolatecomponent" class="tsd-kind-icon">isolate<wbr>Component</a>
 					</li>
 				</ul>

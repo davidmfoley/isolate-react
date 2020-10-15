@@ -94,10 +94,27 @@ export interface IsolatedComponent<P> {
  * const component = isolateComponent(<MyComponent someProp="value" />)
  * ```
  *
- * @returns IsolatedComponen
+ * @returns IsolatedComponent
  * @typeparam P - Type of the component's props
  **/
-export const isolateComponent = <P>(
+type IsolateComponentFunc = <Props>(
+  componentElement: React.ReactElement<Props, any>
+) => IsolatedComponent<Props>
+
+type IsolateComponent = IsolateComponentFunc & {
+  /**
+   * Set context for isolated components
+   */
+  withContext: <ContextType>(
+    type: React.Context<ContextType>,
+    value: ContextType
+  ) => IsolateComponent
+}
+
+type Contexts = { contextType: React.Context<any>; contextValue: any }[]
+
+const isolateComponent_ = <P>(
+  contexts: Contexts,
   componentElement: React.ReactElement<P, any>
 ): IsolatedComponent<P> => {
   let lastResult: React.ReactNode
@@ -107,6 +124,10 @@ export const isolateComponent = <P>(
   const render = isolateHooks(() => {
     lastResult = componentElement.type(props)
     tree = nodeTree(lastResult)
+  })
+
+  contexts.forEach(({ contextType, contextValue }) => {
+    render.setContext(contextType, contextValue)
   })
 
   render()
@@ -138,3 +159,30 @@ export const isolateComponent = <P>(
     cleanup: () => render.cleanup(),
   }
 }
+
+const isolateComponentWithContext = (contexts: Contexts) =>
+  Object.assign(
+    <Props>(componentElement: React.ReactElement<Props>) =>
+      isolateComponent_(contexts, componentElement),
+    {
+      withContext: <T>(contextType: React.Context<T>, contextValue: T) =>
+        isolateComponentWithContext(
+          contexts.concat([{ contextType, contextValue }])
+        ),
+    }
+  )
+
+/**
+ * Isolate a component for testing
+ * @param componentElement - A react element, usually created with JSX.
+ * @example <caption>Basic usage</caption>
+ * ```js
+ * const component = isolateComponent(<MyComponent someProp="value" />)
+ * ```
+ *
+ * @returns IsolatedComponent
+ * @typeparam P - Type of the component's props
+ **/
+export const isolateComponent: IsolateComponent = isolateComponentWithContext(
+  []
+)

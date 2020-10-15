@@ -29,11 +29,36 @@ console.log(component.findOne('span').content()) // => 'Hello Zaphod'
 ```
 
 
+### Usage with useContext
+
+You can test components that use `useContext` using the `.withContext()` decorator:
+
+
+```js
+const QuestionContext = React.createContext('')
+const AnswerContext = React.createContext(0)
+
+const DisplayQuestionAndAnswer = () => (
+  <div>
+    {React.useContext(QuestionContext)} {React.useContext(AnswerContext)}
+  </div>
+)
+
+const isolated = isolateComponent
+  .withContext(QuestionContext, 'what is the answer?')
+  .withContext(AnswerContext, 42)
+  (<DisplayQuestionAndAnswer />)
+
+console.log(isolated.toString()) // => <div>what is the answer? 42</div>
+```
+
+
 ### Usage with hooks
 
 Hooks are supported, including useEffect:
 
 ```js
+
 // Component with effect
 const ExampleWithHooks = (props) => {
   useEffect(() => {

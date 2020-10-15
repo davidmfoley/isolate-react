@@ -91,11 +91,31 @@
 <span class="hljs-comment">// now update the props</span>
 component.setProps({<span class="hljs-attr">name</span>: <span class="hljs-string">'Zaphod'</span>})
 <span class="hljs-built_in">console</span>.log(component.findOne(<span class="hljs-string">'span'</span>).content()) <span class="hljs-comment">// =&gt; 'Hello Zaphod'</span></code></pre>
+				<a href="#usage-with-usecontext" id="usage-with-usecontext" style="color: inherit; text-decoration: none;">
+					<h3>Usage with useContext</h3>
+				</a>
+				<p>You can test components that use <code>useContext</code> using the <code>.withContext()</code> decorator:</p>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> QuestionContext = React.createContext(<span class="hljs-string">''</span>)
+<span class="hljs-keyword">const</span> AnswerContext = React.createContext(<span class="hljs-number">0</span>)
+
+<span class="hljs-keyword">const</span> DisplayQuestionAndAnswer = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> (
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    {React.useContext(QuestionContext)} {React.useContext(AnswerContext)}
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+)
+
+<span class="hljs-keyword">const</span> isolated = isolateComponent
+  .withContext(QuestionContext, <span class="hljs-string">'what is the answer?'</span>)
+  .withContext(AnswerContext, <span class="hljs-number">42</span>)
+  (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">DisplayQuestionAndAnswer</span> /&gt;</span></span>)
+
+<span class="hljs-built_in">console</span>.log(isolated.toString()) <span class="hljs-comment">// =&gt; &lt;div&gt;what is the answer? 42&lt;/div&gt;</span></code></pre>
 				<a href="#usage-with-hooks" id="usage-with-hooks" style="color: inherit; text-decoration: none;">
 					<h3>Usage with hooks</h3>
 				</a>
 				<p>Hooks are supported, including useEffect:</p>
-				<pre><code class="language-js">// Component with effect
+				<pre><code class="language-js">
+// Component with effect
 const ExampleWithHooks = (props) =&gt; {
   useEffect(() =&gt; {
     console.log(`Hello ${props.name}`)
@@ -144,7 +164,7 @@ component.cleanup()
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#selector" class="tsd-kind-icon">Selector</a>
 					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
+					<li class=" tsd-kind-variable">
 						<a href="globals.html#isolatecomponent" class="tsd-kind-icon">isolate<wbr>Component</a>
 					</li>
 				</ul>
