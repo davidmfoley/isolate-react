@@ -115,33 +115,35 @@ component.setProps({<span class="hljs-attr">name</span>: <span class="hljs-strin
 				</a>
 				<p>Hooks are supported, including useEffect:</p>
 				<pre><code class="language-js">
-// Component with effect
-const ExampleWithHooks = (props) =&gt; {
-  useEffect(() =&gt; {
-    console.log(`Hello ${props.name}`)
-    // cleanup function
-    return () =&gt; {
-      console.log(`Goodbye ${props.name}`)
+<span class="hljs-comment">// Component with effect</span>
+<span class="hljs-keyword">const</span> ExampleWithHooks = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Hello <span class="hljs-subst">${props.name}</span>`</span>)
+    <span class="hljs-comment">// cleanup function</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Goodbye <span class="hljs-subst">${props.name}</span>`</span>)
     }
   }, [props.name])
-  &lt;span&gt;Hello {props.name}&lt;/span&gt;
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Hello {props.name}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+  )
 }
 
-// render the component, in isolation
-const component = isolateComponent(&lt;MyComponent name='Trillian' /&gt;)
-// logs: "Hello Trillian"
+<span class="hljs-comment">// render the component, in isolation</span>
+<span class="hljs-keyword">const</span> component = isolateComponent(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> <span class="hljs-attr">name</span>=<span class="hljs-string">'Trillian'</span> /&gt;</span></span>)
+<span class="hljs-comment">// logs: "Hello Trillian"</span>
 
-component.setProps({name: 'Zaphod'})
-//logs: "Goodbye Trillian" (effect cleanup)
-//logs: "Hello Zaphod" (effect runs because name prop has changed)
+component.setProps({<span class="hljs-attr">name</span>: <span class="hljs-string">'Zaphod'</span>})
+<span class="hljs-comment">//logs: "Goodbye Trillian" (effect cleanup)</span>
+<span class="hljs-comment">//logs: "Hello Zaphod" (effect runs because name prop has changed)</span>
 
 component.cleanup()
-//logs: "Goodbye Zaphod"</code></pre>
+<span class="hljs-comment">//logs: "Goodbye Zaphod"</span></code></pre>
 				<a href="#isolated-component-api" id="isolated-component-api" style="color: inherit; text-decoration: none;">
 					<h3>Isolated component API</h3>
 				</a>
-				<p>An isolated component has some methods to help exercise and inspect it.
-				You can find those here: <a href="https://davidmfoley.github.io/isolate-components/interfaces/isolatedcomponent.html">Isolated component API docs</a></p>
+				<p>An isolated component has some methods to help exercise and inspect it.</p>
+				<p>Docs for those methods lives here: <a href="https://davidmfoley.github.io/isolate-components/interfaces/isolatedcomponent.html">Isolated component API docs</a></p>
 				<a href="#project-progress" id="project-progress" style="color: inherit; text-decoration: none;">
 					<h3>Project progress</h3>
 				</a>
