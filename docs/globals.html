@@ -70,6 +70,7 @@
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/isolatecomponent.html" class="tsd-kind-icon">Isolate<wbr>Component</a></li>
 								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/isolatedcomponent.html" class="tsd-kind-icon">Isolated<wbr>Component</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/treenode.html" class="tsd-kind-icon">Tree<wbr>Node</a></li>
 							</ul>
@@ -77,6 +78,7 @@
 						<section class="tsd-index-section ">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-type-alias"><a href="globals.html#isolatecomponentfunc" class="tsd-kind-icon">Isolate<wbr>Component<wbr>Func</a></li>
 								<li class="tsd-kind-type-alias"><a href="globals.html#selector" class="tsd-kind-icon">Selector</a></li>
 							</ul>
 						</section>
@@ -92,40 +94,17 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Type aliases</h2>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
-					<a name="selector" class="tsd-anchor"></a>
-					<h3>Selector</h3>
-					<div class="tsd-signature tsd-kind-icon">Selector<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">React.FC</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="isolatecomponentfunc" class="tsd-anchor"></a>
+					<h3>Isolate<wbr>Component<wbr>Func</h3>
+					<div class="tsd-signature tsd-kind-icon">Isolate<wbr>Component<wbr>Func<span class="tsd-signature-symbol">:</span> &lt;Props&gt;<span class="tsd-signature-symbol">(</span>componentElement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReactElement</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Props</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="interfaces/isolatedcomponent.html" class="tsd-signature-type">IsolatedComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Props</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/56004bd/src/nodeMatcher.ts#L17">nodeMatcher.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/48109ca/src/index.ts#L100">index.ts:100</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Spec for finding a child node of a component under test, used with <code>findOne</code> and <code>findAll</code>.</p>
-						</div>
-						<p>Use a string to find html nodes using a subset of selector syntax:</p>
-						<p><code>div#awesome-id</code> and <code>#awesome-id</code> will find <code>&lt;div id=&#39;awesome&#39; /&gt;</code></p>
-						<p><code>span.cool</code> and <code>.cool</code> will each find <code>&lt;span className=&#39;cool&#39; /&gt;</code>m</p>
-						<p><code>[data-test-id=foobar]</code> will find the react element or html element with a <code>data-test-id</code> prop with the value <code>foobar</code></p>
-						<p>Use a component function  or name to find react components.</p>
-					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Variables</h2>
-				<section class="tsd-panel tsd-member tsd-kind-variable">
-					<a name="isolatecomponent" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> isolate<wbr>Component</h3>
-					<div class="tsd-signature tsd-kind-icon">isolate<wbr>Component<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IsolateComponent</span><span class="tsd-signature-symbol"> = isolateComponentWithContext([])</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/56004bd/src/index.ts#L186">index.ts:186</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Isolate a component for testing</p>
+							<p>isolateComponent: Isolate a component for testing</p>
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt>param</dt>
@@ -145,6 +124,72 @@
 							</dd>
 						</dl>
 					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-has-type-parameter">
+									<li class="tsd-signature tsd-kind-icon">&lt;Props&gt;<span class="tsd-signature-symbol">(</span>componentElement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReactElement</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Props</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/isolatedcomponent.html" class="tsd-signature-type">IsolatedComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Props</span><span class="tsd-signature-symbol">&gt;</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-type-parameters-title">Type parameters</h4>
+										<ul class="tsd-type-parameters">
+											<li>
+												<h4>Props</h4>
+											</li>
+										</ul>
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>componentElement: <span class="tsd-signature-type">ReactElement</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Props</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <a href="interfaces/isolatedcomponent.html" class="tsd-signature-type">IsolatedComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Props</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="selector" class="tsd-anchor"></a>
+					<h3>Selector</h3>
+					<div class="tsd-signature tsd-kind-icon">Selector<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">React.FC</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/48109ca/src/nodeMatcher.ts#L17">nodeMatcher.ts:17</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Spec for finding a child node of a component under test, used with <code>findOne</code> and <code>findAll</code>.</p>
+						</div>
+						<p>Use a string to find html nodes using a subset of selector syntax:</p>
+						<p><code>div#awesome-id</code> and <code>#awesome-id</code> will find <code>&lt;div id=&#39;awesome&#39; /&gt;</code></p>
+						<p><code>span.cool</code> and <code>.cool</code> will each find <code>&lt;span className=&#39;cool&#39; /&gt;</code>m</p>
+						<p><code>[data-test-id=foobar]</code> will find the react element or html element with a <code>data-test-id</code> prop with the value <code>foobar</code></p>
+						<p>Use a component function  or name to find react components.</p>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Variables</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable">
+					<a name="isolatecomponent" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> isolate<wbr>Component</h3>
+					<div class="tsd-signature tsd-kind-icon">isolate<wbr>Component<span class="tsd-signature-symbol">:</span> <a href="interfaces/isolatecomponent.html" class="tsd-signature-type">IsolateComponent</a><span class="tsd-signature-symbol"> = isolateComponentWithContext([])</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/48109ca/src/index.ts#L180">index.ts:180</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Isolate a component for testing</p>
+						</div>
+						<p>These docs are a work in progress -- the typescript-based doc tool is confused by a function that also has properties. See the docs for <a href="globals.html#isolatecomponentfunc">IsolateComponentFunc</a> in the meantime.</p>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -159,10 +204,16 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/isolatecomponent.html" class="tsd-kind-icon">Isolate<wbr>Component</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/isolatedcomponent.html" class="tsd-kind-icon">Isolated<wbr>Component</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/treenode.html" class="tsd-kind-icon">Tree<wbr>Node</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#isolatecomponentfunc" class="tsd-kind-icon">Isolate<wbr>Component<wbr>Func</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#selector" class="tsd-kind-icon">Selector</a>

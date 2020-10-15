@@ -83,6 +83,12 @@ component.cleanup()
 //logs: "Goodbye Zaphod"
 ```
 
+
+### Isolated component API
+
+An isolated component has some methods to help exercise and inspect it.
+You can find those here: [Isolated component API docs](https://davidmfoley.github.io/isolate-components/interfaces/isolatedcomponent.html)
+
 ### Project progress
 
 This is a new project -- your feature requests and feedback are appreciated.

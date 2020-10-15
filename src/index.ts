@@ -87,7 +87,7 @@ export interface IsolatedComponent<P> {
 }
 
 /**
- * Isolate a component for testing
+ * isolateComponent: Isolate a component for testing
  * @param componentElement - A react element, usually created with JSX.
  * @example <caption>Basic usage</caption>
  * ```js
@@ -97,13 +97,16 @@ export interface IsolatedComponent<P> {
  * @returns IsolatedComponent
  * @typeparam P - Type of the component's props
  **/
-type IsolateComponentFunc = <Props>(
+export type IsolateComponentFunc = <Props>(
   componentElement: React.ReactElement<Props, any>
 ) => IsolatedComponent<Props>
 
-type IsolateComponent = IsolateComponentFunc & {
+export interface IsolateComponent extends IsolateComponentFunc {
   /**
-   * Set context for isolated components
+   * Set context for isolated components.
+   * Returns a new isolate component function that
+   * will include the specifed context, making it
+   * available to components that use `useContext`.
    */
   withContext: <ContextType>(
     type: React.Context<ContextType>,
@@ -174,14 +177,8 @@ const isolateComponentWithContext = (contexts: Contexts) =>
 
 /**
  * Isolate a component for testing
- * @param componentElement - A react element, usually created with JSX.
- * @example <caption>Basic usage</caption>
- * ```js
- * const component = isolateComponent(<MyComponent someProp="value" />)
- * ```
  *
- * @returns IsolatedComponent
- * @typeparam P - Type of the component's props
+ * These docs are a work in progress -- the typescript-based doc tool is confused by a function that also has properties. See the docs for {@link IsolateComponentFunc} in the meantime.
  **/
 export const isolateComponent: IsolateComponent = isolateComponentWithContext(
   []
