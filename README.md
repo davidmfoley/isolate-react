@@ -68,7 +68,9 @@ const ExampleWithHooks = (props) => {
       console.log(`Goodbye ${props.name}`)
     }
   }, [props.name])
-  <span>Hello {props.name}</span>
+  return (
+    <span>Hello {props.name}</span>
+  )
 }
 
 // render the component, in isolation
@@ -87,7 +89,8 @@ component.cleanup()
 ### Isolated component API
 
 An isolated component has some methods to help exercise and inspect it.
-You can find those here: [Isolated component API docs](https://davidmfoley.github.io/isolate-components/interfaces/isolatedcomponent.html)
+
+Docs for those methods lives here: [Isolated component API docs](https://davidmfoley.github.io/isolate-components/interfaces/isolatedcomponent.html)
 
 ### Project progress
 
