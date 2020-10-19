@@ -1,5 +1,12 @@
 import { InputNode, TreeNode } from './types'
-import { nullNode, valueNode, fragmentNode, htmlNode, reactNode } from './nodes'
+import {
+  nullNode,
+  valueNode,
+  fragmentNode,
+  htmlNode,
+  reactNode,
+  falseNode,
+} from './nodes'
 
 const normalizeChildren = (children: any) => {
   if (typeof children === 'undefined') return []
@@ -21,6 +28,8 @@ export const parse = (node: InputNode): TreeNode => {
 
   if (typeof node === 'string' || typeof node === 'number')
     return valueNode(node)
+
+  if (node === false) return falseNode()
 
   const { children, ...props } = (node.props || {}) as any
 

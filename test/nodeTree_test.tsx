@@ -45,10 +45,25 @@ describe('nodeTree ', () => {
   })
 
   it('handles stringifying numbers in props', () => {
-    const MagicNumber = (props: { value: number }) => null
+    const MagicNumber = (_: { value: number }) => null
     const tree = nodeTree(<MagicNumber value={3} />)
 
     expect(tree.root().toString()).to.eq(`<MagicNumber value={3} />`)
+  })
+
+  it('handles an empty fragment', () => {
+    const parsed = nodeTree(<></>)
+    expect(parsed.root().toString()).to.eq('')
+  })
+
+  it('handles a fragment with a false boolean value', () => {
+    const parsed = nodeTree(<>{false}</>)
+    expect(parsed.root().toString()).to.eq('')
+  })
+
+  it('handles false', () => {
+    const parsed = nodeTree(false)
+    expect(parsed.root().toString()).to.eq('')
   })
 
   it('exposes content via content() and toString()', () => {

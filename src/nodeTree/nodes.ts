@@ -29,6 +29,16 @@ const componentToString = (value: any, children: TreeNode[], props: any) => {
   }`
 }
 
+export const falseNode = (): TreeNode => ({
+  nodeType: 'null',
+  type: 'false',
+  name: '',
+  children: [],
+  props: {},
+  content: () => null,
+  toString: () => '',
+})
+
 export const nullNode = (): TreeNode => ({
   nodeType: 'null',
   type: 'null',

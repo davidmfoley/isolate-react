@@ -21,4 +21,10 @@ describe('handling null ', () => {
     expect(component.findOne('div').content()).to.eq('not null')
     expect(component.findOne('div').toString()).to.eq(`<div>not null</div>`)
   })
+
+  it('handles null fragment return', () => {
+    const EmptyFragment = () => <>{false}</>
+    const component = isolateComponent(<EmptyFragment />)
+    expect(component.content()).to.eq('')
+  })
 })
