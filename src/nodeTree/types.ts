@@ -14,7 +14,7 @@ export interface TreeNode {
   /**
    * The type of node: a react component, html, string or null.
    */
-  nodeType: 'react' | 'html' | 'string' | 'number' | 'null' | 'fragment'
+  nodeType: 'react' | 'html' | 'string' | 'number' | 'nothing' | 'fragment'
   /**
    * For html elements, the tag name
    * For a react FC, the display name

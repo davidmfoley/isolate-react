@@ -66,6 +66,16 @@ describe('nodeTree ', () => {
     expect(parsed.root().toString()).to.eq('')
   })
 
+  it('handles true', () => {
+    const parsed = nodeTree(true)
+    expect(parsed.root().toString()).to.eq('')
+  })
+
+  it('handles undefined', () => {
+    const parsed = nodeTree(undefined)
+    expect(parsed.root().toString()).to.eq('')
+  })
+
   it('exposes content via content() and toString()', () => {
     const List: React.FC<{ className: string }> = () => null
     const ListItem: React.FC<{}> = () => null

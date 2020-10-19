@@ -1,11 +1,10 @@
 import { InputNode, TreeNode } from './types'
 import {
-  nullNode,
   valueNode,
   fragmentNode,
   htmlNode,
   reactNode,
-  falseNode,
+  nothingNode,
 } from './nodes'
 
 const normalizeChildren = (children: any) => {
@@ -21,7 +20,8 @@ const parseChildren = (children: InputNode[]) =>
   normalizeChildren(children).map(parse)
 
 export const parse = (node: InputNode): TreeNode => {
-  if (node === null) return nullNode()
+  if (node === null) return nothingNode('null')
+  if (typeof node === 'undefined') return nothingNode('undefined')
 
   // for now, treat array as fragment
   if (Array.isArray(node)) return fragmentNode(parseChildren(node))
@@ -29,7 +29,7 @@ export const parse = (node: InputNode): TreeNode => {
   if (typeof node === 'string' || typeof node === 'number')
     return valueNode(node)
 
-  if (node === false) return falseNode()
+  if (typeof node === 'boolean') return nothingNode(node.toString())
 
   const { children, ...props } = (node.props || {}) as any
 
