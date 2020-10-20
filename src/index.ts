@@ -30,9 +30,9 @@ export interface IsolatedComponent<P> {
   findOne(spec?: Selector): TreeNode
 
   /**
-   * Return true if at least one matching node exists, else false.
+   * Check for the existence of any html elements or react components matching the selector.
    * @param spec string or component selector
-   * @returns - true if any one r more matching nodes, else false
+   * @returns - true if any matching nodes, else false
    *
    */
   exists(spec?: Selector): boolean
