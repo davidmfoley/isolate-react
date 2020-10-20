@@ -109,6 +109,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="isolatedcomponent.html#cleanup" class="tsd-kind-icon">cleanup</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="isolatedcomponent.html#content" class="tsd-kind-icon">content</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="isolatedcomponent.html#exists" class="tsd-kind-icon">exists</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="isolatedcomponent.html#findall" class="tsd-kind-icon">find<wbr>All</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="isolatedcomponent.html#findone" class="tsd-kind-icon">find<wbr>One</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="isolatedcomponent.html#mergeprops" class="tsd-kind-icon">merge<wbr>Props</a></li>
@@ -131,7 +132,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/79a6697/src/index.ts#L87">index.ts:87</a></li>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/a782293/src/index.ts#L95">index.ts:95</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -162,7 +163,7 @@ component.cleanup()</code></pre>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/79a6697/src/index.ts#L70">index.ts:70</a></li>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/a782293/src/index.ts#L78">index.ts:78</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -176,6 +177,40 @@ component.cleanup()</code></pre>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="exists" class="tsd-anchor"></a>
+					<h3>exists</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">exists<span class="tsd-signature-symbol">(</span>spec<span class="tsd-signature-symbol">?: </span><a href="../globals.html#selector" class="tsd-signature-type">Selector</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/a782293/src/index.ts#L38">index.ts:38</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return true if at least one matching node exists, else false.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> spec: <a href="../globals.html#selector" class="tsd-signature-type">Selector</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>string or component selector</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<ul>
+								<li>true if any one r more matching nodes, else false</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 					<a name="findall" class="tsd-anchor"></a>
 					<h3>find<wbr>All</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -185,7 +220,7 @@ component.cleanup()</code></pre>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/79a6697/src/index.ts#L22">index.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/a782293/src/index.ts#L22">index.ts:22</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -219,7 +254,7 @@ component.cleanup()</code></pre>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/79a6697/src/index.ts#L30">index.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/a782293/src/index.ts#L30">index.ts:30</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -260,7 +295,7 @@ component.cleanup()</code></pre>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/79a6697/src/index.ts#L48">index.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/a782293/src/index.ts#L56">index.ts:56</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -303,7 +338,7 @@ component.mergeProps({
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/79a6697/src/index.ts#L65">index.ts:65</a></li>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/a782293/src/index.ts#L73">index.ts:73</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -345,7 +380,7 @@ component.setProps({
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/79a6697/src/index.ts#L74">index.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/davidmfoley/isolate-components/blob/a782293/src/index.ts#L82">index.ts:82</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -382,6 +417,9 @@ component.setProps({
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="isolatedcomponent.html#content" class="tsd-kind-icon">content</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="isolatedcomponent.html#exists" class="tsd-kind-icon">exists</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="isolatedcomponent.html#findall" class="tsd-kind-icon">find<wbr>All</a>

@@ -3,9 +3,10 @@ import React from 'react'
 import { isolateComponent } from '../src'
 import { expect } from 'chai'
 
-describe('finding child elements', () => {
+describe('IsolatedComponent queries', () => {
   const ExampleFC = ({ name }: { name: string }) => <span>{name}</span>
   const JustADiv = () => <div className="the-thing" />
+
   const MultipleDivs = () => (
     <div className="the-thing">
       <div />
@@ -14,6 +15,36 @@ describe('finding child elements', () => {
   )
   const JustAnFC = () => <ExampleFC name="trillian" />
   const ChildrenExample: React.FC<{}> = ({ children }) => <div>{children}</div>
+
+  describe('exists', () => {
+    it('returns true for a matching html element', () => {
+      const component = isolateComponent(<JustADiv />)
+      expect(component.exists('div')).to.eq(true)
+    })
+
+    it('returns false for an element that does not exist', () => {
+      const component = isolateComponent(<JustADiv />)
+      expect(component.exists('span')).to.eq(false)
+    })
+
+    it('returns true for a component that exists', () => {
+      const Inner = () => <div></div>
+      const Container = () => (
+        <div>
+          <Inner />
+        </div>
+      )
+      const component = isolateComponent(<Container />)
+      expect(component.exists(Inner)).to.eq(true)
+    })
+
+    it('returns false for a component that does not exist', () => {
+      const Foo = () => <div></div>
+      const Bar = () => <div></div>
+      const component = isolateComponent(<Foo />)
+      expect(component.exists(Bar)).to.eq(false)
+    })
+  })
 
   describe('findOne', () => {
     it('can find by tag', () => {

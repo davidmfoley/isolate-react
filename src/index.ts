@@ -30,6 +30,14 @@ export interface IsolatedComponent<P> {
   findOne(spec?: Selector): TreeNode
 
   /**
+   * Return true if at least one matching node exists, else false.
+   * @param spec string or component selector
+   * @returns - true if any one r more matching nodes, else false
+   *
+   */
+  exists(spec?: Selector): boolean
+
+  /**
    * Set a subset of props, and re-render the component under test
    * @param props - A partial set of props. Unspecified props will not be changed.
    * @example
@@ -173,6 +181,7 @@ const isolateComponent_ = <P>(
         )
       return found[0]
     },
+    exists: (spec: Selector) => tree.filter(nodeMatcher(spec)).length > 0,
     mergeProps: (propsToMerge: Partial<P>) => {
       props = { ...props, ...propsToMerge }
       render()

@@ -14,7 +14,7 @@
     "build": "tsc -p tsconfig.build.json",
     "docs": "yarn docs:typedoc && yarn docs:gh-pages",
     "docs:typedoc": "typedoc --tsconfig tsconfig.build.json --mode library --out docs src/index.ts ",
-    "docs:gh-pages": "echo 'this file force gh pages to allow access to underscore-named files' > docs/.nojekyll",
+    "docs:gh-pages": "echo 'this file forces gh pages to allow access to underscore-named files' > docs/.nojekyll",
     "clean": "rm -rf ./lib/",
     "test": "mocha",
     "test:watch": "nodemon -q -e ts,tsx --exec \"yarn test\" --watch src --watch test",
