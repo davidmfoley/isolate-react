@@ -24,4 +24,17 @@ describe('React class components', () => {
   it('should not throw an error if isolating functional component', () => {
     isolateComponent(<ExampleFunctionComponent />)
   })
+
+  it('supports class components in the rendered tree', () => {
+    const FunctionThatRendersClass = () => (
+      <div>
+        <ExampleClassComponent />
+        <SubclassedClassComponent />
+      </div>
+    )
+
+    const isolated = isolateComponent(<FunctionThatRendersClass />)
+    expect(isolated.exists(ExampleClassComponent)).to.eq(true)
+    expect(isolated.exists(SubclassedClassComponent)).to.eq(true)
+  })
 })

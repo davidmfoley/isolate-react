@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * Query for finding a child node of a component under test, used with the finder methods: `exists`, `findOne` and `findAll`.
  *
@@ -23,4 +24,8 @@
  *  @category Querying
  *
  */
-export type Selector = string | React.FC<any>
+export type Selector =
+  | string
+  | React.FC<any>
+  | React.ComponentClass<any, any>
+  | React.ClassicComponentClass<any>
