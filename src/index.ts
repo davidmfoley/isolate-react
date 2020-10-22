@@ -1,6 +1,6 @@
 import isolateHooks from 'isolate-hooks'
 import { nodeTree, NodeTree, TreeNode } from './nodeTree'
-import nodeMatcher, { Selector } from './nodeMatcher'
+import { Selector } from './nodeMatcher'
 export { TreeNode, Selector }
 
 /**
@@ -168,20 +168,9 @@ const isolateComponent_ = <P>(
   render()
 
   return {
-    findAll: (spec?: Selector) => {
-      return tree.filter(nodeMatcher(spec))
-    },
-    findOne: (spec?: Selector) => {
-      const found = tree.filter(nodeMatcher(spec))
-      if (found.length === 0)
-        throw new Error(`Could not find element matching ${spec}`)
-      if (found.length > 1)
-        throw new Error(
-          `Expected one element matching ${spec} but found ${found.length}`
-        )
-      return found[0]
-    },
-    exists: (spec: Selector) => tree.filter(nodeMatcher(spec)).length > 0,
+    findAll: (spec?: Selector) => tree.findAll(spec),
+    findOne: (spec?: Selector) => tree.findOne(spec),
+    exists: (spec: Selector) => tree.exists(spec),
     mergeProps: (propsToMerge: Partial<P>) => {
       props = { ...props, ...propsToMerge }
       render()
@@ -190,8 +179,8 @@ const isolateComponent_ = <P>(
       props = nextProps
       render()
     },
-    content: () => tree.root().content(),
-    toString: () => tree.root().toString(),
+    content: () => tree.content(),
+    toString: () => tree.toString(),
     cleanup: () => render.cleanup(),
   }
 }
