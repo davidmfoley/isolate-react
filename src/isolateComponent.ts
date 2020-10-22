@@ -9,12 +9,8 @@ type Contexts = { contextType: React.Context<any>; contextValue: any }[]
 
 const validateComponentElement = (componentElement: any) => {
   let proto = componentElement.type?.prototype
-  while (proto) {
-    if (proto.isReactComponent) {
-      throw new ClassesNotSupportedError()
-    }
-
-    proto = proto.prototype
+  if (proto?.isReactComponent) {
+    throw new ClassesNotSupportedError()
   }
 }
 
