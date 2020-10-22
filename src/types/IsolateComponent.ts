@@ -2,7 +2,7 @@ import { IsolatedComponent } from './IsolatedComponent'
 
 /**
  *
- * This is the type of the main entry point: {@link isolateComponent | isolateComponent()}
+ * This is the type of the main entry point: isolateComponent()
  *
  * It accepts a React Element that is a modern react component, usually created with JSX, and returns an
  * {@link IsolatedComponent} that provides methods for manipulating and checking
