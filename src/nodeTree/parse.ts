@@ -1,4 +1,4 @@
-import { InputNode, TreeNode } from './types'
+import { ComponentNode, InputNode, TreeNode } from './types'
 import {
   valueNode,
   fragmentNode,
@@ -6,6 +6,8 @@ import {
   reactNode,
   nothingNode,
 } from './nodes'
+import nodeMatcher, { Selector } from '../nodeMatcher'
+type NodePredicate = (node: TreeNode) => boolean
 
 const normalizeChildren = (children: any) => {
   if (typeof children === 'undefined') return []
@@ -19,7 +21,7 @@ const isFragment = (node: InputNode) =>
 const parseChildren = (children: InputNode[]) =>
   normalizeChildren(children).map(parse)
 
-export const parse = (node: InputNode): TreeNode => {
+const parseRawNode = (node: InputNode): TreeNode => {
   if (node === null) return nothingNode('null')
   if (typeof node === 'undefined') return nothingNode('undefined')
 
@@ -39,4 +41,33 @@ export const parse = (node: InputNode): TreeNode => {
   if (typeof node.type === 'string')
     return htmlNode(node.type, props, parsedChildren)
   return reactNode(node.type, props, parsedChildren)
+}
+
+const allChildren = (e: TreeNode) =>
+  e.children.map(allNodes).reduce((a, b) => a.concat(b), [])
+
+const allNodes = (e: TreeNode) =>
+  [e].concat(e.children.map(allNodes).reduce((a, b) => a.concat(b), []))
+
+export const parse = (node: InputNode): ComponentNode => {
+  const parsed = parseRawNode(node)
+  const filter = (predicate: NodePredicate) =>
+    allChildren(parsed).filter(predicate)
+  const findAll = (selector?: Selector) => filter(nodeMatcher(selector))
+
+  return {
+    ...parsed,
+    exists: (selector?: Selector) => findAll(selector).length > 0,
+    findAll,
+    findOne: (selector?: Selector) => {
+      const found = findAll(selector)
+      if (found.length === 0)
+        throw new Error(`Could not find element matching ${selector}`)
+      if (found.length > 1)
+        throw new Error(
+          `Expected one element matching ${selector} but found ${found.length}`
+        )
+      return found[0]
+    },
+  }
 }

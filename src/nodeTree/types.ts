@@ -45,3 +45,13 @@ export interface TreeNode {
    */
   toString(): string
 }
+
+export type Selector = string | React.FC<any>
+
+export interface QueryableNode {
+  exists: (selector?: Selector) => boolean
+  findAll: (selector?: Selector) => ComponentNode[]
+  findOne: (selector?: Selector) => ComponentNode
+}
+
+export interface ComponentNode extends TreeNode, QueryableNode {}

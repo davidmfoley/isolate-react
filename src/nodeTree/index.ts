@@ -5,14 +5,14 @@ import nodeMatcher, { Selector } from '../nodeMatcher'
 
 type NodePredicate = (node: TreeNode) => boolean
 
-const allNodes = (e: TreeNode) => {
-  return [e].concat(e.children.map(allNodes).reduce((a, b) => a.concat(b), []))
-}
+const allNodes = (e: TreeNode) =>
+  [e].concat(e.children.map(allNodes).reduce((a, b) => a.concat(b), []))
 
 export const nodeTree = (top: any /* React.ReactElement<any, any> */) => {
   const root = parse(top)
   const filter = (predicate: NodePredicate) => allNodes(root).filter(predicate)
   const findAll = (selector?: Selector) => filter(nodeMatcher(selector))
+
   return {
     root: () => root,
     filter,

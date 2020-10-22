@@ -39,6 +39,27 @@ describe('nodeTree ', () => {
     expect(root.children[0].type).to.eql(Child)
   })
 
+  it('can find children', () => {
+    const tree = nodeTree(
+      <section>
+        <ul>
+          <li>A</li>
+          <li>B</li>
+        </ul>
+      </section>
+    )
+
+    const section = tree.findOne('section')
+
+    expect(section.exists('ul')).to.eq(true)
+    expect(section.exists('span')).to.eq(false)
+
+    expect(section.findAll('li').length).to.eq(2)
+    section.findOne('ul')
+
+    expect(() => section.findOne('div')).to.throw()
+  })
+
   it('handles stringifying numbers in content', () => {
     const tree = nodeTree(<span>{3}</span>)
     expect(tree.root().content()).to.eq('3')
