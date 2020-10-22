@@ -44,7 +44,9 @@ describe('nodeTree ', () => {
       <section>
         <ul>
           <li>A</li>
-          <li>B</li>
+          <li>
+            <span>B</span>
+          </li>
         </ul>
       </section>
     )
@@ -52,12 +54,13 @@ describe('nodeTree ', () => {
     const section = tree.findOne('section')
 
     expect(section.exists('ul')).to.eq(true)
-    expect(section.exists('span')).to.eq(false)
+    expect(section.exists('div')).to.eq(false)
 
     expect(section.findAll('li').length).to.eq(2)
     section.findOne('ul')
 
     expect(() => section.findOne('div')).to.throw()
+    section.findOne('ul').findAll('li')[1].findOne('span')
   })
 
   it('handles stringifying numbers in content', () => {
