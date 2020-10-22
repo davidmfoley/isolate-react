@@ -1,16 +1,15 @@
-import { TreeNode } from './types'
 import { parse } from './parse'
-export { TreeNode }
-import nodeMatcher, { Selector } from '../nodeMatcher'
-
-type NodePredicate = (node: TreeNode) => boolean
+import nodeMatcher from '../nodeMatcher'
+import { TreeNode } from '../types/TreeNode'
+import { Selector } from '../types/Selector'
 
 const allNodes = (e: TreeNode) =>
   [e].concat(e.children.map(allNodes).reduce((a, b) => a.concat(b), []))
 
 export const nodeTree = (top: any /* React.ReactElement<any, any> */) => {
   const root = parse(top)
-  const filter = (predicate: NodePredicate) => allNodes(root).filter(predicate)
+  const filter = (predicate: (node: TreeNode) => boolean) =>
+    allNodes(root).filter(predicate)
   const findAll = (selector?: Selector) => filter(nodeMatcher(selector))
 
   return {

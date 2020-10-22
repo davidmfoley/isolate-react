@@ -1,4 +1,7 @@
-import { ComponentNode, InputNode, TreeNode } from './types'
+import { ComponentNode } from '../types'
+import { InputNode } from '../types/InputNode'
+import { TreeNode } from '../types/TreeNode'
+import { Selector } from '../types/Selector'
 import {
   valueNode,
   fragmentNode,
@@ -6,7 +9,7 @@ import {
   reactNode,
   nothingNode,
 } from './nodes'
-import nodeMatcher, { Selector } from '../nodeMatcher'
+import nodeMatcher from '../nodeMatcher'
 type NodePredicate = (node: TreeNode) => boolean
 
 const normalizeChildren = (children: any) => {
@@ -31,7 +34,7 @@ const parseRawNode = (node: InputNode): TreeNode => {
   if (typeof node === 'string' || typeof node === 'number')
     return valueNode(node)
 
-  if (typeof node === 'boolean') return nothingNode(node.toString())
+  if (typeof node === 'boolean') return nothingNode('' + node)
 
   const { children, ...props } = (node.props || {}) as any
 
@@ -40,7 +43,8 @@ const parseRawNode = (node: InputNode): TreeNode => {
 
   if (typeof node.type === 'string')
     return htmlNode(node.type, props, parsedChildren)
-  return reactNode(node.type, props, parsedChildren)
+
+  return reactNode(node.type as any, props, parsedChildren)
 }
 
 const allChildren = (e: TreeNode) =>

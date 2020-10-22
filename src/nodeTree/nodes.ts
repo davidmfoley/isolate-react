@@ -1,4 +1,4 @@
-import { TreeNode } from './types'
+import { TreeNode } from '../types'
 
 const formatChildren = (children: any[]) =>
   children.map((c: TreeNode) => c.toString()).join('')
@@ -41,7 +41,7 @@ export const nothingNode = (type: string): TreeNode => ({
 
 export const valueNode = (value: string | number): TreeNode => ({
   nodeType: typeof value as any,
-  type: value,
+  type: '' + value,
   children: [],
   props: {},
   name: '',

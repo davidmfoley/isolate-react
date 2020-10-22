@@ -1,4 +1,5 @@
-import { QueryableNode } from './nodeTree/types'
+import { QueryableNode } from './QueryableNode'
+
 /**
  * Return value from isolateComponent.
  *

@@ -4,7 +4,7 @@ import { expect } from 'chai'
 import { reactNode, htmlNode } from '../src/nodeTree/nodes'
 
 import nodeMatcher from '../src/nodeMatcher'
-import { TreeNode } from '../src'
+import { TreeNode } from '../src/types/TreeNode'
 
 const shouldMatch = (selector: string, node: TreeNode) => {
   it(`${selector} should match ${node.toString()}`, () => {
