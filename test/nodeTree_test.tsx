@@ -60,6 +60,8 @@ describe('nodeTree ', () => {
     section.findOne('ul')
 
     expect(() => section.findOne('div')).to.throw()
+    expect(() => section.findOne('li')).to.throw()
+
     section.findOne('ul').findAll('li')[1].findOne('span')
   })
 
