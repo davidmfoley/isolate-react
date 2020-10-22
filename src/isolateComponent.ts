@@ -56,9 +56,42 @@ const isolateComponentWithContext = (contexts: Contexts) =>
   )
 
 /**
- * Isolate a component for testing
+ * isolateComponent: Isolate a component for testing
+ * @param componentElement - A react element, usually created with JSX.
  *
- * These docs are a work in progress -- the typescript-based doc tool is confused by a function that also has properties. Therefore the docs for this are here: {@link IsolateComponent} in the meantime.
+ *
+ *
+ * @example <caption>Basic usage</caption>
+ *
+ * ```js
+ * const Hello = (props) => <h2>Hello {props.name}</h2>
+ * const component = isolateComponent(<Hello name="Zaphod" />)
+ *
+ * console.log(component.toString()) // => "<h2>Hello Zaphod</h2>"
+ * ```
+ *
+ * @example <caption>Use withContext to test a component that uses useContext</caption>
+ *
+ * ```js
+ * const NameContext = React.createContext('')
+ *
+ * const HelloWithContext = (props) => {
+ *   const name = useContext(NameContext)
+ *   return  <h2>Hello {nameContext.value}</h2>
+ * }
+ *
+ * // To test this component, inject a context value as follows:
+ *
+ * const component = isolateComponent.withContext(NameContext, 'Trillian')(<HelloWithContext />)
+ * console.log(component.toString()) // => "<h2>Hello Trillian</h2>"
+ *
+ * ```
+ *
+ * withContext can be chained to set multiple context values
+ *
+ * @category Entry Point
+ * @returns IsolatedComponent - see the {@link IsolatedCompoenent} docs for more information.
+ * @typeparam Props - Type of the component's props
  **/
 export const isolateComponent: IsolateComponent = isolateComponentWithContext(
   []

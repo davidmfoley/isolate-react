@@ -1,0 +1,7 @@
+{
+  "tsconfig": "tsconfig.build.json",
+  "mode": "library",
+  "out": "docs",
+  "categorizeByGroup": false,
+  "disableSources": true
+}

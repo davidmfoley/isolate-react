@@ -1,48 +1,63 @@
 import { IsolatedComponent } from './IsolatedComponent'
 
 /**
- * This is the type of the main entry point: isolateComponent
  *
- * isolateCompnent is callable as a function, and also exposes a method `withContext`
- * that returns a new IsolateComponent instance that will set
- * context values for testing.
+ * This is the type of the main entry point: {@link isolateComponent | isolateComponent()}
  *
- * @example <caption>Import like this:</caption>
+ * It accepts a React Element that is a modern react component, usually created with JSX, and returns an
+ * {@link IsolatedComponent} that provides methods for manipulating and checking
+ * the results of rendering that component.
+ *
+ * @example Quick start
  *
  * ```js
- * import { isolateComponent } from 'isolate-components'
+ * import { isolateComponent } from 'isolated-components'
+ * const Hello = (props) => <h2>Hello {props.name}</h2>
+ * const component = isolateComponent(<Hello name="Zaphod" />)
+ *
+ * console.log(component.toString()) // => "<h2>Hello Zaphod</h2>"
  * ```
+ *
+ * `isolateComponent` also exposes the method {@link IsolateComponent.withContext | isolateComponent.withContext} for setting context values for testing.
+ *
+ *
+ * @returns IsolatedComponent - {@link IsolatedComponent}
+ * @typeparam Props - Type of the component's props
  */
 export interface IsolateComponent {
   /**
-   * isolateComponent: Isolate a component for testing
-   * @param componentElement - A react element, usually created with JSX.
-   * @example <caption>Basic usage</caption>
-   *
-   * ```js
-   * const component = isolateComponent(<MyComponent someProp="value" />)
-   * ```
-   *
-   * @returns IsolatedComponent - see the {@link IsolatedCompoenent} docs for more information.
-   * @typeparam Props - Type of the component's props
+   * @hidden
    **/
   <Props>(componentElement: React.ReactElement<Props, any>): IsolatedComponent<
     Props
   >
 
   /**
-   * Set context for isolated components.
-   * @param type - The context type. This is the return value from React.createContext()
-   * @param value - The value of the context, to set for testing.
+   * Set context values, for testing components that use `useContext`.
+   * @param type The context type. This is the return value from React.createContext()
+   * @param value The value of the context, to set for testing.
    *
    * Returns a new isolateComponent function that
    * will include the specifed context, making it
    * available to components that use `useContext`.
    *
-   * @example <caption>set a context value for testing:</caption>
+   * @example <caption>Testing components that use useContext</caption>
    *
    * ```js
-   * const isolatedWithContext = isolateComponent.withContext(MyContext, 'my context value')(<MyComponentThatUsesContext />)
+   * const NameContext = React.createContext('')
+   *
+   * const HelloWithContext = (props) => {
+   *   const name = useContext(NameContext)
+   *   return  <h2>Hello {nameContext.value}</h2>
+   * }
+   *
+   * // To test this component, inject a context value as follows:
+   *
+   * const component = isolateComponent.withContext(NameContext, 'Trillian')(<HelloWithContext />)
+   * console.log(component.toString()) // => "<h2>Hello Trillian</h2>"
+   *
+   *
+   * `withContext` can be chained to set multiple context values
    * ```
    */
   withContext: <ContextType>(
