@@ -1,3 +1,5 @@
+import { IsolatedComponent } from './IsolatedComponent'
+
 /**
  * This is the type of the main entry point: isolateComponent
  *
