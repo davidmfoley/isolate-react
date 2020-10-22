@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha'
 import React from 'react'
-import { isolateComponent } from '../src'
+import { isolateComponent, IsolatedComponent } from '../src'
 import { expect } from 'chai'
 
 describe('IsolatedComponent queries', () => {
@@ -95,11 +95,16 @@ describe('IsolatedComponent queries', () => {
 
   describe('querying by selector', () => {
     describe('find by id', () => {
-      const component = isolateComponent(
-        <ChildrenExample>
-          <div id="example-id" className="example-class" />
-        </ChildrenExample>
-      )
+      let component: IsolatedComponent<{}>
+
+      beforeEach(() => {
+        component = isolateComponent(
+          <ChildrenExample>
+            <div id="example-id" className="example-class" />
+          </ChildrenExample>
+        )
+      })
+
       it('can find by id only', () => {
         const div = component.findOne('#example-id')
         expect(div.props.className).to.eq('example-class')
@@ -118,6 +123,7 @@ describe('IsolatedComponent queries', () => {
       })
     })
   })
+
   describe('findAll', () => {
     it('returns empty array if no matches', () => {
       const component = isolateComponent(<JustADiv />)

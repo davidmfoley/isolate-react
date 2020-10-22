@@ -8,17 +8,18 @@ describe('getting component content', () => {
     <span>The answer is {answer}</span>
   )
 
-  const answer = isolateComponent(<Answer answer={42} />)
-
   it('content() returns inner content', () => {
+    const answer = isolateComponent(<Answer answer={42} />)
     expect(answer.content()).to.eq('The answer is 42')
   })
 
   it('toString() returns outer content', () => {
+    const answer = isolateComponent(<Answer answer={42} />)
     expect(answer.toString()).to.eq('<span>The answer is 42</span>')
   })
 
   it('handles fragments', () => {
+    const answer = isolateComponent(<Answer answer={42} />)
     const FragmentExample = () => (
       <>
         <div>A</div>

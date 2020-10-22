@@ -1,10 +1,22 @@
 import isolateHooks from 'isolate-hooks'
+import { ClassesNotSupportedError } from './errors'
 import { nodeTree, NodeTree } from './nodeTree'
 import { IsolateComponent } from './types/IsolateComponent'
 import { IsolatedComponent } from './types/IsolatedComponent'
 import { Selector } from './types/Selector'
 
 type Contexts = { contextType: React.Context<any>; contextValue: any }[]
+
+const validateComponentElement = (componentElement: any) => {
+  let proto = componentElement.type?.prototype
+  while (proto) {
+    if (proto.isReactComponent) {
+      throw new ClassesNotSupportedError()
+    }
+
+    proto = proto.prototype
+  }
+}
 
 const isolateComponent_ = <P>(
   contexts: Contexts,
@@ -13,6 +25,8 @@ const isolateComponent_ = <P>(
   let lastResult: React.ReactNode
   let props = componentElement.props
   let tree: NodeTree
+
+  validateComponentElement(componentElement)
 
   const render = isolateHooks(() => {
     lastResult = componentElement.type(props)
