@@ -67,7 +67,7 @@ const isolateComponentWithContext = (contexts: Contexts) =>
 
 /**
  * isolateComponent: Isolate a component for testing
- * This function accepts a react element rendering a functional component and returns an {@link IsolatedCompoenent} -- see the linked docs for more information.
+ * This function accepts a react element rendering a functional component and returns an {@link IsolatedComponent} -- see the linked docs for more information.
  *
  * @param componentElement A react element, usually created with JSX.
  *
