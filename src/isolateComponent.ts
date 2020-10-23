@@ -67,16 +67,24 @@ const isolateComponentWithContext = (contexts: Contexts) =>
 
 /**
  * isolateComponent: Isolate a component for testing
- * @param componentElement - A react element, usually created with JSX.
+ * This function accepts a react element rendering a functional component and returns an {@link IsolatedCompoenent} -- see the linked docs for more information.
  *
+ * @param componentElement A react element, usually created with JSX.
  *
+ * @example <caption>Import isolateComponent</caption>
+ *
+ * ```js
+ * import { isolateComponent } from 'isolate-components'
+ * ```
  *
  * @example <caption>Basic usage</caption>
  *
  * ```js
+ * // the component we will isolate for testing
  * const Hello = (props) => <h2>Hello {props.name}</h2>
  * const component = isolateComponent(<Hello name="Zaphod" />)
  *
+ * console.log(component.findOne('h2').content()) // => "Hello Zaphod"
  * console.log(component.toString()) // => "<h2>Hello Zaphod</h2>"
  * ```
  *
@@ -100,7 +108,7 @@ const isolateComponentWithContext = (contexts: Contexts) =>
  * withContext can be chained to set multiple context values
  *
  * @category Entry Point
- * @returns IsolatedComponent - see the {@link IsolatedCompoenent} docs for more information.
+ * @returns IsolatedComponent
  * @typeparam Props - Type of the component's props
  **/
 export const isolateComponent: IsolateComponent = isolateComponentWithContext(

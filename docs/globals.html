@@ -100,17 +100,24 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>isolateComponent: Isolate a component for testing</p>
+							<p>isolateComponent: Isolate a component for testing
+							This function accepts a react element rendering a functional component and returns an {@link IsolatedCompoenent} -- see the linked docs for more information.</p>
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt>param</dt>
 							<dd><p>A react element, usually created with JSX.</p>
 							</dd>
 							<dt>example</dt>
+							<dd><caption>Import isolateComponent</caption>
+								<pre><code class="language-js"><span class="hljs-keyword">import</span> { isolateComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'isolate-components'</span></code></pre>
+							</dd>
+							<dt>example</dt>
 							<dd><caption>Basic usage</caption>
-								<pre><code class="language-js"><span class="hljs-keyword">const</span> Hello = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Hello {props.name}<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span>
+								<pre><code class="language-js"><span class="hljs-comment">// the component we will isolate for testing</span>
+<span class="hljs-keyword">const</span> Hello = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Hello {props.name}<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span>
 <span class="hljs-keyword">const</span> component = isolateComponent(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Hello</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"Zaphod"</span> /&gt;</span></span>)
 
+<span class="hljs-built_in">console</span>.log(component.findOne(<span class="hljs-string">'h2'</span>).content()) <span class="hljs-comment">// =&gt; "Hello Zaphod"</span>
 <span class="hljs-built_in">console</span>.log(component.toString()) <span class="hljs-comment">// =&gt; "&lt;h2&gt;Hello Zaphod&lt;/h2&gt;"</span></code></pre>
 							</dd>
 							<dt>example</dt>
@@ -130,7 +137,7 @@
 								<p>withContext can be chained to set multiple context values</p>
 							</dd>
 							<dt>returns</dt>
-							<dd><p>IsolatedComponent - see the {@link IsolatedCompoenent} docs for more information.</p>
+							<dd><p>IsolatedComponent</p>
 							</dd>
 							<dt>typeparam</dt>
 							<dd><p>Type of the component&#39;s props</p>

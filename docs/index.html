@@ -65,16 +65,100 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<a href="#isolate-components" id="isolate-components" style="color: inherit; text-decoration: none;">
-					<h2>isolate-components</h2>
+					<h1>isolate-components</h1>
 				</a>
-				<p><a href="https://npmjs.com/package/isolate-components"><img src="https://img.shields.io/npm/v/isolate-components" alt="npm badge"></a></p>
-				<p>Isolate and test your modern react components without the need for DOM emulators and with support for hooks.</p>
+				<p>Isolate and test your modern react components with full hooks support and without the need for DOM emulators.</p>
+				<pre><code class="language-js">
+<span class="hljs-keyword">import</span> { isolateComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'isolate-components'</span>
+
+<span class="hljs-comment">// Component with effect</span>
+<span class="hljs-keyword">const</span> ExampleWithHooks = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Hello <span class="hljs-subst">${props.name}</span>`</span>)
+    <span class="hljs-comment">// cleanup function</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Goodbye <span class="hljs-subst">${props.name}</span>`</span>)
+    }
+  }, [props.name])
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Hello {props.name}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+  )
+}
+
+<span class="hljs-comment">// render the component, in isolation</span>
+<span class="hljs-keyword">const</span> component = isolateComponent(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> <span class="hljs-attr">name</span>=<span class="hljs-string">'Trillian'</span> /&gt;</span></span>)
+<span class="hljs-comment">// logs: "Hello Trillian"</span>
+
+component.setProps({<span class="hljs-attr">name</span>: <span class="hljs-string">'Zaphod'</span>})
+<span class="hljs-comment">//logs: "Goodbye Trillian" (effect cleanup)</span>
+<span class="hljs-comment">//logs: "Hello Zaphod" (effect runs because name prop has changed)</span>
+
+component.cleanup()
+<span class="hljs-comment">//logs: "Goodbye Zaphod"</span></code></pre>
+				<a href="#links" id="links" style="color: inherit; text-decoration: none;">
+					<h2>Links</h2>
+				</a>
+				<p><a href="https://npmjs.com/package/isolate-components">npm</a> | <a href="https://github.com/davidmfoley/isolate-components">github</a> | <a href="https://davidmfoley.github.io/isolate-components">api docs</a></p>
+				<a href="#what-does-it-do" id="what-does-it-do" style="color: inherit; text-decoration: none;">
+					<h2>What does it do?</h2>
+				</a>
+				<ul>
+					<li>Allows unit-testing modern react functional components -- including full support for hooks.</li>
+					<li>Runs very fast because there is no DOM emulation.</li>
+				</ul>
+				<a href="#what-doesn39t-it-do" id="what-doesn39t-it-do" style="color: inherit; text-decoration: none;">
+					<h2>What doesn&#39;t it do?</h2>
+				</a>
+				<a href="#run-your-tests" id="run-your-tests" style="color: inherit; text-decoration: none;">
+					<h3>Run your tests</h3>
+				</a>
+				<p><code>isolate-components</code> provides tools for testing your react components. It is not a test runner, nor an assertion library. It will work with any test runner that runs in nodejs like <a href="https://mochajs.org/">mocha</a> or <a href="https://jestjs.io/">jest</a> and any assertion library of your choice.</p>
+				<a href="#test-of-react-hooks-outside-a-component" id="test-of-react-hooks-outside-a-component" style="color: inherit; text-decoration: none;">
+					<h3>Test of react hooks outside a component</h3>
+				</a>
+				<p>Want to test your custom hooks? This library doesn&#39;t do that, but there is one that does:</p>
+				<p>If you want to test your custom react hooks outside of the component lifecycle, you should use <a href="https://www.npmjs.com/package/isolate-hooks">isolate-hooks</a> -- this library is for testing your react functional components that <em>use</em> hooks.</p>
+				<a href="#testing-react-class-components-yet" id="testing-react-class-components-yet" style="color: inherit; text-decoration: none;">
+					<h3>Testing react class components (yet)</h3>
+				</a>
+				<p>If this is a feature you want, please upvote/comment on <a href="https://github.com/davidmfoley/isolate-components/issues/8">this issue</a>.</p>
+				<a href="#no-support-for-rendering-child-components-like-react-testing-library-and-enzyme-mount-yet" id="no-support-for-rendering-child-components-like-react-testing-library-and-enzyme-mount-yet" style="color: inherit; text-decoration: none;">
+					<h3>No support for rendering child components (like react-testing-library and enzyme mount) (yet)</h3>
+				</a>
+				<p>If this is a feature you want, please upvote/comment on <a href="https://github.com/davidmfoley/isolate-components/issues/4">this issue</a>.</p>
+				<a href="#why-does-it-exist" id="why-does-it-exist" style="color: inherit; text-decoration: none;">
+					<h2>Why does it exist?</h2>
+				</a>
+				<p>Testing components in isolation should be fast and simple. This library makes it so.</p>
+				<p>Approaches that require a DOM emulator to test react components will always be slow and indirect. This library enables direct testing of components.</p>
+				<p>Other options that are fast, such as enzyme&#39;s <code>shallow</code>, rely on a poorly-maintained shallow renderer that is part of react. This renderer doesn&#39;t fully support hooks, so they don&#39;t support testing any functional component that uses useEffect or useContext.</p>
+				<p>Fast, isolated automated testing tools are useful for test-driven development practices.</p>
+				<a href="#how-does-this-compare-to-insert-tool-here" id="how-does-this-compare-to-insert-tool-here" style="color: inherit; text-decoration: none;">
+					<h2>How does this compare to (insert tool here)?</h2>
+				</a>
+				<a href="#enzyme-shallow" id="enzyme-shallow" style="color: inherit; text-decoration: none;">
+					<h3>enzyme shallow</h3>
+				</a>
+				<p>Enzyme shallow works great for react class components but doesn&#39;t support the full set of hooks necessary to build stateful functional components.</p>
+				<a href="#enzyme-mount-and-react-testing-library" id="enzyme-mount-and-react-testing-library" style="color: inherit; text-decoration: none;">
+					<h3>enzyme mount and react-testing-library</h3>
+				</a>
+				<p>These tools allow testing components that use hooks but they:</p>
+				<ol>
+					<li>Require a dom emulator. This makes tests run <em>very</em> slow compared to isolate-components.</li>
+					<li>Require testing all rendered components. This is <em>sometimes</em> desirable but often is not.</li>
+				</ol>
+				<a href="#cypress-selenium-etc" id="cypress-selenium-etc" style="color: inherit; text-decoration: none;">
+					<h3>cypress, selenium, etc.</h3>
+				</a>
+				<p>Cypress and similar tools are used for <em>acceptance testing</em>. <code>isolate-components</code> facilitates isolated testing of a single component (<em>unit testing</em>). Acceptance testing is orthogonal to unit testing -- you can do either or both.</p>
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
-					<h3>Installation</h3>
+					<h2>Installation</h2>
 				</a>
+				<p>You should probably install this as a dev dependency.</p>
 				<p><code>yarn add --dev isolate-components</code> or <code>npm install -D isolate-components</code></p>
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
-					<h3>Usage</h3>
+					<h2>Usage</h2>
 				</a>
 				<p>See <a href="https://davidmfoley.github.io/isolate-components/globals.html#isolatecomponent">API documentation</a>.</p>
 				<pre><code><span class="hljs-keyword">import</span> { isolateComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'isolate-components'</span>
@@ -115,6 +199,8 @@ component.setProps({<span class="hljs-attr">name</span>: <span class="hljs-strin
 				</a>
 				<p>Hooks are supported, including useEffect:</p>
 				<pre><code class="language-js">
+<span class="hljs-keyword">import</span> { isolateComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'isolate-components'</span>
+
 <span class="hljs-comment">// Component with effect</span>
 <span class="hljs-keyword">const</span> ExampleWithHooks = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
   useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
@@ -143,7 +229,7 @@ component.cleanup()
 					<h3>Isolated component API</h3>
 				</a>
 				<p>An isolated component has some methods to help exercise and inspect it.</p>
-				<p>Docs for those methods lives here: <a href="https://davidmfoley.github.io/isolate-components/interfaces/isolatedcomponent.html">Isolated component API docs</a></p>
+				<p>See the <a href="https://davidmfoley.github.io/isolate-components/interfaces/isolatedcomponent.html">Isolated component API docs</a></p>
 				<a href="#project-progress" id="project-progress" style="color: inherit; text-decoration: none;">
 					<h3>Project progress</h3>
 				</a>

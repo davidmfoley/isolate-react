@@ -1,13 +1,98 @@
-## isolate-components
-[![npm badge](https://img.shields.io/npm/v/isolate-components)](https://npmjs.com/package/isolate-components)
+# isolate-components
 
-Isolate and test your modern react components without the need for DOM emulators and with support for hooks.
+Isolate and test your modern react components with full hooks support and without the need for DOM emulators.
 
-### Installation
+```js
+
+import { isolateComponent } from 'isolate-components'
+
+// Component with effect
+const ExampleWithHooks = (props) => {
+  useEffect(() => {
+    console.log(`Hello ${props.name}`)
+    // cleanup function
+    return () => {
+      console.log(`Goodbye ${props.name}`)
+    }
+  }, [props.name])
+  return (
+    <span>Hello {props.name}</span>
+  )
+}
+
+// render the component, in isolation
+const component = isolateComponent(<MyComponent name='Trillian' />)
+// logs: "Hello Trillian"
+
+component.setProps({name: 'Zaphod'})
+//logs: "Goodbye Trillian" (effect cleanup)
+//logs: "Hello Zaphod" (effect runs because name prop has changed)
+
+component.cleanup()
+//logs: "Goodbye Zaphod"
+```
+
+## Links
+[npm](https://npmjs.com/package/isolate-components) | [github](https://github.com/davidmfoley/isolate-components) | [api docs](https://davidmfoley.github.io/isolate-components)
+
+## What does it do?
+
+- Allows unit-testing modern react functional components -- including full support for hooks.
+- Runs very fast because there is no DOM emulation.
+
+## What doesn't it do?
+
+### Run your tests
+
+`isolate-components` provides tools for testing your react components. It is not a test runner, nor an assertion library. It will work with any test runner that runs in nodejs like [mocha](https://mochajs.org/) or [jest](https://jestjs.io/) and any assertion library of your choice.
+
+### Test of react hooks outside a component
+
+Want to test your custom hooks? This library doesn't do that, but there is one that does:
+
+If you want to test your custom react hooks outside of the component lifecycle, you should use [isolate-hooks](https://www.npmjs.com/package/isolate-hooks) -- this library is for testing your react functional components that *use* hooks.
+
+### Testing react class components (yet)
+
+If this is a feature you want, please upvote/comment on [this issue](https://github.com/davidmfoley/isolate-components/issues/8).
+
+### No support for rendering child components (like react-testing-library and enzyme mount) (yet)
+
+If this is a feature you want, please upvote/comment on [this issue](https://github.com/davidmfoley/isolate-components/issues/4).
+
+## Why does it exist?
+
+Testing components in isolation should be fast and simple. This library makes it so.
+
+Approaches that require a DOM emulator to test react components will always be slow and indirect. This library enables direct testing of components.
+
+Other options that are fast, such as enzyme's `shallow`, rely on a poorly-maintained shallow renderer that is part of react. This renderer doesn't fully support hooks, so they don't support testing any functional component that uses useEffect or useContext.
+
+Fast, isolated automated testing tools are useful for test-driven development practices.
+
+## How does this compare to (insert tool here)?
+
+### enzyme shallow
+
+Enzyme shallow works great for react class components but doesn't support the full set of hooks necessary to build stateful functional components.
+
+### enzyme mount and react-testing-library
+
+These tools allow testing components that use hooks but they:
+1. Require a dom emulator. This makes tests run *very* slow compared to isolate-components.
+1. Require testing all rendered components. This is *sometimes* desirable but often is not.
+
+### cypress, selenium, etc.
+
+Cypress and similar tools are used for *acceptance testing*. `isolate-components` facilitates isolated testing of a single component (*unit testing*). Acceptance testing is orthogonal to unit testing -- you can do either or both.
+
+## Installation
+
+You should probably install this as a dev dependency.
 
 `yarn add --dev isolate-components` or `npm install -D isolate-components`
 
-### Usage
+## Usage
 
 See [API documentation](https://davidmfoley.github.io/isolate-components/globals.html#isolatecomponent).
 
@@ -27,7 +112,6 @@ console.log(component.findOne('span').content()) // => 'Hello Trillian'
 component.setProps({name: 'Zaphod'})
 console.log(component.findOne('span').content()) // => 'Hello Zaphod'
 ```
-
 
 ### Usage with useContext
 
@@ -59,6 +143,8 @@ Hooks are supported, including useEffect:
 
 ```js
 
+import { isolateComponent } from 'isolate-components'
+
 // Component with effect
 const ExampleWithHooks = (props) => {
   useEffect(() => {
@@ -85,12 +171,11 @@ component.cleanup()
 //logs: "Goodbye Zaphod"
 ```
 
-
 ### Isolated component API
 
 An isolated component has some methods to help exercise and inspect it.
 
-Docs for those methods lives here: [Isolated component API docs](https://davidmfoley.github.io/isolate-components/interfaces/isolatedcomponent.html)
+See the [Isolated component API docs](https://davidmfoley.github.io/isolate-components/interfaces/isolatedcomponent.html)
 
 ### Project progress
 
