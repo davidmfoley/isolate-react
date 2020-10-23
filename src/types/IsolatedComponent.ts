@@ -8,9 +8,9 @@ import { QueryableNode } from './QueryableNode'
  *
  *
  * @interface
- * @typeparam P - Type of the component's props
+ * @typeparam Props - Type of the component's props. You probably don't need to worry about this -- just note that if you are using typescript, the methods that set props (mergeProps and setProps) will be typesafe.
  */
-export interface IsolatedComponent<P> extends QueryableNode {
+export interface IsolatedComponent<Props> extends QueryableNode {
   /**
    * Set a subset of props, and re-render the component under test
    * @param props - A partial set of props. Unspecified props will not be changed.
@@ -27,7 +27,7 @@ export interface IsolatedComponent<P> extends QueryableNode {
    * ```
    *
    */
-  mergeProps(props: Partial<P>): void
+  mergeProps(props: Partial<Props>): void
   /**
    * Replace all props, and re-render the component under test
    * @param props - New props. Replaces existing props.
@@ -44,7 +44,7 @@ export interface IsolatedComponent<P> extends QueryableNode {
    * ```
    *
    */
-  setProps(props: P): void
+  setProps(props: Props): void
   /**
    * Returns the content of the component.
    * If the component returned null, this is null, otherwise it is a string representation of the content.
