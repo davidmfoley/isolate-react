@@ -25,11 +25,16 @@ const getRenderMethod = <P>(t: any): RenderMethod<P> => {
       instance.props = props
       instance.state = componentState
 
-      if (instance.componentDidMount) {
-        useEffect(() => {
+      useEffect(() => {
+        if (instance.componentDidMount) {
           instance.componentDidMount()
-        }, [])
-      }
+        }
+        return () => {
+          if (instance.componentWillUnmount) {
+            instance.componentWillUnmount()
+          }
+        }
+      }, [])
 
       return instance.render()
     }

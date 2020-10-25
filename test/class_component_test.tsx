@@ -98,4 +98,34 @@ describe('React class components', () => {
       expect(isolated.toString()).to.eq('<div>Zaphod</div>')
     })
   })
+
+  describe('componentWillUnmount', () => {
+    let invocations: string[]
+
+    class WillUnmountExample extends React.Component<{}, { name: string }> {
+      componentWillUnmount() {
+        invocations.push('componentWillUnmount')
+      }
+
+      render() {
+        return <div />
+      }
+    }
+
+    let isolated: IsolatedComponent<{ name: string }>
+
+    beforeEach(() => {
+      invocations = []
+      isolated = isolateComponent(<WillUnmountExample />)
+    })
+
+    it('is not invoked until cleanup', () => {
+      expect(invocations).to.eql([])
+    })
+
+    it('is invoked upon cleanup', () => {
+      isolated.cleanup()
+      expect(invocations).to.eql(['componentWillUnmount'])
+    })
+  })
 })
