@@ -101,6 +101,53 @@ describe('React class components', () => {
     })
   })
 
+  describe('setState with a callback', () => {
+    let invocations: string[]
+    class NameComponent extends React.Component<{}, { name: string }> {
+      state = {
+        name: 'Arthur',
+      }
+      render() {
+        invocations.push('render')
+        return (
+          <input
+            type="text"
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              invocations.push('onChange')
+              this.setState(
+                (s) => ({ ...s, name: e.target.value }),
+                () => {
+                  invocations.push('setState callback')
+                }
+              )
+            }}
+            value={this.state.name}
+          />
+        )
+      }
+    }
+
+    let isolated: IsolatedComponent<{ name: string }>
+
+    beforeEach(() => {
+      invocations = []
+      isolated = isolateComponent(<NameComponent />)
+    })
+
+    it('can update state', () => {
+      isolated
+        .findOne('input')
+        .props.onChange({ target: { value: 'Trillian' } })
+
+      expect(invocations).to.eql([
+        'render',
+        'onChange',
+        'render',
+        'setState callback',
+      ])
+    })
+  })
+
   describe('componentDidMount', () => {
     let invocations: string[]
 

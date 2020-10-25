@@ -10,11 +10,13 @@ export const wrapClassComponent = <P>(t: {
 
   let prevProps: P | null = null
   let prevState: any | null = null
+  let setStateCallbacks: Function[] = []
 
   return (props: P) => {
     const [componentState, setComponentState] = useState(instance.state)
 
-    instance.setState = (s: any) => {
+    instance.setState = (s: any, cb: Function) => {
+      if (cb) setStateCallbacks.push(cb)
       if (typeof s === 'function') {
         setComponentState(s(instance.state))
       } else {
@@ -54,6 +56,7 @@ export const wrapClassComponent = <P>(t: {
       lastResult = instance.render()
       if (instance.componentDidUpdate && !first)
         instance.componentDidUpdate(prevProps, prevState, snapshot)
+      while (setStateCallbacks.length) setStateCallbacks.shift()()
     }
 
     first = false
