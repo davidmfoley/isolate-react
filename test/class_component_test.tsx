@@ -1,40 +1,29 @@
 import { describe, it } from 'mocha'
 import React from 'react'
-import { isolateComponent } from '../src'
-import { ClassesNotSupportedError } from '../src/errors'
+import { isolateComponent, IsolatedComponent } from '../src'
 import { expect } from 'chai'
 
-class ExampleClassComponent extends React.Component<{}> {}
-class SubclassedClassComponent extends ExampleClassComponent {}
-const ExampleFunctionComponent = () => <div />
-
 describe('React class components', () => {
-  it('should throw an error if isolating class component', () => {
-    expect(() => {
-      isolateComponent(<ExampleClassComponent />)
-    }).to.throw(ClassesNotSupportedError)
-  })
+  describe('conmponent with props only', () => {
+    class PropsOnlyComponent extends React.Component<{ name: string }> {
+      render() {
+        return <div>Hello {this.props.name}</div>
+      }
+    }
 
-  it('should throw an error if isolating subclassed class component', () => {
-    expect(() => {
-      isolateComponent(<SubclassedClassComponent />)
-    }).to.throw(ClassesNotSupportedError)
-  })
+    let isolated: IsolatedComponent<{ name: string }>
 
-  it('should not throw an error if isolating functional component', () => {
-    isolateComponent(<ExampleFunctionComponent />)
-  })
+    beforeEach(() => {
+      isolated = isolateComponent(<PropsOnlyComponent name="Trillian" />)
+    })
 
-  it('supports class components in the rendered tree', () => {
-    const FunctionThatRendersClass = () => (
-      <div>
-        <ExampleClassComponent />
-        <SubclassedClassComponent />
-      </div>
-    )
+    it('can render', () => {
+      expect(isolated.toString()).to.eq('<div>Hello Trillian</div>')
+    })
 
-    const isolated = isolateComponent(<FunctionThatRendersClass />)
-    expect(isolated.exists(ExampleClassComponent)).to.eq(true)
-    expect(isolated.exists(SubclassedClassComponent)).to.eq(true)
+    it('can update props', () => {
+      isolated.setProps({ name: 'Ford' })
+      expect(isolated.toString()).to.eq('<div>Hello Ford</div>')
+    })
   })
 })

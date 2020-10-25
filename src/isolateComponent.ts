@@ -6,12 +6,19 @@ import { IsolatedComponent } from './types/IsolatedComponent'
 import { Selector } from './types/Selector'
 
 type Contexts = { contextType: React.Context<any>; contextValue: any }[]
+type RenderMethod<P> = (props: P) => any
 
-const validateComponentElement = (componentElement: any) => {
-  let proto = componentElement.type?.prototype
+const getRenderMethod = <P>(t: any): RenderMethod<P> => {
+  let proto = t.prototype
   if (proto?.isReactComponent) {
-    throw new ClassesNotSupportedError()
+    const instance = new t()
+    return (props: P) => {
+      instance.props = props
+      return instance.render()
+    }
   }
+
+  return t
 }
 
 const isolateComponent_ = <P>(
@@ -22,10 +29,10 @@ const isolateComponent_ = <P>(
   let props = componentElement.props
   let tree: NodeTree
 
-  validateComponentElement(componentElement)
+  const renderMethod = getRenderMethod<P>(componentElement.type)
 
   const render = isolateHooks(() => {
-    lastResult = componentElement.type(props)
+    lastResult = renderMethod(props)
     tree = nodeTree(lastResult)
   })
 
