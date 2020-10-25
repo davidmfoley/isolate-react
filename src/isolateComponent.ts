@@ -1,5 +1,5 @@
 import isolateHooks from 'isolate-hooks'
-import { ClassesNotSupportedError } from './errors'
+import { useEffect, useState } from 'react'
 import { nodeTree, NodeTree } from './nodeTree'
 import { IsolateComponent } from './types/IsolateComponent'
 import { IsolatedComponent } from './types/IsolatedComponent'
@@ -12,8 +12,25 @@ const getRenderMethod = <P>(t: any): RenderMethod<P> => {
   let proto = t.prototype
   if (proto?.isReactComponent) {
     const instance = new t()
+
     return (props: P) => {
+      const [componentState, setComponentState] = useState(instance.state)
+
+      instance.setState = (s: any) => {
+        if (typeof s === 'function') throw new Error('not yet implemented')
+        const nextState = { ...componentState, ...s }
+        setComponentState(nextState)
+      }
+
       instance.props = props
+      instance.state = componentState
+
+      if (instance.componentDidMount) {
+        useEffect(() => {
+          instance.componentDidMount()
+        }, [])
+      }
+
       return instance.render()
     }
   }
