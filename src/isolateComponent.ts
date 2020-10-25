@@ -28,7 +28,6 @@ const getRenderMethod = <P>(t: any): RenderMethod<P> => {
         !!instance.shouldComponentUpdate && !first
           ? instance.shouldComponentUpdate(props, componentState)
           : true
-      first = false
 
       instance.props = props
       instance.state = componentState
@@ -44,7 +43,13 @@ const getRenderMethod = <P>(t: any): RenderMethod<P> => {
         }
       }, [])
 
-      return shouldRender ? (lastResult = instance.render()) : lastResult
+      if (shouldRender) {
+        lastResult = instance.render()
+        if (instance.componentDidUpdate && !first) instance.componentDidUpdate()
+      }
+
+      first = false
+      return lastResult
     }
   }
 

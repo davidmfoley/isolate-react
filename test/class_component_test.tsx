@@ -129,6 +129,41 @@ describe('React class components', () => {
     })
   })
 
+  describe('componentDidUpdate', () => {
+    let invocations: string[]
+
+    class DidUpdateExample extends React.Component<{ name: string }> {
+      componentDidUpdate() {
+        invocations.push('componentDidUpdate')
+      }
+
+      render() {
+        invocations.push(`render:${this.props.name}`)
+        return <div />
+      }
+    }
+
+    let isolated: IsolatedComponent<{ name: string }>
+
+    beforeEach(() => {
+      invocations = []
+      isolated = isolateComponent(<DidUpdateExample name="Arthur" />)
+    })
+
+    it('is not invoked on first render', () => {
+      expect(invocations).to.eql(['render:Arthur'])
+    })
+
+    it('is invoked upon re-render', () => {
+      isolated.setProps({ name: 'Trillian' })
+      expect(invocations).to.eql([
+        'render:Arthur',
+        'render:Trillian',
+        'componentDidUpdate',
+      ])
+    })
+  })
+
   describe('shouldComponentUpdate', () => {
     let invocations: string[]
 
