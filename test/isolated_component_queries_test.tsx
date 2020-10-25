@@ -93,6 +93,24 @@ describe('IsolatedComponent queries', () => {
     })
   })
 
+  describe('querying for class components', () => {
+    class ExampleClassComponent extends React.Component<{}> {
+      render() {
+        return <div>Hello</div>
+      }
+    }
+    it('supports finding class components', () => {
+      const FunctionThatRendersClass = () => (
+        <div>
+          <ExampleClassComponent />
+        </div>
+      )
+
+      const isolated = isolateComponent(<FunctionThatRendersClass />)
+      expect(isolated.exists(ExampleClassComponent)).to.eq(true)
+      expect(isolated.findAll(ExampleClassComponent).length).to.eq(1)
+    })
+  })
   describe('querying by selector', () => {
     describe('find by id', () => {
       let component: IsolatedComponent<{}>

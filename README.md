@@ -37,7 +37,7 @@ component.cleanup()
 
 ## What does it do?
 
-- Allows unit-testing modern react functional components -- including full support for hooks.
+- Allows unit-testing react functional and class components -- including full support for hooks.
 - Runs very fast because there is no DOM emulation.
 
 ## What doesn't it do?
@@ -51,10 +51,6 @@ component.cleanup()
 Want to test your custom hooks? This library doesn't do that, but there is one that does:
 
 If you want to test your custom react hooks outside of the component lifecycle, you should use [isolate-hooks](https://www.npmjs.com/package/isolate-hooks) -- this library is for testing your react functional components that *use* hooks.
-
-### Testing react class components (yet)
-
-If this is a feature you want, please upvote/comment on [this issue](https://github.com/davidmfoley/isolate-components/issues/8).
 
 ### No support for rendering child components (like react-testing-library and enzyme mount) (yet)
 
