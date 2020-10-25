@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 
 export const wrapClassComponent = <P>(t: {
-  new (): React.Component<P>
+  new (): React.Component<P, any>
 }): ((p: P) => any) => {
   const instance = new t() as any
 
   let first = true
   let lastResult: any = null
+
+  let prevProps: P | null = null
+  let prevState: any | null = null
 
   return (props: P) => {
     const [componentState, setComponentState] = useState(instance.state)
@@ -20,6 +23,11 @@ export const wrapClassComponent = <P>(t: {
       !!instance.shouldComponentUpdate && !first
         ? instance.shouldComponentUpdate(props, componentState)
         : true
+
+    if (shouldRender) {
+      prevProps = instance.props
+      prevState = instance.state
+    }
 
     instance.props = props
     instance.state = componentState
@@ -36,8 +44,13 @@ export const wrapClassComponent = <P>(t: {
     }, [])
 
     if (shouldRender) {
+      let snapshot = undefined
+      if (instance.getSnapshotBeforeUpdate && !first) {
+        snapshot = instance.getSnapshotBeforeUpdate(prevProps, prevState)
+      }
       lastResult = instance.render()
-      if (instance.componentDidUpdate && !first) instance.componentDidUpdate()
+      if (instance.componentDidUpdate && !first)
+        instance.componentDidUpdate(prevProps, prevState, snapshot)
     }
 
     first = false

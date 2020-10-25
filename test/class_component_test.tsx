@@ -133,8 +133,8 @@ describe('React class components', () => {
     let invocations: string[]
 
     class DidUpdateExample extends React.Component<{ name: string }> {
-      componentDidUpdate() {
-        invocations.push('componentDidUpdate')
+      componentDidUpdate(prevProps: { name: string }) {
+        invocations.push(`componentDidUpdate:${prevProps.name}`)
       }
 
       render() {
@@ -159,7 +159,42 @@ describe('React class components', () => {
       expect(invocations).to.eql([
         'render:Arthur',
         'render:Trillian',
-        'componentDidUpdate',
+        'componentDidUpdate:Arthur',
+      ])
+    })
+  })
+
+  describe('getSnapshotBeforeUpdate', () => {
+    let invocations: string[]
+    beforeEach(() => {
+      invocations = []
+    })
+
+    class SnapshotExample extends React.Component<{ name: string }> {
+      getSnapshotBeforeUpdate(prevProps, prevState) {
+        invocations.push(`getSnapshotBeforeUpdate:${prevProps.name}`)
+        return prevProps.name
+      }
+
+      componentDidUpdate(prevProps: { name: string }, _, snapshot) {
+        invocations.push(`componentDidUpdate:${prevProps.name}:${snapshot}`)
+      }
+
+      render() {
+        invocations.push(`render:${this.props.name}`)
+        return <div />
+      }
+    }
+
+    it('is invoked upon re-render', () => {
+      const isolated = isolateComponent(<SnapshotExample name="Arthur" />)
+
+      isolated.setProps({ name: 'Trillian' })
+      expect(invocations).to.eql([
+        'render:Arthur',
+        'getSnapshotBeforeUpdate:Arthur',
+        'render:Trillian',
+        'componentDidUpdate:Arthur:Arthur',
       ])
     })
   })
