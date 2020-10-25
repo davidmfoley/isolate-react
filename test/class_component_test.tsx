@@ -4,7 +4,7 @@ import { isolateComponent, IsolatedComponent } from '../src'
 import { expect } from 'chai'
 
 describe('React class components', () => {
-  describe('conmponent with props only', () => {
+  describe('component with props only', () => {
     class PropsOnlyComponent extends React.Component<{ name: string }> {
       render() {
         return <div>Hello {this.props.name}</div>
@@ -27,7 +27,7 @@ describe('React class components', () => {
     })
   })
 
-  describe('component with state', () => {
+  describe('setState with an object', () => {
     class NameComponent extends React.Component<{}, { name: string }> {
       state = {
         name: 'Arthur',
@@ -38,6 +38,43 @@ describe('React class components', () => {
             type="text"
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               this.setState({ name: e.target.value })
+            }}
+            value={this.state.name}
+          />
+        )
+      }
+    }
+
+    let isolated: IsolatedComponent<{ name: string }>
+
+    beforeEach(() => {
+      isolated = isolateComponent(<NameComponent />)
+    })
+
+    it('populates state', () => {
+      expect(isolated.findOne('input').props.value).to.eq('Arthur')
+    })
+
+    it('can update state', () => {
+      isolated
+        .findOne('input')
+        .props.onChange({ target: { value: 'Trillian' } })
+
+      expect(isolated.findOne('input').props.value).to.eq('Trillian')
+    })
+  })
+
+  describe('setState with a function', () => {
+    class NameComponent extends React.Component<{}, { name: string }> {
+      state = {
+        name: 'Arthur',
+      }
+      render() {
+        return (
+          <input
+            type="text"
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              this.setState((s) => ({ ...s, name: e.target.value }))
             }}
             value={this.state.name}
           />
@@ -171,12 +208,12 @@ describe('React class components', () => {
     })
 
     class SnapshotExample extends React.Component<{ name: string }> {
-      getSnapshotBeforeUpdate(prevProps, prevState) {
+      getSnapshotBeforeUpdate(prevProps: { name: string }) {
         invocations.push(`getSnapshotBeforeUpdate:${prevProps.name}`)
         return prevProps.name
       }
 
-      componentDidUpdate(prevProps: { name: string }, _, snapshot) {
+      componentDidUpdate(prevProps: { name: string }, _: any, snapshot: any) {
         invocations.push(`componentDidUpdate:${prevProps.name}:${snapshot}`)
       }
 

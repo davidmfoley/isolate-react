@@ -15,9 +15,12 @@ export const wrapClassComponent = <P>(t: {
     const [componentState, setComponentState] = useState(instance.state)
 
     instance.setState = (s: any) => {
-      if (typeof s === 'function') throw new Error('not yet implemented')
-      const nextState = { ...componentState, ...s }
-      setComponentState(nextState)
+      if (typeof s === 'function') {
+        setComponentState(s(instance.state))
+      } else {
+        const nextState = { ...componentState, ...s }
+        setComponentState(nextState)
+      }
     }
     const shouldRender =
       !!instance.shouldComponentUpdate && !first
