@@ -55,7 +55,10 @@ const isolateHooks = <F extends (...args: any[]) => any>(
 
   let lastResult: ReturnType<F>
 
+  const invoke = () => invokeHook(...(lastArgs || ([] as any)))
+
   const invokeHook = (...args: Parameters<F>): ReturnType<F> => {
+    hookState.onUpdated(() => {})
     const previousDispatcher = ReactCurrentDispatcher.current
     ReactCurrentDispatcher.current = dispatcher
     do {
@@ -65,10 +68,9 @@ const isolateHooks = <F extends (...args: any[]) => any>(
     } while (hookState.dirty())
     ReactCurrentDispatcher.current = previousDispatcher
 
+    hookState.onUpdated(invoke)
     return lastResult
   }
-
-  hookState.onUpdated(invokeHook)
 
   const currentValue = () => lastResult
 
@@ -77,7 +79,7 @@ const isolateHooks = <F extends (...args: any[]) => any>(
     cleanup: () => {
       hookState.cleanup()
     },
-    invoke: () => invokeHook(...(lastArgs || ([] as any))),
+    invoke,
     setRef: hookState.setRef,
     setContext: hookState.setContext,
   })

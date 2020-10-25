@@ -52,6 +52,20 @@ describe('effects', () => {
       expect(invocations).to.eql(['hello arthur', 'hello ford'])
     })
 
+    it('can set state in mount effect', () => {
+      const useEffectExample = () => {
+        const [name, setName] = useState('arthur')
+        useEffect(() => {
+          setName('trillian')
+        }, [])
+        return name
+      }
+
+      const isolated = isolateHooks(useEffectExample)
+
+      expect(isolated()).to.eq('trillian')
+    })
+
     it('does not invoke effect if deps do not change', () => {
       let setName: Function
 
