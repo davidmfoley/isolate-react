@@ -1,5 +1,4 @@
 import isolateHooks from 'isolate-hooks'
-import { useEffect, useState } from 'react'
 import { nodeTree, NodeTree } from './nodeTree'
 import { IsolateComponent } from './types/IsolateComponent'
 import { IsolatedComponent } from './types/IsolatedComponent'
