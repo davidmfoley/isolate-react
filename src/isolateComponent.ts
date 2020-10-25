@@ -13,6 +13,9 @@ const getRenderMethod = <P>(t: any): RenderMethod<P> => {
   if (proto?.isReactComponent) {
     const instance = new t()
 
+    let first = true
+    let lastResult: any = null
+
     return (props: P) => {
       const [componentState, setComponentState] = useState(instance.state)
 
@@ -21,6 +24,11 @@ const getRenderMethod = <P>(t: any): RenderMethod<P> => {
         const nextState = { ...componentState, ...s }
         setComponentState(nextState)
       }
+      const shouldRender =
+        !!instance.shouldComponentUpdate && !first
+          ? instance.shouldComponentUpdate(props, componentState)
+          : true
+      first = false
 
       instance.props = props
       instance.state = componentState
@@ -36,7 +44,7 @@ const getRenderMethod = <P>(t: any): RenderMethod<P> => {
         }
       }, [])
 
-      return instance.render()
+      return shouldRender ? (lastResult = instance.render()) : lastResult
     }
   }
 

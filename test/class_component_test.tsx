@@ -128,4 +128,45 @@ describe('React class components', () => {
       expect(invocations).to.eql(['componentWillUnmount'])
     })
   })
+
+  describe('shouldComponentUpdate', () => {
+    let invocations: string[]
+
+    class ShouldUpdateExample extends React.Component<{ name: string }, {}> {
+      shouldComponentUpdate(nextProps: { name: string }) {
+        invocations.push('shouldComponentUpdate')
+        return nextProps.name !== this.props.name
+      }
+
+      render() {
+        invocations.push(`render:${this.props.name}`)
+        return <div>{this.props.name}</div>
+      }
+    }
+
+    let isolated: IsolatedComponent<{ name: string }>
+
+    beforeEach(() => {
+      invocations = []
+      isolated = isolateComponent(<ShouldUpdateExample name="Arthur" />)
+    })
+
+    it('is not invoked on first render', () => {
+      expect(invocations).to.eql(['render:Arthur'])
+    })
+
+    it('prevents render', () => {
+      isolated.setProps({ name: 'Arthur' })
+      expect(invocations).to.eql(['render:Arthur', 'shouldComponentUpdate'])
+    })
+
+    it('does not prevent render if true returned', () => {
+      isolated.setProps({ name: 'Trillian' })
+      expect(invocations).to.eql([
+        'render:Arthur',
+        'shouldComponentUpdate',
+        'render:Trillian',
+      ])
+    })
+  })
 })
