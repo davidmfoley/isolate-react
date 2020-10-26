@@ -16,13 +16,19 @@ const ExampleWithHooks = (props) => {
     }
   }, [props.name])
   return (
-    <span>Hello {props.name}</span>
+    <span className="hello">Hello {props.name}</span>
   )
 }
 
 // render the component, in isolation
 const component = isolateComponent(<MyComponent name='Trillian' />)
 // logs: "Hello Trillian"
+
+// explore the rendered components
+console.log(component.findOne('span').props.className) // => "hello"
+console.log(component.findOne('span.hello').content()) // => "Hello Trillian"
+console.log(component.exists('.hello')) // => true
+console.log(component.findAll('.hello')) // => array with all matches
 
 component.setProps({name: 'Zaphod'})
 //logs: "Goodbye Trillian" (effect cleanup)
