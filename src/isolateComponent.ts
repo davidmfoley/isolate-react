@@ -2,7 +2,7 @@ import isolateHooks from 'isolate-hooks'
 import { nodeTree, NodeTree } from './nodeTree'
 import { IsolateComponent } from './types/IsolateComponent'
 import { IsolatedComponent } from './types/IsolatedComponent'
-import { Selector } from './types/Selector'
+import { ReactComponentSelector, Selector } from './types/Selector'
 import { wrapClassComponent } from './wrapClassComponent'
 
 type Contexts = { contextType: React.Context<any>; contextValue: any }[]
@@ -18,15 +18,14 @@ const getRenderMethod = <P>(t: any): RenderMethod<P> => {
   return t
 }
 
-const isolateComponent_ = <P>(
-  contexts: Contexts,
-  componentElement: React.ReactElement<P, any>
-): IsolatedComponent<P> => {
+const isolatedRenderer = (contexts: Contexts) => (
+  component: ReactComponentSelector,
+  props: any
+) => {
   let lastResult: React.ReactNode
-  let props = componentElement.props
   let tree: NodeTree
 
-  const renderMethod = getRenderMethod<P>(componentElement.type)
+  const renderMethod = getRenderMethod(component)
 
   const render = isolateHooks(() => {
     lastResult = renderMethod(props)
@@ -39,21 +38,43 @@ const isolateComponent_ = <P>(
 
   render()
 
+  const setProps = (nextProps: any) => {
+    props = nextProps
+    render()
+  }
+
+  const mergeProps = (propsToMerge: any) => {
+    setProps({ ...props, ...propsToMerge })
+  }
+
   return {
-    findAll: (spec?: Selector) => tree.findAll(spec),
-    findOne: (spec?: Selector) => tree.findOne(spec),
-    exists: (spec: Selector) => tree.exists(spec),
-    mergeProps: (propsToMerge: Partial<P>) => {
-      props = { ...props, ...propsToMerge }
-      render()
-    },
-    setProps: (nextProps: P) => {
-      props = nextProps
-      render()
-    },
-    content: () => tree.content(),
-    toString: () => tree.toString(),
+    render,
+    setProps,
+    mergeProps,
+    tree: () => tree,
+  }
+}
+
+const isolateComponent_ = <P>(
+  contexts: Contexts,
+  componentElement: React.ReactElement<P, any>
+): IsolatedComponent<P> => {
+  const { render, tree, setProps, mergeProps } = isolatedRenderer(contexts)(
+    componentElement.type,
+    componentElement.props
+  )
+
+  return {
+    findAll: (spec?: Selector) => tree().findAll(spec),
+    findOne: (spec?: Selector) => tree().findOne(spec),
+    exists: (spec: Selector) => tree().exists(spec),
+    mergeProps,
+    setProps,
+    content: () => tree().content(),
+    toString: () => tree().toString(),
     cleanup: () => render.cleanup(),
+    inline: (selector?: ReactComponentSelector) => {},
+    //tree.inlineAll(selector, isolateComponent_.bind(null, contexts)),
   }
 }
 

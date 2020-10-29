@@ -1,4 +1,5 @@
 import { QueryableNode } from './QueryableNode'
+import { Selector } from './Selector'
 
 /**
  * Return value from isolateComponent.
@@ -67,4 +68,6 @@ export interface IsolatedComponent<Props> extends QueryableNode {
    * ```
    */
   cleanup(): void
+
+  inline(selector: Selector): void
 }
