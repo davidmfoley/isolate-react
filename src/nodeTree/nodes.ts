@@ -1,6 +1,6 @@
 import { TreeNode } from '../types'
 import { ComponentInstance } from '../types/ComponentInstance'
-import { ReactComponentSelector } from '../types/Selector'
+import { RenderableComponent } from '../types/RenderableComponent'
 
 const formatChildren = (children: any[]) =>
   children.map((c: TreeNode) => c.toString()).join('')
@@ -65,7 +65,7 @@ export const fragmentNode = (children: TreeNode[]): TreeNode => ({
 
 export const isolatedNode = (
   instance: ComponentInstance<any>,
-  componentType: ReactComponentSelector
+  componentType: RenderableComponent
 ): TreeNode => ({
   nodeType: 'isolated',
   type: componentType,

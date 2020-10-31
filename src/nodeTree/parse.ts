@@ -1,7 +1,7 @@
 import { ComponentNode } from '../types'
 import { InputNode } from '../types/InputNode'
 import { TreeNode } from '../types/TreeNode'
-import { ReactComponentSelector, Selector } from '../types/Selector'
+import { Selector } from '../types/Selector'
 import {
   valueNode,
   fragmentNode,
@@ -11,8 +11,8 @@ import {
   isolatedNode,
 } from './nodes'
 import nodeMatcher from '../nodeMatcher'
-import { IsolatedRenderer } from '../isolateComponent/isolatedRenderer'
 import { ComponentInstance } from '../types/ComponentInstance'
+import { RenderableComponent } from '../types/RenderableComponent'
 type NodePredicate = (node: TreeNode) => boolean
 
 const normalizeChildren = (children: any) => {
@@ -59,7 +59,7 @@ const allNodes = (e: TreeNode) =>
 
 export const parseIsolated = (
   component: ComponentInstance<any>,
-  componentType: ReactComponentSelector
+  componentType: RenderableComponent
 ) => isolatedNode(component, componentType)
 
 export const parse = (node: InputNode): ComponentNode => {

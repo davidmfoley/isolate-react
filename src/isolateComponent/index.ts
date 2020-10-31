@@ -1,8 +1,9 @@
 import { IsolateComponent } from '../types/IsolateComponent'
 import { IsolatedComponent } from '../types/IsolatedComponent'
 import { ComponentInstance } from '../types/ComponentInstance'
-import { ReactComponentSelector, Selector } from '../types/Selector'
+import { Selector } from '../types/Selector'
 import { Contexts, isolatedRenderer } from './isolatedRenderer'
+import { RenderableComponent } from '../types/RenderableComponent'
 
 const isolateComponent_ = <P>(
   contexts: Contexts,
@@ -23,7 +24,7 @@ const isolateComponent_ = <P>(
     content: () => instance.tree().content(),
     toString: () => instance.tree().toString(),
     cleanup: instance.cleanup,
-    inline: (selector?: ReactComponentSelector) =>
+    inline: (selector?: RenderableComponent) =>
       instance.tree().inlineAll(selector, renderer),
   }
 }

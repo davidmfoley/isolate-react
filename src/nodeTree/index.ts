@@ -13,28 +13,6 @@ export const nodeTree = (top: any /* React.ReactElement<any, any> */) => {
     allNodes(root).filter(predicate)
   const findAll = (selector?: Selector) => filter(nodeMatcher(selector))
 
-  /*
-  const inline = (
-    isolateComponent: IsolateComponent,
-    matcher: (n: TreeNode) => boolean,
-    node: TreeNode
-  ): ComponentNode => {
-    node.children = node.children.map((child) => {
-      if (!matcher(node) || node.type !== 'react') return child
-      const isolatedComponent = isolateComponent(node.sourceElement)
-      return {
-        type: 'isolated',
-        children: [parse(isolatedComponent)],
-        isolatedComponent: isolateComponent(node.sourceElement),
-      }
-    })
-    for (let child of node.children) {
-      if (matcher(child)) {
-      }
-    }
-  }
-  */
-
   const doInline = (
     matcher: ReturnType<typeof nodeMatcher>,
     renderer: IsolatedRenderer,
@@ -69,15 +47,6 @@ export const nodeTree = (top: any /* React.ReactElement<any, any> */) => {
     inlineAll: (selector: Selector, renderer: IsolatedRenderer) => {
       doInline(nodeMatcher(selector), renderer, root)
     },
-    /*
-    inlineAll: (selector?: ReactComponentSelector, isolate: IsolateComponent) => {
-      let matches: TreeNode[]
-      const matcher = nodeMatcher(selector)
-      do {
-        matches =
-      }
-    }
-    */
   }
 }
 

@@ -1,9 +1,5 @@
-import React from 'react'
+import { RenderableComponent } from './RenderableComponent'
 
-export type ReactComponentSelector =
-  | React.FC<any>
-  | React.ComponentClass<any, any>
-  | React.ClassicComponentClass<any>
 /**
  * Query for finding a child node of a component under test, used with the finder methods: `exists`, `findOne` and `findAll`.
  *
@@ -29,4 +25,4 @@ export type ReactComponentSelector =
  *  @category Querying
  *
  */
-export type Selector = string | ReactComponentSelector
+export type Selector = string | RenderableComponent
