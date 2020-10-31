@@ -25,14 +25,22 @@ export const isolatedRenderer = (contexts: Contexts): IsolatedRenderer => <P>(
   component: React.ComponentClass<P, any> | React.FC<P>,
   props: P
 ) => {
-  let lastResult: React.ReactNode
   let tree: NodeTree
 
   const renderMethod = getRenderMethod(component)
 
+  const createTree = (result: any) => {
+    tree = nodeTree(result)
+    renderHandler = updateTree
+  }
+
+  const updateTree = (result: any) => tree.update(result)
+
+  let renderHandler = createTree
+
   const render = isolateHooks(() => {
-    lastResult = renderMethod(props)
-    tree = nodeTree(lastResult)
+    const result = renderMethod(props)
+    renderHandler(result)
   })
 
   contexts.forEach(({ contextType, contextValue }) => {

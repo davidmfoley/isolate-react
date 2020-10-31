@@ -17,4 +17,19 @@ describe('inlining ', () => {
 
     expect(isolated.findOne('li').content()).to.eq('list item content')
   })
+
+  it('can update an inlined component', () => {
+    const ListItem: React.FC<{}> = (props) => <li>{props.children}</li>
+    const List = ({ itemCaption }: any) => (
+      <ul>
+        <ListItem>{itemCaption}</ListItem>
+      </ul>
+    )
+
+    const isolated = isolateComponent(<List itemCaption="A" />)
+    isolated.inline(ListItem)
+    isolated.setProps({ itemCaption: 'B' })
+
+    expect(isolated.findOne('li').content()).to.eq('B')
+  })
 })

@@ -7,8 +7,10 @@ import { IsolatedRenderer } from '../isolateComponent/isolatedRenderer'
 const allNodes = (e: TreeNode) =>
   [e].concat(e.children.map(allNodes).reduce((a, b) => a.concat(b), []))
 
-export const nodeTree = (top: any /* React.ReactElement<any, any> */) => {
-  const root = parse(top)
+type TreeSource = any /* React.ReactElement<any, any> */
+
+export const nodeTree = (top: TreeSource) => {
+  let root = parse(top)
   const filter = (predicate: (node: TreeNode) => boolean) =>
     allNodes(root).filter(predicate)
   const findAll = (selector?: Selector) => filter(nodeMatcher(selector))
@@ -46,6 +48,9 @@ export const nodeTree = (top: any /* React.ReactElement<any, any> */) => {
     content: () => root.content(),
     inlineAll: (selector: Selector, renderer: IsolatedRenderer) => {
       doInline(nodeMatcher(selector), renderer, root)
+    },
+    update: (next: TreeSource) => {
+      root = parse(next)
     },
   }
 }
