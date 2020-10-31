@@ -14,6 +14,7 @@ describe('inlining ', () => {
 
     const isolated = isolateComponent(<List />)
     isolated.inline(ListItem)
+
     expect(isolated.findOne('li').content()).to.eq('list item content')
   })
 })

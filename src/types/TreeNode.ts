@@ -5,7 +5,14 @@ export interface TreeNode extends NodeContent {
   /**
    * The type of node: a react component, html, string or null.
    */
-  nodeType: 'react' | 'html' | 'string' | 'number' | 'nothing' | 'fragment'
+  nodeType:
+    | 'react'
+    | 'html'
+    | 'string'
+    | 'number'
+    | 'nothing'
+    | 'fragment'
+    | 'isolated'
   /**
    * For html elements, the tag name
    * For a react FC, the display name

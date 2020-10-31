@@ -1,4 +1,6 @@
 import { TreeNode } from '../types'
+import { ComponentInstance } from '../types/ComponentInstance'
+import { ReactComponentSelector } from '../types/Selector'
 
 const formatChildren = (children: any[]) =>
   children.map((c: TreeNode) => c.toString()).join('')
@@ -15,7 +17,9 @@ const formatPropValue = (v: any) => {
 }
 
 const formatProps = (props: any) => {
-  const keys = Object.keys(props).sort()
+  const keys = Object.keys(props)
+    .filter((k) => k !== 'children')
+    .sort()
   if (keys.length === 0) return ''
   return ` ${keys.map((k) => `${k}=${formatPropValue(props[k])}`).join(' ')}`
 }
@@ -59,6 +63,18 @@ export const fragmentNode = (children: TreeNode[]): TreeNode => ({
   toString: () => formatChildren(children),
 })
 
+export const isolatedNode = (
+  instance: ComponentInstance<any>,
+  componentType: ReactComponentSelector
+): TreeNode => ({
+  nodeType: 'isolated',
+  type: componentType,
+  children: [instance.tree().root()],
+  name: '',
+  props: {},
+  content: () => '',
+  toString: () => '',
+})
 export const reactNode = (
   fc: React.FC<any>,
   props: any,

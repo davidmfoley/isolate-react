@@ -18,6 +18,16 @@ describe('getting component content', () => {
     expect(answer.toString()).to.eq('<span>The answer is 42</span>')
   })
 
+  it('handles child text', () => {
+    const Parent: React.FC<{}> = (props) => <div>{props.children}</div>
+    const Child: React.FC<{}> = () => undefined
+    const isolated = isolateComponent(
+      <Parent>
+        <Child>a b c</Child>
+      </Parent>
+    )
+  })
+
   it('handles fragments', () => {
     const answer = isolateComponent(<Answer answer={42} />)
     const FragmentExample = () => (

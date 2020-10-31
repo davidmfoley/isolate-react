@@ -1,15 +1,18 @@
 import { ComponentNode } from '../types'
 import { InputNode } from '../types/InputNode'
 import { TreeNode } from '../types/TreeNode'
-import { Selector } from '../types/Selector'
+import { ReactComponentSelector, Selector } from '../types/Selector'
 import {
   valueNode,
   fragmentNode,
   htmlNode,
   reactNode,
   nothingNode,
+  isolatedNode,
 } from './nodes'
 import nodeMatcher from '../nodeMatcher'
+import { IsolatedRenderer } from '../isolateComponent/isolatedRenderer'
+import { ComponentInstance } from '../types/ComponentInstance'
 type NodePredicate = (node: TreeNode) => boolean
 
 const normalizeChildren = (children: any) => {
@@ -36,7 +39,8 @@ const parseRawNode = (node: InputNode): TreeNode => {
 
   if (typeof node === 'boolean') return nothingNode('' + node)
 
-  const { children, ...props } = (node.props || {}) as any
+  const { children } = (node.props || {}) as any
+  const props = node.props || {}
 
   const parsedChildren = parseChildren(children)
   if (isFragment(node)) return fragmentNode(parsedChildren)
@@ -52,6 +56,11 @@ const allChildren = (e: TreeNode) =>
 
 const allNodes = (e: TreeNode) =>
   [e].concat(e.children.map(allNodes).reduce((a, b) => a.concat(b), []))
+
+export const parseIsolated = (
+  component: ComponentInstance<any>,
+  componentType: ReactComponentSelector
+) => isolatedNode(component, componentType)
 
 export const parse = (node: InputNode): ComponentNode => {
   const parsed = parseRawNode(node)

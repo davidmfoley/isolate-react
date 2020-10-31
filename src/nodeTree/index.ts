@@ -1,7 +1,8 @@
-import { parse } from './parse'
+import { parse, parseIsolated } from './parse'
 import nodeMatcher from '../nodeMatcher'
 import { TreeNode } from '../types/TreeNode'
 import { Selector } from '../types/Selector'
+import { IsolatedRenderer } from '../isolateComponent/isolatedRenderer'
 
 const allNodes = (e: TreeNode) =>
   [e].concat(e.children.map(allNodes).reduce((a, b) => a.concat(b), []))
@@ -34,6 +35,20 @@ export const nodeTree = (top: any /* React.ReactElement<any, any> */) => {
   }
   */
 
+  const doInline = (
+    matcher: ReturnType<typeof nodeMatcher>,
+    renderer: IsolatedRenderer,
+    node: TreeNode
+  ) => {
+    node.children = node.children.map((child) => {
+      if (child.nodeType === 'react' && matcher(child)) {
+        const isolated = renderer(child.type as any, child.props)
+        return parseIsolated(isolated, child.type as any)
+      }
+
+      return child
+    })
+  }
   return {
     root: () => root,
     filter,
@@ -51,12 +66,15 @@ export const nodeTree = (top: any /* React.ReactElement<any, any> */) => {
     },
     toString: () => root.toString(),
     content: () => root.content(),
+    inlineAll: (selector: Selector, renderer: IsolatedRenderer) => {
+      doInline(nodeMatcher(selector), renderer, root)
+    },
     /*
     inlineAll: (selector?: ReactComponentSelector, isolate: IsolateComponent) => {
       let matches: TreeNode[]
       const matcher = nodeMatcher(selector)
       do {
-        matches = 
+        matches =
       }
     }
     */
