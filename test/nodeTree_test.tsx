@@ -2,10 +2,13 @@ import { describe, it } from 'mocha'
 import React from 'react'
 import { nodeTree } from '../src/nodeTree'
 import { expect } from 'chai'
+import { IsolatedRenderer } from '../src/isolateComponent/isolatedRenderer'
+
+const nullRenderer = ((() => {}) as unknown) as IsolatedRenderer
 
 describe('nodeTree ', () => {
   it('can parse a single html element', () => {
-    const tree = nodeTree(<div />)
+    const tree = nodeTree(<div />, nullRenderer)
     const root = tree.root()
 
     expect(root.nodeType).to.eq('html')
@@ -15,7 +18,7 @@ describe('nodeTree ', () => {
 
   it('can parse a single component', () => {
     const Example = () => <div />
-    const tree = nodeTree(<Example />)
+    const tree = nodeTree(<Example />, nullRenderer)
     const root = tree.root()
 
     expect(root.nodeType).to.eq('react')
@@ -29,7 +32,8 @@ describe('nodeTree ', () => {
     const tree = nodeTree(
       <Parent>
         <Child />
-      </Parent>
+      </Parent>,
+      nullRenderer
     )
     const root = tree.root()
 
@@ -48,7 +52,8 @@ describe('nodeTree ', () => {
             <span>B</span>
           </li>
         </ul>
-      </section>
+      </section>,
+      nullRenderer
     )
 
     const section = tree.findOne('section')
@@ -66,39 +71,39 @@ describe('nodeTree ', () => {
   })
 
   it('handles stringifying numbers in content', () => {
-    const tree = nodeTree(<span>{3}</span>)
+    const tree = nodeTree(<span>{3}</span>, nullRenderer)
     expect(tree.root().content()).to.eq('3')
   })
 
   it('handles stringifying numbers in props', () => {
     const MagicNumber = (_: { value: number }) => null
-    const tree = nodeTree(<MagicNumber value={3} />)
+    const tree = nodeTree(<MagicNumber value={3} />, nullRenderer)
 
     expect(tree.root().toString()).to.eq(`<MagicNumber value={3} />`)
   })
 
   it('handles an empty fragment', () => {
-    const parsed = nodeTree(<></>)
+    const parsed = nodeTree(<></>, nullRenderer)
     expect(parsed.root().toString()).to.eq('')
   })
 
   it('handles a fragment with a false boolean value', () => {
-    const parsed = nodeTree(<>{false}</>)
+    const parsed = nodeTree(<>{false}</>, nullRenderer)
     expect(parsed.root().toString()).to.eq('')
   })
 
   it('handles false', () => {
-    const parsed = nodeTree(false)
+    const parsed = nodeTree(false, nullRenderer)
     expect(parsed.root().toString()).to.eq('')
   })
 
   it('handles true', () => {
-    const parsed = nodeTree(true)
+    const parsed = nodeTree(true, nullRenderer)
     expect(parsed.root().toString()).to.eq('')
   })
 
   it('handles undefined', () => {
-    const parsed = nodeTree(undefined)
+    const parsed = nodeTree(undefined, nullRenderer)
     expect(parsed.root().toString()).to.eq('')
   })
 
@@ -109,7 +114,8 @@ describe('nodeTree ', () => {
       <List className="listy-list">
         <ListItem>Arthur</ListItem>
         <ListItem>Trillian</ListItem>
-      </List>
+      </List>,
+      null as any
     )
     const root = tree.root()
 

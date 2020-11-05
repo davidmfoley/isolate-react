@@ -69,6 +69,7 @@ export const isolatedNode = (
 ): TreeNode => ({
   nodeType: 'isolated',
   type: componentType,
+  componentInstance: instance,
   children: [instance.tree().root()],
   name: '',
   props: {},

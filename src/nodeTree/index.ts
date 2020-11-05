@@ -3,14 +3,15 @@ import nodeMatcher from '../nodeMatcher'
 import { TreeNode } from '../types/TreeNode'
 import { Selector } from '../types/Selector'
 import { IsolatedRenderer } from '../isolateComponent/isolatedRenderer'
+import { ComponentNode } from '..'
 
 const allNodes = (e: TreeNode) =>
   [e].concat(e.children.map(allNodes).reduce((a, b) => a.concat(b), []))
 
 type TreeSource = any /* React.ReactElement<any, any> */
 
-export const nodeTree = (top: TreeSource) => {
-  let root = parse(top)
+export const nodeTree = (top: TreeSource, renderer: IsolatedRenderer) => {
+  let root = parse(top) as TreeNode
   const filter = (predicate: (node: TreeNode) => boolean) =>
     allNodes(root).filter(predicate)
   const findAll = (selector?: Selector) => filter(nodeMatcher(selector))
@@ -29,6 +30,27 @@ export const nodeTree = (top: TreeSource) => {
       return child
     })
   }
+
+  const matchChildren = (previous: TreeNode[], next: TreeNode[]) => {
+    return next
+  }
+
+  const reconcile = (previous: TreeNode, next: TreeNode): TreeNode => {
+    if (!previous) return next
+    if (next.type !== previous.type) return next
+    if (previous.nodeType === 'isolated') {
+      previous.componentInstance!.setProps(next.props)
+      previous.props = next.props
+      previous.children = [previous.componentInstance.tree().root()]
+      return previous
+    }
+
+    return {
+      ...next,
+      children: next.children.map((c, i) => reconcile(previous.children[i], c)),
+    }
+  }
+
   return {
     root: () => root,
     filter,
@@ -46,11 +68,11 @@ export const nodeTree = (top: TreeSource) => {
     },
     toString: () => root.toString(),
     content: () => root.content(),
-    inlineAll: (selector: Selector, renderer: IsolatedRenderer) => {
+    inlineAll: (selector: Selector) => {
       doInline(nodeMatcher(selector), renderer, root)
     },
     update: (next: TreeSource) => {
-      root = parse(next)
+      root = reconcile(root, parse(next))
     },
   }
 }

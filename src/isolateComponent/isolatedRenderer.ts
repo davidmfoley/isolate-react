@@ -21,48 +21,50 @@ export type IsolatedRenderer = <P>(
   props: P
 ) => ComponentInstance<P>
 
-export const isolatedRenderer = (contexts: Contexts): IsolatedRenderer => <P>(
-  component: React.ComponentClass<P, any> | React.FC<P>,
-  props: P
-) => {
-  let tree: NodeTree
+export const isolatedRenderer = (contexts: Contexts): IsolatedRenderer => {
+  return <P>(
+    component: React.ComponentClass<P, any> | React.FC<P>,
+    props: P
+  ) => {
+    let tree: NodeTree
 
-  const renderMethod = getRenderMethod(component)
+    const renderMethod = getRenderMethod(component)
 
-  const createTree = (result: any) => {
-    tree = nodeTree(result)
-    renderHandler = updateTree
-  }
+    const createTree = (result: any) => {
+      tree = nodeTree(result, isolatedRenderer(contexts))
+      renderHandler = updateTree
+    }
 
-  const updateTree = (result: any) => tree.update(result)
+    const updateTree = (result: any) => tree.update(result)
 
-  let renderHandler = createTree
+    let renderHandler = createTree
 
-  const render = isolateHooks(() => {
-    const result = renderMethod(props)
-    renderHandler(result)
-  })
+    const render = isolateHooks(() => {
+      const result = renderMethod(props)
+      renderHandler(result)
+    })
 
-  contexts.forEach(({ contextType, contextValue }) => {
-    render.setContext(contextType, contextValue)
-  })
+    contexts.forEach(({ contextType, contextValue }) => {
+      render.setContext(contextType, contextValue)
+    })
 
-  render()
-
-  const setProps = (nextProps: P) => {
-    props = nextProps
     render()
-  }
 
-  const mergeProps = (propsToMerge: Partial<P>) => {
-    setProps({ ...props, ...propsToMerge })
-  }
+    const setProps = (nextProps: P) => {
+      props = nextProps
+      render()
+    }
 
-  return {
-    render,
-    cleanup: () => render.cleanup(),
-    setProps,
-    mergeProps,
-    tree: () => tree,
+    const mergeProps = (propsToMerge: Partial<P>) => {
+      setProps({ ...props, ...propsToMerge })
+    }
+
+    return {
+      render,
+      cleanup: () => render.cleanup(),
+      setProps,
+      mergeProps,
+      tree: () => tree,
+    }
   }
 }

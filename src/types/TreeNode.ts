@@ -1,3 +1,4 @@
+import { ComponentInstance } from './ComponentInstance'
 import { InputNode } from './InputNode'
 import { NodeContent } from './NodeContent'
 
@@ -19,6 +20,7 @@ export interface TreeNode extends NodeContent {
    * otherwise empty
    */
   name: string
+  componentInstance?: ComponentInstance<any>
   /**
    * The `type` as returned from React.createElement
    * For a react FC, the component function.
