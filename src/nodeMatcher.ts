@@ -1,7 +1,7 @@
 import { Selector } from './types/Selector'
 import { TreeNode } from './types/TreeNode'
 
-const nodeMatcher = (spec: Selector | null): ((node: TreeNode) => boolean) => {
+export const nodeMatcher = (spec: Selector | null | undefined): NodeMatcher => {
   if (!spec) return () => true
   if (typeof spec === 'string') {
     if (spec.includes('#')) {
@@ -27,3 +27,5 @@ const nodeMatcher = (spec: Selector | null): ((node: TreeNode) => boolean) => {
 }
 
 export default nodeMatcher
+
+export type NodeMatcher = (node: TreeNode) => boolean

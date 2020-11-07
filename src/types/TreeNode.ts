@@ -28,6 +28,7 @@ export interface TreeNode extends NodeContent {
    * For a string, the string.
    */
   type: InputNode['type']
+  key?: string
   /**
    * Children, if present, or else an empty array
    * @hidden

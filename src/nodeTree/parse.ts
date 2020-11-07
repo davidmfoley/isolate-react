@@ -59,11 +59,18 @@ const allNodes = (e: TreeNode) =>
 
 export const parseIsolated = (
   component: ComponentInstance<any>,
-  componentType: RenderableComponent
-) => isolatedNode(component, componentType)
+  componentType: RenderableComponent,
+  key: string
+) => {
+  const isolated = isolatedNode(component, componentType)
+  isolated.key = key
+  return isolated
+}
 
 export const parse = (node: InputNode): ComponentNode => {
   const parsed = parseRawNode(node)
+  if (node) parsed.key = '' + node.key
+
   const filter = (predicate: NodePredicate) =>
     allChildren(parsed).filter(predicate)
   const findAll = (selector?: Selector) => filter(nodeMatcher(selector))

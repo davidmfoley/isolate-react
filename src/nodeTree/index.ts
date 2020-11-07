@@ -23,7 +23,7 @@ export const nodeTree = (top: TreeSource, renderer: IsolatedRenderer) => {
     node.children = node.children.map((child) => {
       if (child.nodeType === 'react' && matcher(child)) {
         const isolated = renderer(child.type as any, child.props)
-        return parseIsolated(isolated, child.type as any)
+        return parseIsolated(isolated, child.type as any, child.key)
       }
 
       return child
@@ -34,7 +34,15 @@ export const nodeTree = (top: TreeSource, renderer: IsolatedRenderer) => {
     previous: TreeNode[],
     next: TreeNode[]
   ): [TreeNode | null, TreeNode][] => {
-    return next.map((node, i) => [previous[i] || null, node])
+    const getKey = (node: TreeNode, index: number) => {
+      return node.key || `___${index}__`
+    }
+    const previousByKey: { [k: string]: TreeNode } = {}
+    previous.forEach((node, i) => {
+      const key = getKey(node, i)
+      previousByKey[key] = node
+    })
+    return next.map((node, i) => [previousByKey[getKey(node, i)] || null, node])
   }
 
   const reconcile = (previous: TreeNode | null, next: TreeNode): TreeNode => {

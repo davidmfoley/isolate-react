@@ -1,9 +1,11 @@
 import { describe, it } from 'mocha'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { expect } from 'chai'
 import { isolateComponent } from '../src'
 
 describe('inlining ', () => {
+  const ListItem: React.FC<{}> = (props) => <li>{props.children}</li>
+
   it('can inline a component', () => {
     const ListItem: React.FC<{}> = (props) => <li>{props.children}</li>
     const List = () => (
@@ -19,7 +21,6 @@ describe('inlining ', () => {
   })
 
   it('can update an inlined component', () => {
-    const ListItem: React.FC<{}> = (props) => <li>{props.children}</li>
     const List = ({ itemCaption }: any) => (
       <ul>
         <ListItem>{itemCaption}</ListItem>
@@ -34,26 +35,59 @@ describe('inlining ', () => {
   })
 
   it('isolates newly matching components', () => {
-    const ListItem: React.FC<{}> = (props) => <li>{props.children}</li>
-    const List = ({ items }: { items: [string, string][] }) => (
+    const Strings = (props: { items: string[] }) => (
       <ul>
-        {items.map(([k, v]) => (
-          <ListItem key={k}>{v}</ListItem>
+        {props.items.map((v) => (
+          <ListItem key={v}>{v}</ListItem>
         ))}
       </ul>
     )
 
-    const isolated = isolateComponent(<List items={[['a', '1']]} />)
+    const isolated = isolateComponent(<Strings items={['a']} />)
 
     isolated.inline(ListItem)
 
     isolated.setProps({
-      items: [
-        ['b', '2'],
-        ['a', '3'],
-      ],
+      items: ['b', 'a'],
     })
 
     expect(isolated.findAll('li').length).to.eq(2)
+  })
+
+  it('supports keys', () => {
+    const Appender = (props: { value: string }) => {
+      const [appended, setAppended] = React.useState('')
+
+      useEffect(() => {
+        setAppended(appended + props.value)
+      }, [props.value])
+
+      return <li>{appended}</li>
+    }
+
+    const KeyedStrings = ({ items }: { items: [string, string][] }) => (
+      <ul>
+        {items.map(([k, v]) => (
+          <Appender key={k} value={v} />
+        ))}
+      </ul>
+    )
+
+    const isolated = isolateComponent(<KeyedStrings items={[['1', 'foo']]} />)
+
+    isolated.inline(Appender)
+    expect(isolated.findOne('li').content()).to.eq('foo')
+
+    isolated.setProps({
+      items: [
+        ['2', 'baz'],
+        ['1', 'bar'],
+      ],
+    })
+
+    const lis = isolated.findAll('li')
+    expect(lis.length).to.eq(2)
+    expect(lis[0].content()).to.eq('baz')
+    expect(lis[1].content()).to.eq('foobar')
   })
 })
