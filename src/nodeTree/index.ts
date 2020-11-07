@@ -1,9 +1,8 @@
 import { parse, parseIsolated } from './parse'
-import nodeMatcher from '../nodeMatcher'
+import { nodeMatcher } from '../nodeMatcher'
 import { TreeNode } from '../types/TreeNode'
 import { Selector } from '../types/Selector'
 import { IsolatedRenderer } from '../isolateComponent/isolatedRenderer'
-import { ComponentNode } from '..'
 
 const allNodes = (e: TreeNode) =>
   [e].concat(e.children.map(allNodes).reduce((a, b) => a.concat(b), []))
@@ -31,11 +30,14 @@ export const nodeTree = (top: TreeSource, renderer: IsolatedRenderer) => {
     })
   }
 
-  const matchChildren = (previous: TreeNode[], next: TreeNode[]) => {
-    return next
+  const matchChildren = (
+    previous: TreeNode[],
+    next: TreeNode[]
+  ): [TreeNode | null, TreeNode][] => {
+    return next.map((node, i) => [previous[i] || null, node])
   }
 
-  const reconcile = (previous: TreeNode, next: TreeNode): TreeNode => {
+  const reconcile = (previous: TreeNode | null, next: TreeNode): TreeNode => {
     if (!previous) return next
     if (next.type !== previous.type) return next
     if (previous.nodeType === 'isolated') {
@@ -45,12 +47,18 @@ export const nodeTree = (top: TreeSource, renderer: IsolatedRenderer) => {
       return previous
     }
 
+    const matchedChildren = matchChildren(previous.children, next.children)
     return {
       ...next,
-      children: next.children.map((c, i) => reconcile(previous.children[i], c)),
+      children: matchedChildren.map(([p, n]) => reconcile(p, n)),
     }
   }
 
+  let inlinedMatchers: ((node: TreeNode) => boolean)[] = []
+
+  const applyInline = () => {
+    doInline((node) => !!inlinedMatchers.find((m) => m(node)), renderer, root)
+  }
   return {
     root: () => root,
     filter,
@@ -69,10 +77,12 @@ export const nodeTree = (top: TreeSource, renderer: IsolatedRenderer) => {
     toString: () => root.toString(),
     content: () => root.content(),
     inlineAll: (selector: Selector) => {
-      doInline(nodeMatcher(selector), renderer, root)
+      inlinedMatchers.push(nodeMatcher(selector))
+      applyInline()
     },
     update: (next: TreeSource) => {
       root = reconcile(root, parse(next))
+      applyInline()
     },
   }
 }
