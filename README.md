@@ -3,7 +3,6 @@
 Isolate and test your modern react components with full hooks support and without the need for DOM emulators.
 
 ```js
-
 import { isolateComponent } from 'isolate-components'
 
 // Component with effect
@@ -15,13 +14,11 @@ const ExampleWithHooks = (props) => {
       console.log(`Goodbye ${props.name}`)
     }
   }, [props.name])
-  return (
-    <span className="hello">Hello {props.name}</span>
-  )
+  return <span className="hello">Hello {props.name}</span>
 }
 
 // render the component, in isolation
-const component = isolateComponent(<MyComponent name='Trillian' />)
+const component = isolateComponent(<MyComponent name="Trillian" />)
 // logs: "Hello Trillian"
 
 // explore the rendered components
@@ -30,7 +27,7 @@ console.log(component.findOne('span.hello').content()) // => "Hello Trillian"
 console.log(component.exists('.hello')) // => true
 console.log(component.findAll('.hello')) // => array with all matches
 
-component.setProps({name: 'Zaphod'})
+component.setProps({ name: 'Zaphod' })
 //logs: "Goodbye Trillian" (effect cleanup)
 //logs: "Hello Zaphod" (effect runs because name prop has changed)
 
@@ -39,6 +36,7 @@ component.cleanup()
 ```
 
 ## Links
+
 [npm](https://npmjs.com/package/isolate-components) | [github](https://github.com/davidmfoley/isolate-components) | [api docs](https://davidmfoley.github.io/isolate-components)
 
 ## What does it do?
@@ -56,11 +54,7 @@ component.cleanup()
 
 Want to test your custom hooks? This library doesn't do that, but there is one that does:
 
-If you want to test your custom react hooks outside of the component lifecycle, you should use [isolate-hooks](https://www.npmjs.com/package/isolate-hooks) -- this library is for testing your react functional components that *use* hooks.
-
-### No support for rendering child components (like react-testing-library and enzyme mount) (yet)
-
-If this is a feature you want, please upvote/comment on [this issue](https://github.com/davidmfoley/isolate-components/issues/4).
+If you want to test your custom react hooks outside of the component lifecycle, you should use [isolate-hooks](https://www.npmjs.com/package/isolate-hooks) -- this library is for testing your react functional components that _use_ hooks.
 
 ## Why does it exist?
 
@@ -81,12 +75,13 @@ Enzyme shallow works great for react class components but doesn't support the fu
 ### enzyme mount and react-testing-library
 
 These tools allow testing components that use hooks but they:
-1. Require a dom emulator. This makes tests run *very* slow compared to isolate-components.
-1. Require testing all rendered components. This is *sometimes* desirable but often is not.
+
+1. Require a dom emulator. This makes tests run _very_ slow compared to isolate-components.
+1. Require testing _all_ rendered components. This is _sometimes_ desirable but often is not. isolate-components allows you to test a single component in isolation, or to test multiple components together -- it's up to you.
 
 ### cypress, selenium, etc.
 
-Cypress and similar tools are used for *acceptance testing*. `isolate-components` facilitates isolated testing of a single component (*unit testing*). Acceptance testing is orthogonal to unit testing -- you can do either or both.
+Cypress and similar tools are used for _acceptance testing_. `isolate-components` facilitates isolated testing of a single component (_unit testing_) or a small set of components. Acceptance testing is orthogonal to unit testing -- you can do either or both.
 
 ## Installation
 
@@ -119,7 +114,6 @@ console.log(component.findOne('span').content()) // => 'Hello Zaphod'
 
 You can test components that use `useContext` using the `.withContext()` decorator:
 
-
 ```js
 const QuestionContext = React.createContext('')
 const AnswerContext = React.createContext(0)
@@ -132,19 +126,19 @@ const DisplayQuestionAndAnswer = () => (
 
 const isolated = isolateComponent
   .withContext(QuestionContext, 'what is the answer?')
-  .withContext(AnswerContext, 42)
-  (<DisplayQuestionAndAnswer />)
+  .withContext(
+    AnswerContext,
+    42
+  )(<DisplayQuestionAndAnswer />)
 
 console.log(isolated.toString()) // => <div>what is the answer? 42</div>
 ```
-
 
 ### Usage with hooks
 
 Hooks are supported, including useEffect:
 
 ```js
-
 import { isolateComponent } from 'isolate-components'
 
 // Component with effect
@@ -156,16 +150,14 @@ const ExampleWithHooks = (props) => {
       console.log(`Goodbye ${props.name}`)
     }
   }, [props.name])
-  return (
-    <span>Hello {props.name}</span>
-  )
+  return <span>Hello {props.name}</span>
 }
 
 // render the component, in isolation
-const component = isolateComponent(<MyComponent name='Trillian' />)
+const component = isolateComponent(<MyComponent name="Trillian" />)
 // logs: "Hello Trillian"
 
-component.setProps({name: 'Zaphod'})
+component.setProps({ name: 'Zaphod' })
 //logs: "Goodbye Trillian" (effect cleanup)
 //logs: "Hello Zaphod" (effect runs because name prop has changed)
 
@@ -186,4 +178,3 @@ This is a new project -- your feature requests and feedback are appreciated.
 See the [project tracker](https://github.com/davidmfoley/isolate-components/projects/1) for project progress.
 
 File an [issue](https://github.com/davidmfoley/isolate-components/issues) if you have a suggestion or request.
-
