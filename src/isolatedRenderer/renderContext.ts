@@ -9,11 +9,13 @@ export interface RenderContext {
   contexts: Contexts
   addInlinedSelector: (selector: Selector) => void
   shouldInline: (node: TreeNode) => boolean
+  withContext: (type: any, value: any) => RenderContext
 }
 
-export const makeRenderContext = (contexts: Contexts): RenderContext => {
-  const inlinedMatchers: NodeMatcher[] = []
-
+export const makeRenderContext = (
+  contexts: Contexts,
+  inlinedMatchers: NodeMatcher[] = []
+): RenderContext => {
   return {
     inlinedSelectors: [],
     contexts,
@@ -21,5 +23,10 @@ export const makeRenderContext = (contexts: Contexts): RenderContext => {
       inlinedMatchers.push(nodeMatcher(selector))
     },
     shouldInline: (node: TreeNode) => !!inlinedMatchers.find((m) => m(node)),
+    withContext: (contextType: any, contextValue: any) =>
+      makeRenderContext(
+        contexts.concat({ contextType, contextValue }),
+        inlinedMatchers
+      ),
   }
 }

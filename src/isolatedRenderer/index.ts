@@ -17,6 +17,17 @@ export type IsolatedRenderer = {
   shouldInline: NodeMatcher
 }
 
+const applyProviderContext = (
+  component: any,
+  props: any,
+  renderContext: RenderContext
+) => {
+  if (component._context) {
+    return renderContext.withContext(component._context, props.value)
+  }
+  return renderContext
+}
+
 export const isolatedRenderer = (
   renderContext: RenderContext
 ): IsolatedRenderer => {
@@ -29,7 +40,10 @@ export const isolatedRenderer = (
     const renderMethod = getRenderMethod(component)
 
     const createTree = (result: any) => {
-      tree = nodeTree(result, isolatedRenderer(renderContext))
+      tree = nodeTree(
+        result,
+        isolatedRenderer(applyProviderContext(component, props, renderContext))
+      )
       renderHandler = updateTree
     }
 

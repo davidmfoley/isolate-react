@@ -19,7 +19,7 @@ describe('inline with context provider', () => {
     expect(isolated.findOne('div').content()).to.eq('Arthur')
   })
 
-  it.skip('handles context provider', () => {
+  it('handles context provider', () => {
     const isolated = isolateComponent(
       <TestComponent>
         <NameContext.Provider value="Trillian">
@@ -31,5 +31,26 @@ describe('inline with context provider', () => {
     isolated.inline('*')
 
     expect(isolated.findOne('div').content()).to.eq('Trillian')
+  })
+
+  it('handles nested context providers', () => {
+    const isolated = isolateComponent(
+      <TestComponent>
+        <DisplayName />
+        <NameContext.Provider value="Trillian">
+          <DisplayName />
+          <NameContext.Provider value="Ford">
+            <DisplayName />
+          </NameContext.Provider>
+          <DisplayName />
+        </NameContext.Provider>
+        <DisplayName />
+      </TestComponent>
+    )
+
+    isolated.inline('*')
+
+    const names = isolated.findAll('div').map((d) => d.content())
+    expect(names).to.eql(['Arthur', 'Trillian', 'Ford', 'Trillian', 'Arthur'])
   })
 })

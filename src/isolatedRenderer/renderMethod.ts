@@ -7,5 +7,7 @@ export const getRenderMethod = <P>(t: any): RenderMethod<P> => {
     return wrapClassComponent(t)
   }
 
+  if (t._context) return (props: any) => props.children
+
   return t
 }
