@@ -3,21 +3,10 @@ import { NodeMatcher } from '../nodeMatcher'
 import { nodeTree, NodeTree } from '../nodeTree'
 import { ComponentInstance } from '../types/ComponentInstance'
 import { Selector } from '../types/Selector'
+import { getRenderMethod } from './renderMethod'
 import { RenderContext } from './renderContext'
-import { wrapClassComponent } from './wrapClassComponent'
 
 export type Contexts = { contextType: React.Context<any>; contextValue: any }[]
-
-type RenderMethod<P> = (props: P) => any
-
-const getRenderMethod = <P>(t: any): RenderMethod<P> => {
-  let proto = t.prototype
-  if (proto?.isReactComponent) {
-    return wrapClassComponent(t)
-  }
-
-  return t
-}
 
 export type IsolatedRenderer = {
   render: <P>(
