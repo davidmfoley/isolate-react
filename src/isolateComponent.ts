@@ -1,10 +1,10 @@
-import { IsolateComponent } from '../types/IsolateComponent'
-import { IsolatedComponent } from '../types/IsolatedComponent'
-import { ComponentInstance } from '../types/ComponentInstance'
-import { Selector } from '../types/Selector'
+import { IsolateComponent } from './types/IsolateComponent'
+import { IsolatedComponent } from './types/IsolatedComponent'
+import { ComponentInstance } from './types/ComponentInstance'
+import { Selector } from './types/Selector'
 import { Contexts, isolatedRenderer } from './isolatedRenderer'
-import { RenderableComponent } from '../types/RenderableComponent'
-import { makeRenderContext } from './renderContext'
+import { RenderableComponent } from './types/RenderableComponent'
+import { makeRenderContext } from './isolatedRenderer/renderContext'
 
 const isolateComponent_ = <P>(
   contexts: Contexts,

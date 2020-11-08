@@ -1,4 +1,4 @@
-import { IsolatedRenderer } from '../isolateComponent/isolatedRenderer'
+import { IsolatedRenderer } from '../isolatedRenderer'
 import { TreeNode } from '../types'
 import { parseIsolated } from './parse'
 

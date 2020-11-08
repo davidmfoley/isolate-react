@@ -2,7 +2,7 @@ import { parse } from './parse'
 import nodeMatcher, { NodeMatcher } from '../nodeMatcher'
 import { TreeNode } from '../types/TreeNode'
 import { Selector } from '../types/Selector'
-import { IsolatedRenderer } from '../isolateComponent/isolatedRenderer'
+import { IsolatedRenderer } from '../isolatedRenderer'
 import { doInline } from './inline'
 import { reconcile } from './reconcile'
 

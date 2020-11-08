@@ -2,7 +2,7 @@ import { describe, it } from 'mocha'
 import React from 'react'
 import { nodeTree } from '../src/nodeTree'
 import { expect } from 'chai'
-import { IsolatedRenderer } from '../src/isolateComponent/isolatedRenderer'
+import { IsolatedRenderer } from '../src/isolatedRenderer'
 
 const nullRenderer: IsolatedRenderer = {
   render: () => ({} as any),
