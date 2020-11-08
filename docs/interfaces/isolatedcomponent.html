@@ -117,6 +117,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="isolatedcomponent.html#exists" class="tsd-kind-icon">exists</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="isolatedcomponent.html#findall" class="tsd-kind-icon">find<wbr>All</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="isolatedcomponent.html#findone" class="tsd-kind-icon">find<wbr>One</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="isolatedcomponent.html#inline" class="tsd-kind-icon">inline</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="isolatedcomponent.html#mergeprops" class="tsd-kind-icon">merge<wbr>Props</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="isolatedcomponent.html#setprops" class="tsd-kind-icon">set<wbr>Props</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="isolatedcomponent.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
@@ -327,6 +328,38 @@ component.cleanup()</code></pre>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="inline" class="tsd-anchor"></a>
+					<h3>inline</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">inline<span class="tsd-signature-symbol">(</span>selector<span class="tsd-signature-symbol">: </span><a href="../globals.html#selector" class="tsd-signature-type">Selector</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>&quot;Inline&quot; components to include them rendered output rather than making them available.
+									Allows for testing multiple components.</p>
+								</div>
+								<p>Inline all components of a certain type:</p>
+								<p><code>isolated.inline(ListItem)</code></p>
+								<p>The display name of the component can also be used:</p>
+								<p><code>isolated.inline(&#39;ListItem&#39;)</code></p>
+								<p>Include <em>all</em> components by passing &quot;*&quot;:</p>
+								<p><code>isolated.inline(&#39;*&#39;)</code></p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>selector: <a href="../globals.html#selector" class="tsd-signature-type">Selector</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 					<a name="mergeprops" class="tsd-anchor"></a>
 					<h3>merge<wbr>Props</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -461,6 +494,9 @@ component.setProps({
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 								<a href="isolatedcomponent.html#findone" class="tsd-kind-icon">find<wbr>One</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="isolatedcomponent.html#inline" class="tsd-kind-icon">inline</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="isolatedcomponent.html#mergeprops" class="tsd-kind-icon">merge<wbr>Props</a>

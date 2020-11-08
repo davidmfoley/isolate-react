@@ -68,8 +68,7 @@
 					<h1>isolate-components</h1>
 				</a>
 				<p>Isolate and test your modern react components with full hooks support and without the need for DOM emulators.</p>
-				<pre><code class="language-js">
-<span class="hljs-keyword">import</span> { isolateComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'isolate-components'</span>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { isolateComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'isolate-components'</span>
 
 <span class="hljs-comment">// Component with effect</span>
 <span class="hljs-keyword">const</span> ExampleWithHooks = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
@@ -80,16 +79,20 @@
       <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Goodbye <span class="hljs-subst">${props.name}</span>`</span>)
     }
   }, [props.name])
-  <span class="hljs-keyword">return</span> (
-    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Hello {props.name}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
-  )
+  <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"hello"</span>&gt;</span>Hello {props.name}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
 }
 
 <span class="hljs-comment">// render the component, in isolation</span>
-<span class="hljs-keyword">const</span> component = isolateComponent(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> <span class="hljs-attr">name</span>=<span class="hljs-string">'Trillian'</span> /&gt;</span></span>)
+<span class="hljs-keyword">const</span> component = isolateComponent(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"Trillian"</span> /&gt;</span></span>)
 <span class="hljs-comment">// logs: "Hello Trillian"</span>
 
-component.setProps({<span class="hljs-attr">name</span>: <span class="hljs-string">'Zaphod'</span>})
+<span class="hljs-comment">// explore the rendered components</span>
+<span class="hljs-built_in">console</span>.log(component.findOne(<span class="hljs-string">'span'</span>).props.className) <span class="hljs-comment">// =&gt; "hello"</span>
+<span class="hljs-built_in">console</span>.log(component.findOne(<span class="hljs-string">'span.hello'</span>).content()) <span class="hljs-comment">// =&gt; "Hello Trillian"</span>
+<span class="hljs-built_in">console</span>.log(component.exists(<span class="hljs-string">'.hello'</span>)) <span class="hljs-comment">// =&gt; true</span>
+<span class="hljs-built_in">console</span>.log(component.findAll(<span class="hljs-string">'.hello'</span>)) <span class="hljs-comment">// =&gt; array with all matches</span>
+
+component.setProps({ <span class="hljs-attr">name</span>: <span class="hljs-string">'Zaphod'</span> })
 <span class="hljs-comment">//logs: "Goodbye Trillian" (effect cleanup)</span>
 <span class="hljs-comment">//logs: "Hello Zaphod" (effect runs because name prop has changed)</span>
 
@@ -118,10 +121,6 @@ component.cleanup()
 				</a>
 				<p>Want to test your custom hooks? This library doesn&#39;t do that, but there is one that does:</p>
 				<p>If you want to test your custom react hooks outside of the component lifecycle, you should use <a href="https://www.npmjs.com/package/isolate-hooks">isolate-hooks</a> -- this library is for testing your react functional components that <em>use</em> hooks.</p>
-				<a href="#no-support-for-rendering-child-components-like-react-testing-library-and-enzyme-mount-yet" id="no-support-for-rendering-child-components-like-react-testing-library-and-enzyme-mount-yet" style="color: inherit; text-decoration: none;">
-					<h3>No support for rendering child components (like react-testing-library and enzyme mount) (yet)</h3>
-				</a>
-				<p>If this is a feature you want, please upvote/comment on <a href="https://github.com/davidmfoley/isolate-components/issues/4">this issue</a>.</p>
 				<a href="#why-does-it-exist" id="why-does-it-exist" style="color: inherit; text-decoration: none;">
 					<h2>Why does it exist?</h2>
 				</a>
@@ -142,12 +141,12 @@ component.cleanup()
 				<p>These tools allow testing components that use hooks but they:</p>
 				<ol>
 					<li>Require a dom emulator. This makes tests run <em>very</em> slow compared to isolate-components.</li>
-					<li>Require testing all rendered components. This is <em>sometimes</em> desirable but often is not.</li>
+					<li>Require testing <em>all</em> rendered components. This is <em>sometimes</em> desirable but often is not. isolate-components allows you to test a single component in isolation, or to test multiple components together -- it&#39;s up to you.</li>
 				</ol>
 				<a href="#cypress-selenium-etc" id="cypress-selenium-etc" style="color: inherit; text-decoration: none;">
 					<h3>cypress, selenium, etc.</h3>
 				</a>
-				<p>Cypress and similar tools are used for <em>acceptance testing</em>. <code>isolate-components</code> facilitates isolated testing of a single component (<em>unit testing</em>). Acceptance testing is orthogonal to unit testing -- you can do either or both.</p>
+				<p>Cypress and similar tools are used for <em>acceptance testing</em>. <code>isolate-components</code> facilitates isolated testing of a single component (<em>unit testing</em>) or a small set of components. Acceptance testing is orthogonal to unit testing -- you can do either or both.</p>
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 					<h2>Installation</h2>
 				</a>
@@ -186,16 +185,17 @@ component.setProps({<span class="hljs-attr">name</span>: <span class="hljs-strin
 
 <span class="hljs-keyword">const</span> isolated = isolateComponent
   .withContext(QuestionContext, <span class="hljs-string">'what is the answer?'</span>)
-  .withContext(AnswerContext, <span class="hljs-number">42</span>)
-  (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">DisplayQuestionAndAnswer</span> /&gt;</span></span>)
+  .withContext(
+    AnswerContext,
+    <span class="hljs-number">42</span>
+  )(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">DisplayQuestionAndAnswer</span> /&gt;</span></span>)
 
 <span class="hljs-built_in">console</span>.log(isolated.toString()) <span class="hljs-comment">// =&gt; &lt;div&gt;what is the answer? 42&lt;/div&gt;</span></code></pre>
 				<a href="#usage-with-hooks" id="usage-with-hooks" style="color: inherit; text-decoration: none;">
 					<h3>Usage with hooks</h3>
 				</a>
 				<p>Hooks are supported, including useEffect:</p>
-				<pre><code class="language-js">
-<span class="hljs-keyword">import</span> { isolateComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'isolate-components'</span>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { isolateComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'isolate-components'</span>
 
 <span class="hljs-comment">// Component with effect</span>
 <span class="hljs-keyword">const</span> ExampleWithHooks = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
@@ -206,16 +206,14 @@ component.setProps({<span class="hljs-attr">name</span>: <span class="hljs-strin
       <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Goodbye <span class="hljs-subst">${props.name}</span>`</span>)
     }
   }, [props.name])
-  <span class="hljs-keyword">return</span> (
-    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Hello {props.name}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
-  )
+  <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Hello {props.name}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
 }
 
 <span class="hljs-comment">// render the component, in isolation</span>
-<span class="hljs-keyword">const</span> component = isolateComponent(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> <span class="hljs-attr">name</span>=<span class="hljs-string">'Trillian'</span> /&gt;</span></span>)
+<span class="hljs-keyword">const</span> component = isolateComponent(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"Trillian"</span> /&gt;</span></span>)
 <span class="hljs-comment">// logs: "Hello Trillian"</span>
 
-component.setProps({<span class="hljs-attr">name</span>: <span class="hljs-string">'Zaphod'</span>})
+component.setProps({ <span class="hljs-attr">name</span>: <span class="hljs-string">'Zaphod'</span> })
 <span class="hljs-comment">//logs: "Goodbye Trillian" (effect cleanup)</span>
 <span class="hljs-comment">//logs: "Hello Zaphod" (effect runs because name prop has changed)</span>
 
