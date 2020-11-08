@@ -123,5 +123,17 @@ describe('inlining ', () => {
       expect(isolated.content()).to.eq(expected)
       expect(isolated.toString()).to.eq(expected)
     })
+
+    it('can inline all components with a star selector', () => {
+      const isolated = isolateComponent(<Sections />)
+      isolated.inline('*')
+      expect(isolated.findAll('section').length).to.eq(3)
+    })
+
+    it('can inline components by name', () => {
+      const isolated = isolateComponent(<Sections />)
+      isolated.inline('Section')
+      expect(isolated.findAll('section').length).to.eq(3)
+    })
   })
 })

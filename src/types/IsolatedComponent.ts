@@ -69,5 +69,22 @@ export interface IsolatedComponent<Props> extends QueryableNode {
    */
   cleanup(): void
 
+  /**
+   * "Inline" components to include them rendered output rather than making them available.
+   *  Allows for testing multiple components.
+   *
+   * Inline all components of a certain type:
+   *
+   * `isolated.inline(ListItem)`
+   *
+   * The display name of the component can also be used:
+   *
+   * `isolated.inline('ListItem')`
+   *
+   * Include *all* components by passing "*":
+   *
+   * `isolated.inline('*')`
+   *
+   */
   inline(selector: Selector): void
 }
