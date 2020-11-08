@@ -4,13 +4,14 @@ import { ComponentInstance } from '../types/ComponentInstance'
 import { Selector } from '../types/Selector'
 import { Contexts, isolatedRenderer } from './isolatedRenderer'
 import { RenderableComponent } from '../types/RenderableComponent'
+import { makeRenderContext } from './renderContext'
 
 const isolateComponent_ = <P>(
   contexts: Contexts,
   componentElement: React.ReactElement<P, any>
 ): IsolatedComponent<P> => {
-  const renderer = isolatedRenderer(contexts)
-  const instance: ComponentInstance<P> = renderer(
+  const renderer = isolatedRenderer(makeRenderContext(contexts))
+  const instance: ComponentInstance<P> = renderer.render(
     componentElement.type,
     componentElement.props
   )
@@ -24,8 +25,7 @@ const isolateComponent_ = <P>(
     content: () => instance.tree().content(),
     toString: () => instance.tree().toString(),
     cleanup: instance.cleanup,
-    inline: (selector?: RenderableComponent) =>
-      instance.tree().inlineAll(selector),
+    inline: (selector?: RenderableComponent) => instance.inlineAll(selector),
   }
 }
 

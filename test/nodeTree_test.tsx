@@ -4,7 +4,10 @@ import { nodeTree } from '../src/nodeTree'
 import { expect } from 'chai'
 import { IsolatedRenderer } from '../src/isolateComponent/isolatedRenderer'
 
-const nullRenderer = ((() => {}) as unknown) as IsolatedRenderer
+const nullRenderer: IsolatedRenderer = {
+  render: () => ({} as any),
+  shouldInline: () => false,
+}
 
 describe('nodeTree ', () => {
   it('can parse a single html element', () => {
@@ -115,7 +118,7 @@ describe('nodeTree ', () => {
         <ListItem>Arthur</ListItem>
         <ListItem>Trillian</ListItem>
       </List>,
-      null as any
+      nullRenderer
     )
     const root = tree.root()
 

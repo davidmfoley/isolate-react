@@ -1,6 +1,9 @@
 import isolateHooks from 'isolate-hooks'
+import { NodeMatcher } from '../nodeMatcher'
 import { nodeTree, NodeTree } from '../nodeTree'
 import { ComponentInstance } from '../types/ComponentInstance'
+import { Selector } from '../types/Selector'
+import { RenderContext } from './renderContext'
 import { wrapClassComponent } from './wrapClassComponent'
 
 export type Contexts = { contextType: React.Context<any>; contextValue: any }[]
@@ -16,13 +19,19 @@ const getRenderMethod = <P>(t: any): RenderMethod<P> => {
   return t
 }
 
-export type IsolatedRenderer = <P>(
-  component: React.ComponentClass<P, any> | React.FC<P>,
-  props: P
-) => ComponentInstance<P>
+export type IsolatedRenderer = {
+  render: <P>(
+    component: React.ComponentClass<P, any> | React.FC<P>,
+    props: P
+  ) => ComponentInstance<P>
 
-export const isolatedRenderer = (contexts: Contexts): IsolatedRenderer => {
-  return <P>(
+  shouldInline: NodeMatcher
+}
+
+export const isolatedRenderer = (
+  renderContext: RenderContext
+): IsolatedRenderer => {
+  const render = <P>(
     component: React.ComponentClass<P, any> | React.FC<P>,
     props: P
   ) => {
@@ -31,7 +40,7 @@ export const isolatedRenderer = (contexts: Contexts): IsolatedRenderer => {
     const renderMethod = getRenderMethod(component)
 
     const createTree = (result: any) => {
-      tree = nodeTree(result, isolatedRenderer(contexts))
+      tree = nodeTree(result, isolatedRenderer(renderContext))
       renderHandler = updateTree
     }
 
@@ -44,7 +53,7 @@ export const isolatedRenderer = (contexts: Contexts): IsolatedRenderer => {
       renderHandler(result)
     })
 
-    contexts.forEach(({ contextType, contextValue }) => {
+    renderContext.contexts.forEach(({ contextType, contextValue }) => {
       render.setContext(contextType, contextValue)
     })
 
@@ -65,6 +74,11 @@ export const isolatedRenderer = (contexts: Contexts): IsolatedRenderer => {
       setProps,
       mergeProps,
       tree: () => tree,
+      inlineAll: (selector: Selector) => {
+        renderContext.addInlinedSelector(selector)
+        tree.inlineAll()
+      },
     }
   }
+  return { render, shouldInline: renderContext.shouldInline }
 }

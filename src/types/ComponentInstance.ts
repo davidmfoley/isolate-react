@@ -1,3 +1,4 @@
+import { Selector } from '..'
 import { NodeTree } from '../nodeTree'
 
 export interface ComponentInstance<P> {
@@ -6,4 +7,5 @@ export interface ComponentInstance<P> {
   setProps: (props: P) => void
   tree(): NodeTree
   mergeProps: (props: Partial<P>) => void
+  inlineAll: (selector: Selector) => void
 }

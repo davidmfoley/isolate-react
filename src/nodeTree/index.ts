@@ -1,5 +1,5 @@
 import { parse, parseIsolated } from './parse'
-import { nodeMatcher } from '../nodeMatcher'
+import nodeMatcher, { NodeMatcher } from '../nodeMatcher'
 import { TreeNode } from '../types/TreeNode'
 import { Selector } from '../types/Selector'
 import { IsolatedRenderer } from '../isolateComponent/isolatedRenderer'
@@ -11,23 +11,30 @@ type TreeSource = any /* React.ReactElement<any, any> */
 
 export const nodeTree = (top: TreeSource, renderer: IsolatedRenderer) => {
   let root = parse(top) as TreeNode
+
   const filter = (predicate: (node: TreeNode) => boolean) =>
     allNodes(root).filter(predicate)
   const findAll = (selector?: Selector) => filter(nodeMatcher(selector))
 
-  const doInline = (
-    matcher: ReturnType<typeof nodeMatcher>,
-    renderer: IsolatedRenderer,
-    node: TreeNode
-  ) => {
-    node.children = node.children.map((child) => {
-      if (child.nodeType === 'react' && matcher(child)) {
-        const isolated = renderer(child.type as any, child.props)
-        return parseIsolated(isolated, child.type as any, child.key)
-      }
+  const doInline = (node: TreeNode) => {
+    if (node.nodeType === 'react' && renderer.shouldInline(node)) {
+      const isolated = renderer.render(node.type as any, node.props)
+      node = parseIsolated(isolated, node.type as any, node.key)
+    } else if (node.nodeType === 'isolated') {
+      node.componentInstance!.tree().inlineAll()
+    } else {
+      node.children.forEach((child, i) => {
+        if (child.nodeType === 'react' && renderer.shouldInline(child)) {
+          const isolated = renderer.render(child.type as any, child.props)
+          child = parseIsolated(isolated, child.type as any, child.key)
+          node.children[i] = child
+        }
 
-      return child
-    })
+        doInline(child)
+      })
+    }
+
+    return node
   }
 
   const matchChildren = (
@@ -50,8 +57,6 @@ export const nodeTree = (top: TreeSource, renderer: IsolatedRenderer) => {
     if (next.type !== previous.type) return next
     if (previous.nodeType === 'isolated') {
       previous.componentInstance!.setProps(next.props)
-      previous.props = next.props
-      previous.children = [previous.componentInstance.tree().root()]
       return previous
     }
 
@@ -62,11 +67,12 @@ export const nodeTree = (top: TreeSource, renderer: IsolatedRenderer) => {
     }
   }
 
-  let inlinedMatchers: ((node: TreeNode) => boolean)[] = []
-
   const applyInline = () => {
-    doInline((node) => !!inlinedMatchers.find((m) => m(node)), renderer, root)
+    root = doInline(root)
   }
+
+  applyInline()
+
   return {
     root: () => root,
     filter,
@@ -84,8 +90,7 @@ export const nodeTree = (top: TreeSource, renderer: IsolatedRenderer) => {
     },
     toString: () => root.toString(),
     content: () => root.content(),
-    inlineAll: (selector: Selector) => {
-      inlinedMatchers.push(nodeMatcher(selector))
+    inlineAll: () => {
       applyInline()
     },
     update: (next: TreeSource) => {

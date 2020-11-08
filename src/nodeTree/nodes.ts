@@ -70,12 +70,15 @@ export const isolatedNode = (
   nodeType: 'isolated',
   type: componentType,
   componentInstance: instance,
-  children: [instance.tree().root()],
+  get children() {
+    return [instance.tree().root()]
+  },
   name: '',
   props: {},
-  content: () => '',
-  toString: () => '',
+  content: () => formatChildren([instance.tree().root()]),
+  toString: () => formatChildren([instance.tree().root()]),
 })
+
 export const reactNode = (
   fc: React.FC<any>,
   props: any,
@@ -86,7 +89,7 @@ export const reactNode = (
   name: displayName(fc),
   children,
   props,
-  content: () => children.map((c: TreeNode) => c.toString()).join(''),
+  content: () => formatChildren(children),
   toString: () => componentToString(fc, children, props),
 })
 
@@ -100,6 +103,6 @@ export const htmlNode = (
   name: tag,
   children,
   props,
-  content: () => children.map((c: TreeNode) => c.toString()).join(''),
+  content: () => formatChildren(children),
   toString: () => componentToString(tag, children, props),
 })

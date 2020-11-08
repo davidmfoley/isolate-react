@@ -90,4 +90,38 @@ describe('inlining ', () => {
     expect(lis[0].content()).to.eq('baz')
     expect(lis[1].content()).to.eq('foobar')
   })
+
+  describe('with a recursive hierarchy', () => {
+    const Section: React.FC<{ caption: string }> = (props) => (
+      <section>
+        <h2>{props.caption}</h2>
+        {props.children}
+      </section>
+    )
+
+    const Sections = () => (
+      <Section caption="A">
+        <Section caption="B">
+          <Section caption="C"></Section>
+        </Section>
+      </Section>
+    )
+
+    it('recursively inlines', () => {
+      const isolated = isolateComponent(<Sections />)
+
+      isolated.inline(Section)
+
+      expect(isolated.findAll('section').length).to.eq(3)
+    })
+
+    it('supports content() and toString()', () => {
+      const isolated = isolateComponent(<Sections />)
+
+      isolated.inline(Section)
+      const expected = `<section><h2>A</h2><section><h2>B</h2><section><h2>C</h2></section></section></section>`
+      expect(isolated.content()).to.eq(expected)
+      expect(isolated.toString()).to.eq(expected)
+    })
+  })
 })
