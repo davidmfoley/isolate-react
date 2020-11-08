@@ -37,6 +37,11 @@ const shouldNotMatchReact = (selector: string, fc: any, props: any) => {
 const Example = () => null
 
 describe('nodeMatcher', () => {
+  describe('star matcher', () => {
+    shouldMatchHtmlNode('*', 'div', { className: 'awesome' })
+    shouldMatchReact('*', Example, {})
+  })
+
   describe('empty matcher', () => {
     shouldMatchHtmlNode('', 'div', { className: 'awesome' })
     shouldMatchReact('', Example, {})

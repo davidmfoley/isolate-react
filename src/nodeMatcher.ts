@@ -2,7 +2,7 @@ import { Selector } from './types/Selector'
 import { TreeNode } from './types/TreeNode'
 
 export const nodeMatcher = (spec: Selector | null | undefined): NodeMatcher => {
-  if (!spec) return () => true
+  if (!spec || spec === '*') return () => true
   if (typeof spec === 'string') {
     if (spec.includes('#')) {
       const [tag, id] = spec.split('#')
