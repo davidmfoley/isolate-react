@@ -1,7 +1,7 @@
 {
   "tsconfig": "tsconfig.build.json",
   "mode": "library",
-  "out": "docs",
+  "out": "docs/api",
   "categorizeByGroup": false,
   "disableSources": true,
   "plugins": ["typedoc-plugin-markdown"]

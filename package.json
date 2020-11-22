@@ -13,7 +13,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "docs": "yarn docs:clean && yarn docs:typedoc",
-    "docs:clean": "rm -rf ./docs",
+    "docs:clean": "rm -rf ./docs/api",
     "docs:typedoc": "typedoc --options typedoc.json src/index.ts ",
     "clean": "rm -rf ./lib/",
     "test": "mocha",
