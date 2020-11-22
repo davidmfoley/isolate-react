@@ -3,5 +3,6 @@
   "mode": "library",
   "out": "docs",
   "categorizeByGroup": false,
-  "disableSources": true
+  "disableSources": true,
+  "plugins": ["typedoc-plugin-markdown"]
 }

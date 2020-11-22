@@ -12,9 +12,9 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "docs": "yarn docs:typedoc && yarn docs:gh-pages",
+    "docs": "yarn docs:clean && yarn docs:typedoc",
+    "docs:clean": "rm -rf ./docs",
     "docs:typedoc": "typedoc --options typedoc.json src/index.ts ",
-    "docs:gh-pages": "echo 'this file forces gh pages to allow access to underscore-named files' > docs/.nojekyll",
     "clean": "rm -rf ./lib/",
     "test": "mocha",
     "test:watch": "nodemon -q -e ts,tsx --exec \"yarn test\" --watch src --watch test",
@@ -41,6 +41,7 @@
     "source-map-support": "^0.5.19",
     "ts-node": "^9.0.0",
     "typedoc": "0.17.0-3",
+    "typedoc-plugin-markdown": "^3.0.11",
     "typescript": "^4.0.3"
   },
   "mocha": {
