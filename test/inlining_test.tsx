@@ -136,4 +136,30 @@ describe('inlining ', () => {
       expect(isolated.findAll('section').length).to.eq(3)
     })
   })
+
+  it('can handle state updates in inlined components', () => {
+    const ToggleButton = (props: { text: string }) => {
+      const [toggled, setToggled] = React.useState(false)
+
+      return (
+        <button
+          className={toggled ? 'toggled' : 'not-toggled'}
+          onClick={() => setToggled(!toggled)}
+        >
+          {props.text}
+        </button>
+      )
+    }
+
+    const Settings = () => (
+      <div>
+        <ToggleButton text="Turbo Mode" />
+      </div>
+    )
+
+    const isolated = isolateComponent(<Settings />)
+    isolated.inline(ToggleButton)
+    isolated.findOne('button').props.onClick()
+    expect(isolated.findOne('button').props.className).to.eq('toggled')
+  })
 })
