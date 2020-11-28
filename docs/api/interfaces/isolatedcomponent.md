@@ -1,6 +1,6 @@
 **[isolate-components](../README.md)**
 
-> [Globals](../globals.md) / IsolatedComponent
+> [Globals](../README.md) / IsolatedComponent
 
 # Interface: IsolatedComponent\<Props>
 
@@ -71,7 +71,7 @@ ___
 
 ### exists
 
-▸ **exists**(`selector?`: [Selector](../globals.md#selector)): boolean
+▸ **exists**(`selector?`: [Selector](../README.md#selector)): boolean
 
 *Inherited from [ComponentNode](componentnode.md).[exists](componentnode.md#exists)*
 
@@ -94,13 +94,13 @@ console.log(isolated.exists('ul')) // => true
 console.log(isolated.exists('li')) // => true
 ```
 
-See [Selector](../globals.md#selector) docs for all supported selctor syntax.
+See [Selector](../README.md#selector) docs for all supported selctor syntax.
 
 #### Parameters:
 
 Name | Type |
 ------ | ------ |
-`selector?` | [Selector](../globals.md#selector) |
+`selector?` | [Selector](../README.md#selector) |
 
 **Returns:** boolean
 
@@ -108,7 +108,7 @@ ___
 
 ### findAll
 
-▸ **findAll**(`selector?`: [Selector](../globals.md#selector)): [ComponentNode](componentnode.md)[]
+▸ **findAll**(`selector?`: [Selector](../README.md#selector)): [ComponentNode](componentnode.md)[]
 
 *Inherited from [ComponentNode](componentnode.md).[findAll](componentnode.md#findall)*
 
@@ -129,13 +129,13 @@ console.log(listItems[0].content()) // => 'Arthur'
 console.log(listItems[1].content()) // => 'Trillian'
 ```
 
-See [Selector](../globals.md#selector) docs for all supported selctor syntax.
+See [Selector](../README.md#selector) docs for all supported selctor syntax.
 
 #### Parameters:
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`selector?` | [Selector](../globals.md#selector) | string or component |
+`selector?` | [Selector](../README.md#selector) | string or component |
 
 **Returns:** [ComponentNode](componentnode.md)[]
 
@@ -145,7 +145,7 @@ ___
 
 ### findOne
 
-▸ **findOne**(`selector?`: [Selector](../globals.md#selector)): [ComponentNode](componentnode.md)
+▸ **findOne**(`selector?`: [Selector](../README.md#selector)): [ComponentNode](componentnode.md)
 
 *Inherited from [ComponentNode](componentnode.md).[findOne](componentnode.md#findone)*
 
@@ -173,13 +173,13 @@ const listItem1 = isolated.findOne('li')
 // this will throw an error because there are no matches
 const listItem1 = isolated.findOne('div')
 ```
-See [Selector](../globals.md#selector) docs for all supported selctor syntax.
+See [Selector](../README.md#selector) docs for all supported selctor syntax.
 
 #### Parameters:
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`selector?` | [Selector](../globals.md#selector) | string or component |
+`selector?` | [Selector](../README.md#selector) | string or component |
 
 **Returns:** [ComponentNode](componentnode.md)
 
@@ -189,7 +189,7 @@ ___
 
 ### inline
 
-▸ **inline**(`selector`: [Selector](../globals.md#selector)): void
+▸ **inline**(`selector`: [Selector](../README.md#selector)): void
 
 "Inline" components to include them rendered output rather than making them available.
  Allows for testing multiple components.
@@ -210,7 +210,7 @@ Include *all* components by passing "*":
 
 Name | Type |
 ------ | ------ |
-`selector` | [Selector](../globals.md#selector) |
+`selector` | [Selector](../README.md#selector) |
 
 **Returns:** void
 

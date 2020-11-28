@@ -1,6 +1,6 @@
 **[isolate-components](../README.md)**
 
-> [Globals](../globals.md) / IsolateComponent
+> [Globals](../README.md) / IsolateComponent
 
 # Interface: IsolateComponent
 

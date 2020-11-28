@@ -28,4 +28,8 @@ If your project doesn't already have jest, you can install the `jest` package wi
 
 ### Writing a test
 
-Let's write a test and make it pass.
+Let's write our first test.
+
+Create two files, next to each other. If you started a new project with create-react-app, you can put these in src/components. If you are adding to an existing app, put them whereever you like.
+
+- `Todos.tsx`

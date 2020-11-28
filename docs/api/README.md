@@ -1,184 +1,98 @@
 **[isolate-components](README.md)**
 
-> [Globals](globals.md)
+> Globals
 
 # isolate-components
 
-Isolate and test your modern react components with full hooks support and without the need for DOM emulators.
+## Index
+
+### Interfaces
+
+* [ComponentNode](interfaces/componentnode.md)
+* [IsolateComponent](interfaces/isolatecomponent.md)
+* [IsolatedComponent](interfaces/isolatedcomponent.md)
+
+### Type aliases
+
+* [Selector](README.md#selector)
+
+### Variables
+
+* [isolateComponent](README.md#isolatecomponent)
+
+## Entry Point
+
+### isolateComponent
+
+• `Const` **isolateComponent**: [IsolateComponent](interfaces/isolatecomponent.md) = isolateComponentWithContext( [])
+
+isolateComponent: Isolate a component for testing
+This function accepts a react element rendering a functional component and returns an [IsolatedComponent](interfaces/isolatedcomponent.md) -- see the linked docs for more information.
+
+**`param`** A react element, usually created with JSX.
+
+**`example`** <caption>Import isolateComponent</caption>
 
 ```js
 import { isolateComponent } from 'isolate-components'
+```
 
-// Component with effect
-const ExampleWithHooks = (props) => {
-  useEffect(() => {
-    console.log(`Hello ${props.name}`)
-    // cleanup function
-    return () => {
-      console.log(`Goodbye ${props.name}`)
-    }
-  }, [props.name])
-  return <span className="hello">Hello {props.name}</span>
+**`example`** <caption>Basic usage</caption>
+
+```js
+// the component we will isolate for testing
+const Hello = (props) => <h2>Hello {props.name}</h2>
+const component = isolateComponent(<Hello name="Zaphod" />)
+
+console.log(component.findOne('h2').content()) // => "Hello Zaphod"
+console.log(component.toString()) // => "<h2>Hello Zaphod</h2>"
+```
+
+**`example`** <caption>Use withContext to test a component that uses useContext</caption>
+
+```js
+const NameContext = React.createContext('')
+
+const HelloWithContext = (props) => {
+  const name = useContext(NameContext)
+  return  <h2>Hello {nameContext.value}</h2>
 }
 
-// render the component, in isolation
-const component = isolateComponent(<MyComponent name="Trillian" />)
-// logs: "Hello Trillian"
+// To test this component, inject a context value as follows:
 
-// explore the rendered components
-console.log(component.findOne('span').props.className) // => "hello"
-console.log(component.findOne('span.hello').content()) // => "Hello Trillian"
-console.log(component.exists('.hello')) // => true
-console.log(component.findAll('.hello')) // => array with all matches
-
-component.setProps({ name: 'Zaphod' })
-//logs: "Goodbye Trillian" (effect cleanup)
-//logs: "Hello Zaphod" (effect runs because name prop has changed)
-
-component.cleanup()
-//logs: "Goodbye Zaphod"
-```
-
-## Links
-
-[npm](https://npmjs.com/package/isolate-components) | [github](https://github.com/davidmfoley/isolate-components) | [api docs](https://davidmfoley.github.io/isolate-components)
-
-## What does it do?
-
-- Allows unit-testing react functional and class components -- including full support for hooks.
-- Runs very fast because there is no DOM emulation.
-
-## What doesn't it do?
-
-### Run your tests
-
-`isolate-components` provides tools for testing your react components. It is not a test runner, nor an assertion library. It will work with any test runner that runs in nodejs like [mocha](https://mochajs.org/) or [jest](https://jestjs.io/) and any assertion library of your choice.
-
-### Test of react hooks outside a component
-
-Want to test your custom hooks? This library doesn't do that, but there is one that does:
-
-If you want to test your custom react hooks outside of the component lifecycle, you should use [isolate-hooks](https://www.npmjs.com/package/isolate-hooks) -- this library is for testing your react functional components that _use_ hooks.
-
-## Why does it exist?
-
-Testing components in isolation should be fast and simple. This library makes it so.
-
-Approaches that require a DOM emulator to test react components will always be slow and indirect. This library enables direct testing of components.
-
-Other options that are fast, such as enzyme's `shallow`, rely on a poorly-maintained shallow renderer that is part of react. This renderer doesn't fully support hooks, so they don't support testing any functional component that uses useEffect or useContext.
-
-Fast, isolated automated testing tools are useful for test-driven development practices.
-
-## How does this compare to (insert tool here)?
-
-### enzyme shallow
-
-Enzyme shallow works great for react class components but doesn't support the full set of hooks necessary to build stateful functional components.
-
-### enzyme mount and react-testing-library
-
-These tools allow testing components that use hooks but they:
-
-1. Require a dom emulator. This makes tests run _very_ slow compared to isolate-components.
-1. Require testing _all_ rendered components. This is _sometimes_ desirable but often is not. isolate-components allows you to test a single component in isolation, or to test multiple components together -- it's up to you.
-
-### cypress, selenium, etc.
-
-Cypress and similar tools are used for _acceptance testing_. `isolate-components` facilitates isolated testing of a single component (_unit testing_) or a small set of components. Acceptance testing is orthogonal to unit testing -- you can do either or both.
-
-## Installation
-
-You should probably install this as a dev dependency.
-
-`yarn add --dev isolate-components` or `npm install -D isolate-components`
-
-## Usage
-
-See [API documentation](https://davidmfoley.github.io/isolate-components/globals.html#isolatecomponent).
+const component = isolateComponent.withContext(NameContext, 'Trillian')(<HelloWithContext />)
+console.log(component.toString()) // => "<h2>Hello Trillian</h2>"
 
 ```
-import { isolateComponent } from 'isolate-components'
 
-// the component we are going to test
-const MyComponent = (props) => (
-  <span>Hello {props.name}</span>
-)
+withContext can be chained to set multiple context values
 
-// render the component, in isolation
-const component = isolateComponent(<MyComponent name='Trillian' />)
-console.log(component.findOne('span').content()) // => 'Hello Trillian'
+**`returns`** IsolatedComponent
 
-// now update the props
-component.setProps({name: 'Zaphod'})
-console.log(component.findOne('span').content()) // => 'Hello Zaphod'
-```
+**`typeparam`** Type of the component's props
 
-### Usage with useContext
+## Querying
 
-You can test components that use `useContext` using the `.withContext()` decorator:
+### Selector
 
-```js
-const QuestionContext = React.createContext('')
-const AnswerContext = React.createContext(0)
+Ƭ  **Selector**: string \| RenderableComponent
 
-const DisplayQuestionAndAnswer = () => (
-  <div>
-    {React.useContext(QuestionContext)} {React.useContext(AnswerContext)}
-  </div>
-)
+Query for finding a child node of a component under test, used with the finder methods: `exists`, `findOne` and `findAll`.
 
-const isolated = isolateComponent
-  .withContext(QuestionContext, 'what is the answer?')
-  .withContext(
-    AnswerContext,
-    42
-  )(<DisplayQuestionAndAnswer />)
+Use a string to find html nodes using the following syntax:
 
-console.log(isolated.toString()) // => <div>what is the answer? 42</div>
-```
+ Find by id:
 
-### Usage with hooks
+`div#awesome-id` and `#awesome-id` will find `<div id='awesome' />`
 
-Hooks are supported, including useEffect:
+ Find by className:
 
-```js
-import { isolateComponent } from 'isolate-components'
+`span.cool` and `.cool` will each find `<span className='cool' />`m
 
-// Component with effect
-const ExampleWithHooks = (props) => {
-  useEffect(() => {
-    console.log(`Hello ${props.name}`)
-    // cleanup function
-    return () => {
-      console.log(`Goodbye ${props.name}`)
-    }
-  }, [props.name])
-  return <span>Hello {props.name}</span>
-}
+ Find by a matching prop:
 
-// render the component, in isolation
-const component = isolateComponent(<MyComponent name="Trillian" />)
-// logs: "Hello Trillian"
+`[data-test-id=foobar]` will find the react element or html element with a `data-test-id` prop with the value `foobar`
 
-component.setProps({ name: 'Zaphod' })
-//logs: "Goodbye Trillian" (effect cleanup)
-//logs: "Hello Zaphod" (effect runs because name prop has changed)
+ Find a react component:
 
-component.cleanup()
-//logs: "Goodbye Zaphod"
-```
-
-### Isolated component API
-
-An isolated component has some methods to help exercise and inspect it.
-
-See the [Isolated component API docs](https://davidmfoley.github.io/isolate-components/interfaces/isolatedcomponent.html)
-
-### Project progress
-
-This is a new project -- your feature requests and feedback are appreciated.
-
-See the [project tracker](https://github.com/davidmfoley/isolate-components/projects/1) for project progress.
-
-File an [issue](https://github.com/davidmfoley/isolate-components/issues) if you have a suggestion or request.
+ Use a component function or name to find react components.
