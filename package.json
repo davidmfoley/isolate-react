@@ -25,9 +25,18 @@
     "ci": "yarn build && yarn test && yarn prettier"
   },
   "dependencies": {
-    "isolate-hooks": "1.1.6"
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-react": "^7.12.10",
+    "core-js": "^3.8.3",
+    "isolate-hooks": "1.1.6",
+    "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/plugin-transform-react-jsx": "^7.12.7",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-typescript": "^7.12.7",
+    "@babel/register": "^7.12.1",
     "@types/chai": "^4.2.12",
     "@types/mocha": "^8.0.3",
     "@types/react": "^16.9.52",
@@ -50,8 +59,7 @@
       "tsx"
     ],
     "require": [
-      "source-map-support/register",
-      "ts-node/register"
+      "test/babel-register.js"
     ],
     "watch-files": [
       "./src/**/*",
