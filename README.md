@@ -19,7 +19,7 @@ If you are using this for testing, you probably want to install `isolate-hooks` 
 With yarn:
 
 ```
-yarn add isolated-hooks --dev
+yarn add isolate-hooks --dev
 ```
 
 or with npm:
@@ -40,12 +40,10 @@ console.log(isolated())
 
 ```
 
-
 ### API
 
 'isolateHooks' takes a hook function and returns a function with the same signature that is "isolated" with local state,
 similar to how it would behave if invoked inside a react function component.
-
 
 ```
 import isolateHooks from 'isolate-hooks'
@@ -92,7 +90,6 @@ isolatedHelloGoodbye('trillian')
 
 
 ```
-
 
 Additionally, an isolated hook offers the following methods:
 
