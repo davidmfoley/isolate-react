@@ -93,20 +93,18 @@ You should probably install this as a dev dependency.
 
 See [API documentation](https://davidmfoley.github.io/isolate-components/globals.html#isolatecomponent).
 
-```
+```js
 import { isolateComponent } from 'isolate-components'
 
 // the component we are going to test
-const MyComponent = (props) => (
-  <span>Hello {props.name}</span>
-)
+const MyComponent = (props) => <span>Hello {props.name}</span>
 
 // render the component, in isolation
-const component = isolateComponent(<MyComponent name='Trillian' />)
+const component = isolateComponent(<MyComponent name="Trillian" />)
 console.log(component.findOne('span').content()) // => 'Hello Trillian'
 
 // now update the props
-component.setProps({name: 'Zaphod'})
+component.setProps({ name: 'Zaphod' })
 console.log(component.findOne('span').content()) // => 'Hello Zaphod'
 ```
 

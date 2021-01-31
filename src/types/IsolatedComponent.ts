@@ -18,7 +18,7 @@ export interface IsolatedComponent<Props> extends QueryableNode {
    * @example
    * ```js
    * const component = isolateComponent(
-   *   <MyComponent someProp="value" otherProp="another value/>
+   *   <MyComponent someProp="value" otherProp="another value" />
    * )
    *
    * component.mergeProps({
@@ -36,7 +36,7 @@ export interface IsolatedComponent<Props> extends QueryableNode {
    * @example
    * ```js
    * const component = isolateComponent(
-   *   <MyComponent someProp="value" otherProp="another value/>
+   *   <MyComponent someProp="value" otherProp="another value" />
    * )
    * component.setProps({
    *   someProp: 'updated value',
@@ -61,7 +61,7 @@ export interface IsolatedComponent<Props> extends QueryableNode {
    * @example
    * ```js
    * const component = isolateComponent(
-   *   <MyComponent someProp="value" otherProp="another value />
+   *   <MyComponent someProp="value" otherProp="another value"  />
    * )
    *
    * component.cleanup()

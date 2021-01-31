@@ -48,7 +48,7 @@ Cleans up the component and runs all effect cleanups (functions returned by useE
 **`example`** 
 ```js
 const component = isolateComponent(
-  <MyComponent someProp="value" otherProp="another value />
+  <MyComponent someProp="value" otherProp="another value"  />
 )
 
 component.cleanup()
@@ -225,7 +225,7 @@ Set a subset of props, and re-render the component under test
 **`example`** 
 ```js
 const component = isolateComponent(
-  <MyComponent someProp="value" otherProp="another value/>
+  <MyComponent someProp="value" otherProp="another value" />
 )
 
 component.mergeProps({
@@ -253,7 +253,7 @@ Replace all props, and re-render the component under test
 **`example`** 
 ```js
 const component = isolateComponent(
-  <MyComponent someProp="value" otherProp="another value/>
+  <MyComponent someProp="value" otherProp="another value" />
 )
 component.setProps({
   someProp: 'updated value',
