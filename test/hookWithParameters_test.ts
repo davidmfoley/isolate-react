@@ -26,4 +26,19 @@ describe('invoking a hook with parameters', () => {
     isolated()
     expect(count).to.eq(2)
   })
+
+  it('maintains parameter values on subsequent invocations', () => {
+    let setter: any = () => {}
+    let lastValue = 0
+
+    const usePassedValue = (value: number) => {
+      const [val, setVal] = useState(value)
+      setter = setVal
+      lastValue = value
+      return value
+    }
+    isolateHooks(usePassedValue)(2)
+    setter(42)
+    expect(lastValue).to.eq(2)
+  })
 })

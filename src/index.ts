@@ -67,6 +67,7 @@ const isolateHooks = <F extends (...args: any[]) => any>(
       hookState.endPass()
     } while (hookState.dirty())
     ReactCurrentDispatcher.current = previousDispatcher
+    lastArgs = args
 
     hookState.onUpdated(invoke)
     return lastResult
