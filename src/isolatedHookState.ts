@@ -94,6 +94,7 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
 
   const setContext = (contextType: React.Context<any>, value: any) => {
     context.set(contextType, value)
+    onUpdated()
   }
 
   return {

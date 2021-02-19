@@ -44,4 +44,18 @@ describe('useContext', () => {
 
     expect(isolated()).to.eq('nah')
   })
+
+  it('rerenders on change', () => {
+    let i = 0
+    const isolated = isolateHooks(() => {
+      i++
+      return `${useContext(ExampleContext)}${i}`
+    })
+
+    isolated()
+
+    isolated.setContext(ExampleContext, 'nah')
+
+    expect(isolated.currentValue()).to.eq('nah2')
+  })
 })
