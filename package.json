@@ -19,7 +19,7 @@
     "test": "mocha",
     "test:watch": "nodemon -q -e ts,tsx --exec \"yarn test\" --watch src --watch test",
     "prettier": "prettier -c '{src,test}/**/*.ts'",
-    "prepublish": "yarn clean && yarn build",
+    "prepublish": "yarn clean && yarn build && yarn docs",
     "fix:prettier": "prettier --write '{src,test}/**/*.ts'",
     "cover": "COVERAGE=1 nyc mocha && open coverage/index.html",
     "ci": "yarn build && yarn test && yarn prettier"
