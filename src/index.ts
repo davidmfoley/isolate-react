@@ -40,15 +40,31 @@ export type IsolatedHook<F extends (...args: any) => any> = F & {
   setContext: <T>(contextType: React.Context<T>, value: T) => void
 }
 
+const checkHookFunction = (fn: any) => {
+  if (fn === null) {
+    throw new Error('isolateHooks: Expected a hook function but got null')
+  }
+  if (fn === undefined) {
+    throw new Error('isolateHooks: Expected a hook function but got undefined')
+  }
+
+  if (typeof fn !== 'function') {
+    throw new Error(
+      `isolateHooks: Expected a hook function but got ${typeof fn} (${fn})`
+    )
+  }
+}
+
 /**
  * Run a react hook in isolation
- * @param hookInvocation The hook invocation -- a function that calls a hook.
+ * @param hookInvocation The hook to isolate.
  * @param options Optional options, for specifying context values.
  */
 const isolateHooks = <F extends (...args: any[]) => any>(
   hookInvocation: F,
   options: IsolatedHookOptions = {}
 ): IsolatedHook<F> => {
+  checkHookFunction(hookInvocation)
   const hookState = createIsolatedHookState(options)
   const dispatcher = createIsolatedDispatcher(hookState)
   let lastArgs: Parameters<F>
