@@ -92,7 +92,9 @@ describe('effects', () => {
         setName = setter
         useEffect(() => {
           invocations.push(`hello ${name}`)
-          return () => invocations.push(`goodbye ${name}`)
+          return () => {
+            invocations.push(`goodbye ${name}`)
+          }
         }, [name])
         return ''
       }
@@ -116,12 +118,16 @@ describe('effects', () => {
       const useEffectOrderExample = () => {
         useEffect(() => {
           invocations.push('useEffect')
-          return () => invocations.push('cleanup useEffect')
+          return () => {
+            invocations.push('cleanup useEffect')
+          }
         }, [])
 
         useLayoutEffect(() => {
           invocations.push('useLayoutEffect')
-          return () => invocations.push('cleanup useLayoutEffect')
+          return () => {
+            invocations.push('cleanup useLayoutEffect')
+          }
         }, [])
         return ''
       }
