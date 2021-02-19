@@ -22,6 +22,7 @@ const isolateComponent_ = <P>(
     exists: (spec: Selector) => instance.tree().exists(spec),
     mergeProps: instance.mergeProps,
     setProps: instance.setProps,
+    setContext: instance.setContext,
     content: () => instance.tree().content(),
     toString: () => instance.tree().toString(),
     cleanup: instance.cleanup,

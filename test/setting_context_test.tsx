@@ -49,4 +49,17 @@ describe('setting component context', () => {
       )(<DisplayQuestionAndAnswer />)
     expect(isolated.findOne('div').content()).to.eq('what is the answer? 42')
   })
+
+  it('rerenders when context is set', () => {
+    const isolated = isolateComponent
+      .withContext(QuestionContext, 'what is the answer?')
+      .withContext(
+        AnswerContext,
+        42
+      )(<DisplayQuestionAndAnswer />)
+
+    isolated.setContext(AnswerContext, 77)
+
+    expect(isolated.findOne('div').content()).to.eq('what is the answer? 77')
+  })
 })

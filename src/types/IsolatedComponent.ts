@@ -29,6 +29,39 @@ export interface IsolatedComponent<Props> extends QueryableNode {
    *
    */
   mergeProps(props: Partial<Props>): void
+
+  /**
+   * Set a context value.
+   *
+   * Useful when testing a component that uses `useContext`
+   *
+   * @param type - A React.Context -- this is the value returned from React.createContext().
+   * @example
+   * ```js
+   * const currentUserContext = React.createContext({ id: 0, name: 'unknown' })
+   *
+   * const Greeting = () => {
+   *   const currentUser = useContext(currentUserContext)
+   *   return <h2>Hello {currentUser.name}</h2>
+   * }
+   *
+   * const component = isolateComponent(
+   *   <Greeting/>
+   * )
+   *
+   * component.setContext(
+   *   currentUserContext,
+   *   { id: 42, name: 'arthur' }
+   * })
+   *
+   * console.log(component.findOne('h2').content())
+   * // logs: "Hello arthur"
+   *
+   * ```
+   *
+   */
+  setContext: <T>(type: React.Context<T>, value: T) => void
+
   /**
    * Replace all props, and re-render the component under test
    * @param props - New props. Replaces existing props.

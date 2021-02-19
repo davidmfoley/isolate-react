@@ -132,6 +132,28 @@ const isolated = isolateComponent
 console.log(isolated.toString()) // => <div>what is the answer? 42</div>
 ```
 
+You can change context values used by a component with `.setContext()`:
+
+```js
+const QuestionContext = React.createContext('')
+const AnswerContext = React.createContext(0)
+
+const DisplayQuestionAndAnswer = () => (
+  <div>
+    {React.useContext(QuestionContext)} {React.useContext(AnswerContext)}
+  </div>
+)
+
+const isolated = isolateComponent.withContext(
+  QuestionContext,
+  'what is the answer?'
+)(<DisplayQuestionAndAnswer />)
+
+isolated.setContext(AnswerContext, 42)
+
+console.log(isolated.toString()) // => <div>what is the answer? 42</div>
+```
+
 ### Usage with hooks
 
 Hooks are supported, including useEffect:

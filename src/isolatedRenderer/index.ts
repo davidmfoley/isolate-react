@@ -75,6 +75,9 @@ export const isolatedRenderer = (
       render,
       cleanup: () => render.cleanup(),
       setProps,
+      setContext: (t, v) => {
+        render.setContext(t, v)
+      },
       mergeProps,
       tree: () => tree,
       inlineAll: (selector: Selector) => {
