@@ -1,6 +1,6 @@
 {
   "name": "isolate-hooks",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "repository": "https://github.com/davidmfoley/isolate-hooks",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -19,6 +19,7 @@
     "test:watch": "nodemon -q -e ts --exec \"yarn test\" --watch src --watch test",
     "examples:watch": "nodemon -q -e ts --exec \"yarn examples\" --watch examples",
     "prettier": "prettier -c '{src,test}/**/*.ts'",
+    "prepublish": "yarn docs && yarn build",
     "fix:prettier": "prettier --write '{src,test}/**/*.ts'",
     "cover": "COVERAGE=1 nyc mocha && open coverage/index.html",
     "ci": "yarn build && yarn test && yarn examples && yarn prettier"
