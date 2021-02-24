@@ -1,10 +1,8 @@
 {
   "readme": "none",
   "tsconfig": "tsconfig.build.json",
-  "mode": "library",
   "out": "docs/api",
   "categorizeByGroup": false,
   "disableSources": true,
-  "plugins": ["typedoc-plugin-markdown"],
   "toc": ["IsolateComponent", "IsolatedComponent"]
 }
