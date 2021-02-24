@@ -1,8 +1,6 @@
-**[isolate-components](../README.md)**
+[isolate-components](../README.md) / IsolatedComponent
 
-> [Globals](../README.md) / IsolatedComponent
-
-# Interface: IsolatedComponent\<Props>
+# Interface: IsolatedComponent<Props\>
 
 Return value from isolateComponent.
 
@@ -14,34 +12,92 @@ otherwise testing its behavior.
 ## Type parameters
 
 Name | Description |
------- | ------ |
-`Props` | Type of the component's props. You probably don't need to worry about this -- just note that if you are using typescript, the methods that set props (mergeProps and setProps) will be typesafe.  |
+:------ | :------ |
+`Props` | Type of the component's props. You probably don't need to worry about this -- just note that if you are using typescript, the methods that set props (mergeProps and setProps) will be typesafe.    |
 
 ## Hierarchy
 
-* QueryableNode
+* *QueryableNode*
 
   ↳ **IsolatedComponent**
 
-## Index
+## Table of contents
+
+### Properties
+
+- [setContext](isolatedcomponent.md#setcontext)
 
 ### Methods
 
-* [cleanup](isolatedcomponent.md#cleanup)
-* [content](isolatedcomponent.md#content)
-* [exists](isolatedcomponent.md#exists)
-* [findAll](isolatedcomponent.md#findall)
-* [findOne](isolatedcomponent.md#findone)
-* [inline](isolatedcomponent.md#inline)
-* [mergeProps](isolatedcomponent.md#mergeprops)
-* [setProps](isolatedcomponent.md#setprops)
-* [toString](isolatedcomponent.md#tostring)
+- [cleanup](isolatedcomponent.md#cleanup)
+- [content](isolatedcomponent.md#content)
+- [exists](isolatedcomponent.md#exists)
+- [findAll](isolatedcomponent.md#findall)
+- [findOne](isolatedcomponent.md#findone)
+- [inline](isolatedcomponent.md#inline)
+- [mergeProps](isolatedcomponent.md#mergeprops)
+- [setProps](isolatedcomponent.md#setprops)
+- [toString](isolatedcomponent.md#tostring)
+
+## Properties
+
+### setContext
+
+• **setContext**: <T\>(`type`: *Context*<T\>, `value`: T) => *void*
+
+Set a context value.
+
+Useful when testing a component that uses `useContext`
+
+**`param`** A React.Context -- this is the value returned from React.createContext().
+
+**`example`** 
+```js
+const currentUserContext = React.createContext({ id: 0, name: 'unknown' })
+
+const Greeting = () => {
+  const currentUser = useContext(currentUserContext)
+  return <h2>Hello {currentUser.name}</h2>
+}
+
+const component = isolateComponent(
+  <Greeting/>
+)
+
+component.setContext(
+  currentUserContext,
+  { id: 42, name: 'arthur' }
+})
+
+console.log(component.findOne('h2').content())
+// logs: "Hello arthur"
+
+```
+
+#### Type declaration:
+
+▸ <T\>(`type`: *Context*<T\>, `value`: T): *void*
+
+#### Type parameters:
+
+Name |
+:------ |
+`T` |
+
+#### Parameters:
+
+Name | Type |
+:------ | :------ |
+`type` | *Context*<T\> |
+`value` | T |
+
+**Returns:** *void*
 
 ## Methods
 
 ### cleanup
 
-▸ **cleanup**(): void
+▸ **cleanup**(): *void*
 
 Cleans up the component and runs all effect cleanups (functions returned by useEffect handlers).
 
@@ -54,26 +110,24 @@ const component = isolateComponent(
 component.cleanup()
 ```
 
-**Returns:** void
+**Returns:** *void*
 
 ___
 
 ### content
 
-▸ **content**(): null \| string
+▸ **content**(): *string*
 
 Returns the content of the component.
 If the component returned null, this is null, otherwise it is a string representation of the content.
 
-**Returns:** null \| string
+**Returns:** *string*
 
 ___
 
 ### exists
 
-▸ **exists**(`selector?`: [Selector](../README.md#selector)): boolean
-
-*Inherited from [ComponentNode](componentnode.md).[exists](componentnode.md#exists)*
+▸ **exists**(`selector?`: [*Selector*](../README.md#selector)): *boolean*
 
 Check for the existence of any html elements or react components matching the selector.
 
@@ -99,18 +153,16 @@ See [Selector](../README.md#selector) docs for all supported selctor syntax.
 #### Parameters:
 
 Name | Type |
------- | ------ |
-`selector?` | [Selector](../README.md#selector) |
+:------ | :------ |
+`selector?` | [*Selector*](../README.md#selector) |
 
-**Returns:** boolean
+**Returns:** *boolean*
 
 ___
 
 ### findAll
 
-▸ **findAll**(`selector?`: [Selector](../README.md#selector)): [ComponentNode](componentnode.md)[]
-
-*Inherited from [ComponentNode](componentnode.md).[findAll](componentnode.md#findall)*
+▸ **findAll**(`selector?`: [*Selector*](../README.md#selector)): [*ComponentNode*](componentnode.md)[]
 
 Find all child nodes that match.
 
@@ -134,10 +186,10 @@ See [Selector](../README.md#selector) docs for all supported selctor syntax.
 #### Parameters:
 
 Name | Type | Description |
------- | ------ | ------ |
-`selector?` | [Selector](../README.md#selector) | string or component |
+:------ | :------ | :------ |
+`selector?` | [*Selector*](../README.md#selector) | string or component   |
 
-**Returns:** [ComponentNode](componentnode.md)[]
+**Returns:** [*ComponentNode*](componentnode.md)[]
 
 - all matching nodes in the tree, or an empty array if none match
 
@@ -145,9 +197,7 @@ ___
 
 ### findOne
 
-▸ **findOne**(`selector?`: [Selector](../README.md#selector)): [ComponentNode](componentnode.md)
-
-*Inherited from [ComponentNode](componentnode.md).[findOne](componentnode.md#findone)*
+▸ **findOne**(`selector?`: [*Selector*](../README.md#selector)): [*ComponentNode*](componentnode.md)
 
 Find a single child node that matches, and throw if not found.
 
@@ -178,10 +228,10 @@ See [Selector](../README.md#selector) docs for all supported selctor syntax.
 #### Parameters:
 
 Name | Type | Description |
------- | ------ | ------ |
-`selector?` | [Selector](../README.md#selector) | string or component |
+:------ | :------ | :------ |
+`selector?` | [*Selector*](../README.md#selector) | string or component   |
 
-**Returns:** [ComponentNode](componentnode.md)
+**Returns:** [*ComponentNode*](componentnode.md)
 
 - the matching node
 
@@ -189,7 +239,7 @@ ___
 
 ### inline
 
-▸ **inline**(`selector`: [Selector](../README.md#selector)): void
+▸ **inline**(`selector`: [*Selector*](../README.md#selector)): *void*
 
 "Inline" components to include them rendered output rather than making them available.
  Allows for testing multiple components.
@@ -209,16 +259,16 @@ Include *all* components by passing "*":
 #### Parameters:
 
 Name | Type |
------- | ------ |
-`selector` | [Selector](../README.md#selector) |
+:------ | :------ |
+`selector` | [*Selector*](../README.md#selector) |
 
-**Returns:** void
+**Returns:** *void*
 
 ___
 
 ### mergeProps
 
-▸ **mergeProps**(`props`: Partial\<Props>): void
+▸ **mergeProps**(`props`: *Partial*<Props\>): *void*
 
 Set a subset of props, and re-render the component under test
 
@@ -237,16 +287,16 @@ component.mergeProps({
 #### Parameters:
 
 Name | Type | Description |
------- | ------ | ------ |
-`props` | Partial\<Props> | A partial set of props. Unspecified props will not be changed. |
+:------ | :------ | :------ |
+`props` | *Partial*<Props\> | A partial set of props. Unspecified props will not be changed.   |
 
-**Returns:** void
+**Returns:** *void*
 
 ___
 
 ### setProps
 
-▸ **setProps**(`props`: Props): void
+▸ **setProps**(`props`: Props): *void*
 
 Replace all props, and re-render the component under test
 
@@ -264,17 +314,17 @@ component.setProps({
 #### Parameters:
 
 Name | Type | Description |
------- | ------ | ------ |
-`props` | Props | New props. Replaces existing props.  |
+:------ | :------ | :------ |
+`props` | Props | New props. Replaces existing props.    |
 
-**Returns:** void
+**Returns:** *void*
 
 ___
 
 ### toString
 
-▸ **toString**(): string
+▸ **toString**(): *string*
 
 Returns a string representation of the component and all children, useful for debugging.
 
-**Returns:** string
+**Returns:** *string*

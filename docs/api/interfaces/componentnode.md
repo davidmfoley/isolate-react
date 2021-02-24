@@ -1,6 +1,4 @@
-**[isolate-components](../README.md)**
-
-> [Globals](../README.md) / ComponentNode
+[isolate-components](../README.md) / ComponentNode
 
 # Interface: ComponentNode
 
@@ -14,54 +12,48 @@ Also provides `toString()` and `content()` helpers for debugging.
 
 ## Hierarchy
 
-* TreeNode
+* *TreeNode*
 
-* QueryableNode
+* *QueryableNode*
 
   ↳ **ComponentNode**
 
-## Index
+## Table of contents
 
 ### Properties
 
-* [componentInstance](componentnode.md#componentinstance)
-* [key](componentnode.md#key)
-* [name](componentnode.md#name)
-* [nodeType](componentnode.md#nodetype)
-* [props](componentnode.md#props)
-* [type](componentnode.md#type)
+- [componentInstance](componentnode.md#componentinstance)
+- [key](componentnode.md#key)
+- [name](componentnode.md#name)
+- [nodeType](componentnode.md#nodetype)
+- [props](componentnode.md#props)
+- [type](componentnode.md#type)
 
 ### Methods
 
-* [content](componentnode.md#content)
-* [exists](componentnode.md#exists)
-* [findAll](componentnode.md#findall)
-* [findOne](componentnode.md#findone)
-* [toString](componentnode.md#tostring)
+- [content](componentnode.md#content)
+- [exists](componentnode.md#exists)
+- [findAll](componentnode.md#findall)
+- [findOne](componentnode.md#findone)
+- [toString](componentnode.md#tostring)
 
 ## Properties
 
 ### componentInstance
 
-• `Optional` **componentInstance**: ComponentInstance\<any>
-
-*Inherited from [ComponentNode](componentnode.md).[componentInstance](componentnode.md#componentinstance)*
+• `Optional` **componentInstance**: *ComponentInstance*<any\>
 
 ___
 
 ### key
 
-• `Optional` **key**: string
-
-*Inherited from [ComponentNode](componentnode.md).[key](componentnode.md#key)*
+• `Optional` **key**: *string*
 
 ___
 
 ### name
 
-•  **name**: string
-
-*Inherited from [ComponentNode](componentnode.md).[name](componentnode.md#name)*
+• **name**: *string*
 
 For html elements, the tag name
 For a react FC, the display name
@@ -71,9 +63,7 @@ ___
 
 ### nodeType
 
-•  **nodeType**: \"react\" \| \"html\" \| \"string\" \| \"number\" \| \"nothing\" \| \"fragment\" \| \"isolated\"
-
-*Inherited from [ComponentNode](componentnode.md).[nodeType](componentnode.md#nodetype)*
+• **nodeType**: *string* \| *number* \| *react* \| *html* \| *nothing* \| *fragment* \| *isolated*
 
 The type of node: a react component, html, string or null.
 
@@ -81,9 +71,7 @@ ___
 
 ### props
 
-•  **props**: any
-
-*Inherited from [ComponentNode](componentnode.md).[props](componentnode.md#props)*
+• **props**: *any*
 
 React or html props, excluding children.
 
@@ -91,9 +79,7 @@ ___
 
 ### type
 
-•  **type**: InputNode[\"type\"]
-
-*Inherited from [ComponentNode](componentnode.md).[type](componentnode.md#type)*
+• **type**: *string* \| (`props`: *any*) => *ReactElement*<any, string \| (props: any) =\> ReactElement<any, string \| ... \| (new (props: any) =\> Component<any, any, any\>)\> \| (`props`: *any*) => *Component*<any, any, any\>\> \| (`props`: *any*) => *Component*<any, any, any\>
 
 The `type` as returned from React.createElement
 For a react FC, the component function.
@@ -104,21 +90,17 @@ For a string, the string.
 
 ### content
 
-▸ **content**(): string \| null
-
-*Inherited from [ComponentNode](componentnode.md).[content](componentnode.md#content)*
+▸ **content**(): *string*
 
 Returns the inner content of the node, formatted for debugging
 
-**Returns:** string \| null
+**Returns:** *string*
 
 ___
 
 ### exists
 
-▸ **exists**(`selector?`: [Selector](../README.md#selector)): boolean
-
-*Inherited from [ComponentNode](componentnode.md).[exists](componentnode.md#exists)*
+▸ **exists**(`selector?`: [*Selector*](../README.md#selector)): *boolean*
 
 Check for the existence of any html elements or react components matching the selector.
 
@@ -144,18 +126,16 @@ See [Selector](../README.md#selector) docs for all supported selctor syntax.
 #### Parameters:
 
 Name | Type |
------- | ------ |
-`selector?` | [Selector](../README.md#selector) |
+:------ | :------ |
+`selector?` | [*Selector*](../README.md#selector) |
 
-**Returns:** boolean
+**Returns:** *boolean*
 
 ___
 
 ### findAll
 
-▸ **findAll**(`selector?`: [Selector](../README.md#selector)): [ComponentNode](componentnode.md)[]
-
-*Inherited from [ComponentNode](componentnode.md).[findAll](componentnode.md#findall)*
+▸ **findAll**(`selector?`: [*Selector*](../README.md#selector)): [*ComponentNode*](componentnode.md)[]
 
 Find all child nodes that match.
 
@@ -179,10 +159,10 @@ See [Selector](../README.md#selector) docs for all supported selctor syntax.
 #### Parameters:
 
 Name | Type | Description |
------- | ------ | ------ |
-`selector?` | [Selector](../README.md#selector) | string or component |
+:------ | :------ | :------ |
+`selector?` | [*Selector*](../README.md#selector) | string or component   |
 
-**Returns:** [ComponentNode](componentnode.md)[]
+**Returns:** [*ComponentNode*](componentnode.md)[]
 
 - all matching nodes in the tree, or an empty array if none match
 
@@ -190,9 +170,7 @@ ___
 
 ### findOne
 
-▸ **findOne**(`selector?`: [Selector](../README.md#selector)): [ComponentNode](componentnode.md)
-
-*Inherited from [ComponentNode](componentnode.md).[findOne](componentnode.md#findone)*
+▸ **findOne**(`selector?`: [*Selector*](../README.md#selector)): [*ComponentNode*](componentnode.md)
 
 Find a single child node that matches, and throw if not found.
 
@@ -223,10 +201,10 @@ See [Selector](../README.md#selector) docs for all supported selctor syntax.
 #### Parameters:
 
 Name | Type | Description |
------- | ------ | ------ |
-`selector?` | [Selector](../README.md#selector) | string or component |
+:------ | :------ | :------ |
+`selector?` | [*Selector*](../README.md#selector) | string or component   |
 
-**Returns:** [ComponentNode](componentnode.md)
+**Returns:** [*ComponentNode*](componentnode.md)
 
 - the matching node
 
@@ -234,10 +212,8 @@ ___
 
 ### toString
 
-▸ **toString**(): string
-
-*Inherited from [ComponentNode](componentnode.md).[toString](componentnode.md#tostring)*
+▸ **toString**(): *string*
 
 Returns the outer content of the node (including its tag and props), formatted for debugging
 
-**Returns:** string
+**Returns:** *string*

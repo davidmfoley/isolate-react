@@ -1,6 +1,4 @@
-**[isolate-components](../README.md)**
-
-> [Globals](../README.md) / IsolateComponent
+[isolate-components](../README.md) / IsolateComponent
 
 # Interface: IsolateComponent
 
@@ -20,25 +18,21 @@ const component = isolateComponent(<Hello name="Zaphod" />)
 console.log(component.toString()) // => "<h2>Hello Zaphod</h2>"
 ```
 
-`isolateComponent` also exposes the method {@link IsolateComponent.withContext | isolateComponent.withContext} for setting context values for testing.
+`isolateComponent` also exposes the method [isolateComponent.withContext](isolatecomponent.md#withcontext) for setting context values for testing.
 
 **`returns`** IsolatedComponent - [IsolatedComponent](isolatedcomponent.md)
 
-## Hierarchy
-
-* **IsolateComponent**
-
-## Index
+## Table of contents
 
 ### Properties
 
-* [withContext](isolatecomponent.md#withcontext)
+- [withContext](isolatecomponent.md#withcontext)
 
 ## Properties
 
 ### withContext
 
-•  **withContext**: \<ContextType>(type: Context\<ContextType>, value: ContextType) => [IsolateComponent](isolatecomponent.md)
+• **withContext**: <ContextType\>(`type`: *Context*<ContextType\>, `value`: ContextType) => [*IsolateComponent*](isolatecomponent.md)
 
 Set context values, for testing components that use `useContext`.
 
@@ -67,3 +61,22 @@ console.log(component.toString()) // => "<h2>Hello Trillian</h2>"
 
 `withContext` can be chained to set multiple context values
 ```
+
+#### Type declaration:
+
+▸ <ContextType\>(`type`: *Context*<ContextType\>, `value`: ContextType): [*IsolateComponent*](isolatecomponent.md)
+
+#### Type parameters:
+
+Name |
+:------ |
+`ContextType` |
+
+#### Parameters:
+
+Name | Type |
+:------ | :------ |
+`type` | *Context*<ContextType\> |
+`value` | ContextType |
+
+**Returns:** [*IsolateComponent*](isolatecomponent.md)

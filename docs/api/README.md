@@ -1,30 +1,28 @@
-**[isolate-components](README.md)**
-
-> Globals
+isolate-components
 
 # isolate-components
 
-## Index
+## Table of contents
 
 ### Interfaces
 
-* [ComponentNode](interfaces/componentnode.md)
-* [IsolateComponent](interfaces/isolatecomponent.md)
-* [IsolatedComponent](interfaces/isolatedcomponent.md)
+- [ComponentNode](interfaces/componentnode.md)
+- [IsolateComponent](interfaces/isolatecomponent.md)
+- [IsolatedComponent](interfaces/isolatedcomponent.md)
 
 ### Type aliases
 
-* [Selector](README.md#selector)
+- [Selector](README.md#selector)
 
 ### Variables
 
-* [isolateComponent](README.md#isolatecomponent)
+- [isolateComponent](README.md#isolatecomponent)
 
 ## Entry Point
 
 ### isolateComponent
 
-• `Const` **isolateComponent**: [IsolateComponent](interfaces/isolatecomponent.md) = isolateComponentWithContext( [])
+• `Const` **isolateComponent**: [*IsolateComponent*](interfaces/isolatecomponent.md)
 
 isolateComponent: Isolate a component for testing
 This function accepts a react element rendering a functional component and returns an [IsolatedComponent](interfaces/isolatedcomponent.md) -- see the linked docs for more information.
@@ -75,7 +73,7 @@ withContext can be chained to set multiple context values
 
 ### Selector
 
-Ƭ  **Selector**: string \| RenderableComponent
+Ƭ **Selector**: *string* \| RenderableComponent
 
 Query for finding a child node of a component under test, used with the finder methods: `exists`, `findOne` and `findAll`.
 
