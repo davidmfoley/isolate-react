@@ -32,7 +32,11 @@ export const createIsolatedDispatcher = (
       factory
     )
 
-    return [state.value, (next: T) => updateState(() => next)]
+    return [
+      state.value,
+      (next: T | ((current: T) => T)) =>
+        updateState(typeof next === 'function' ? (next as any) : () => next),
+    ]
   }
 
   const useReducer = <S, A>(

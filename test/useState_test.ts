@@ -34,6 +34,30 @@ describe('useState', () => {
     expect(value).to.equal('updated')
   })
 
+  it('works with a function for initial value', () => {
+    const useStateExample = () => {
+      const [value] = useState(() => 'initial')
+      return value
+    }
+
+    const isolated = isolateHooks(useStateExample)
+    const value = isolated()
+
+    expect(value).to.equal('initial')
+  })
+
+  it('works with a function passed to setter', () => {
+    const useStateExample = () => {
+      return useState(() => 'initial')
+    }
+
+    const isolated = isolateHooks(useStateExample)
+    const [value, setValue] = isolated()
+    setValue(() => 'updated')
+
+    expect(isolated()[0]).to.equal('updated')
+  })
+
   describe('with two independent setStates', () => {
     let setLetter: Function
     let setNumber: Function
