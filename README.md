@@ -1,6 +1,6 @@
 ### isolate-hooks
 
-[![npm badge](https://img.shields.io/npm/v/isolate-hooks)](https://npmjs.com/package/isolate-components)
+[![npm badge](https://img.shields.io/npm/v/isolate-hooks)](https://npmjs.com/package/isolate-hooks)
 
 Isolates your react hooks for fast and predictable unit-testing.
 
