@@ -8,99 +8,129 @@ Useful for getting access to props to assert that they have the correct value, o
 
 Also provides `toString()` and `content()` helpers for debugging.
 
-**`interface`** 
+**`interface`**
 
 ## Hierarchy
 
-* *TreeNode*
+- `TreeNode`
 
-* *QueryableNode*
+- `QueryableNode`
 
-  ↳ **ComponentNode**
+  ↳ **`ComponentNode`**
 
 ## Table of contents
 
 ### Properties
 
-- [componentInstance](componentnode.md#componentinstance)
-- [key](componentnode.md#key)
-- [name](componentnode.md#name)
-- [nodeType](componentnode.md#nodetype)
-- [props](componentnode.md#props)
-- [type](componentnode.md#type)
+- [componentInstance](ComponentNode.md#componentinstance)
+- [key](ComponentNode.md#key)
+- [name](ComponentNode.md#name)
+- [nodeType](ComponentNode.md#nodetype)
+- [props](ComponentNode.md#props)
+- [type](ComponentNode.md#type)
 
 ### Methods
 
-- [content](componentnode.md#content)
-- [exists](componentnode.md#exists)
-- [findAll](componentnode.md#findall)
-- [findOne](componentnode.md#findone)
-- [toString](componentnode.md#tostring)
+- [content](ComponentNode.md#content)
+- [exists](ComponentNode.md#exists)
+- [findAll](ComponentNode.md#findall)
+- [findOne](ComponentNode.md#findone)
+- [toString](ComponentNode.md#tostring)
 
 ## Properties
 
 ### componentInstance
 
-• `Optional` **componentInstance**: *ComponentInstance*<any\>
+• `Optional` **componentInstance**: `ComponentInstance`<`any`\>
+
+#### Inherited from
+
+TreeNode.componentInstance
 
 ___
 
 ### key
 
-• `Optional` **key**: *string*
+• `Optional` **key**: `string`
+
+#### Inherited from
+
+TreeNode.key
 
 ___
 
 ### name
 
-• **name**: *string*
+• **name**: `string`
 
 For html elements, the tag name
 For a react FC, the display name
 otherwise empty
 
+#### Inherited from
+
+TreeNode.name
+
 ___
 
 ### nodeType
 
-• **nodeType**: *string* \| *number* \| *react* \| *html* \| *nothing* \| *fragment* \| *isolated*
+• **nodeType**: ``"string"`` \| ``"number"`` \| ``"react"`` \| ``"html"`` \| ``"nothing"`` \| ``"fragment"`` \| ``"isolated"``
 
 The type of node: a react component, html, string or null.
+
+#### Inherited from
+
+TreeNode.nodeType
 
 ___
 
 ### props
 
-• **props**: *any*
+• **props**: `any`
 
 React or html props, excluding children.
+
+#### Inherited from
+
+TreeNode.props
 
 ___
 
 ### type
 
-• **type**: *string* \| (`props`: *any*) => *ReactElement*<any, string \| (props: any) =\> ReactElement<any, string \| ... \| (new (props: any) =\> Component<any, any, any\>)\> \| (`props`: *any*) => *Component*<any, any, any\>\> \| (`props`: *any*) => *Component*<any, any, any\>
+• **type**: `string` \| `JSXElementConstructor`<`any`\>
 
 The `type` as returned from React.createElement
 For a react FC, the component function.
 For an html node, the tag name.
 For a string, the string.
 
+#### Inherited from
+
+TreeNode.type
+
 ## Methods
 
 ### content
 
-▸ **content**(): *string*
+▸ **content**(): `string`
 
 Returns the inner content of the node, formatted for debugging
 
-**Returns:** *string*
+#### Returns
+
+`string`
+
+#### Inherited from
+
+TreeNode.content
 
 ___
 
 ### exists
 
-▸ **exists**(`selector?`: [*Selector*](../README.md#selector)): *boolean*
+▸ **exists**(`selector?`): `boolean`
 
 Check for the existence of any html elements or react components matching the selector.
 
@@ -123,19 +153,25 @@ console.log(isolated.exists('li')) // => true
 
 See [Selector](../README.md#selector) docs for all supported selctor syntax.
 
-#### Parameters:
+#### Parameters
 
-Name | Type |
-:------ | :------ |
-`selector?` | [*Selector*](../README.md#selector) |
+| Name | Type |
+| :------ | :------ |
+| `selector?` | [`Selector`](../README.md#selector) |
 
-**Returns:** *boolean*
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+QueryableNode.exists
 
 ___
 
 ### findAll
 
-▸ **findAll**(`selector?`: [*Selector*](../README.md#selector)): [*ComponentNode*](componentnode.md)[]
+▸ **findAll**(`selector?`): [`ComponentNode`](ComponentNode.md)[]
 
 Find all child nodes that match.
 
@@ -156,21 +192,27 @@ console.log(listItems[1].content()) // => 'Trillian'
 
 See [Selector](../README.md#selector) docs for all supported selctor syntax.
 
-#### Parameters:
+#### Parameters
 
-Name | Type | Description |
-:------ | :------ | :------ |
-`selector?` | [*Selector*](../README.md#selector) | string or component   |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector?` | [`Selector`](../README.md#selector) | string or component |
 
-**Returns:** [*ComponentNode*](componentnode.md)[]
+#### Returns
+
+[`ComponentNode`](ComponentNode.md)[]
 
 - all matching nodes in the tree, or an empty array if none match
+
+#### Inherited from
+
+QueryableNode.findAll
 
 ___
 
 ### findOne
 
-▸ **findOne**(`selector?`: [*Selector*](../README.md#selector)): [*ComponentNode*](componentnode.md)
+▸ **findOne**(`selector?`): [`ComponentNode`](ComponentNode.md)
 
 Find a single child node that matches, and throw if not found.
 
@@ -198,22 +240,34 @@ const listItem1 = isolated.findOne('div')
 ```
 See [Selector](../README.md#selector) docs for all supported selctor syntax.
 
-#### Parameters:
+#### Parameters
 
-Name | Type | Description |
-:------ | :------ | :------ |
-`selector?` | [*Selector*](../README.md#selector) | string or component   |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector?` | [`Selector`](../README.md#selector) | string or component |
 
-**Returns:** [*ComponentNode*](componentnode.md)
+#### Returns
+
+[`ComponentNode`](ComponentNode.md)
 
 - the matching node
+
+#### Inherited from
+
+QueryableNode.findOne
 
 ___
 
 ### toString
 
-▸ **toString**(): *string*
+▸ **toString**(): `string`
 
 Returns the outer content of the node (including its tag and props), formatted for debugging
 
-**Returns:** *string*
+#### Returns
+
+`string`
+
+#### Inherited from
+
+TreeNode.toString

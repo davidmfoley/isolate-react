@@ -48,13 +48,13 @@ const isolateComponentWithContext = (contexts: Contexts) =>
  *
  * @param componentElement A react element, usually created with JSX.
  *
- * @example <caption>Import isolateComponent</caption>
+ * @example Import isolateComponent
  *
  * ```js
  * import { isolateComponent } from 'isolate-components'
  * ```
  *
- * @example <caption>Basic usage</caption>
+ * @example Basic usage
  *
  * ```js
  * // the component we will isolate for testing
@@ -65,7 +65,7 @@ const isolateComponentWithContext = (contexts: Contexts) =>
  * console.log(component.toString()) // => "<h2>Hello Zaphod</h2>"
  * ```
  *
- * @example <caption>Use withContext to test a component that uses useContext</caption>
+ * @example Test a component that uses useContext.
  *
  * ```js
  * const NameContext = React.createContext('')
@@ -75,14 +75,18 @@ const isolateComponentWithContext = (contexts: Contexts) =>
  *   return  <h2>Hello {nameContext.value}</h2>
  * }
  *
- * // To test this component, inject a context value as follows:
+ * // Use withContext to set the initial value of NameContext:
+ * // withContext can also be chained to set multiple context values (not shown)
  *
  * const component = isolateComponent.withContext(NameContext, 'Trillian')(<HelloWithContext />)
  * console.log(component.toString()) // => "<h2>Hello Trillian</h2>"
  *
+ * // Use setContext to update the value:
+ * component.setContext(NameContext, 'Zaphod')(<HelloWithContext />)
+ * console.log(component.toString()) // => "<h2>Hello Zaphod</h2>"
+ *
  * ```
  *
- * withContext can be chained to set multiple context values
  *
  * @category Entry Point
  * @returns IsolatedComponent

@@ -6,9 +6,9 @@ isolate-components
 
 ### Interfaces
 
-- [ComponentNode](interfaces/componentnode.md)
-- [IsolateComponent](interfaces/isolatecomponent.md)
-- [IsolatedComponent](interfaces/isolatedcomponent.md)
+- [ComponentNode](interfaces/ComponentNode.md)
+- [IsolateComponent](interfaces/IsolateComponent.md)
+- [IsolatedComponent](interfaces/IsolatedComponent.md)
 
 ### Type aliases
 
@@ -22,20 +22,20 @@ isolate-components
 
 ### isolateComponent
 
-• `Const` **isolateComponent**: [*IsolateComponent*](interfaces/isolatecomponent.md)
+• `Const` **isolateComponent**: [`IsolateComponent`](interfaces/IsolateComponent.md)
 
 isolateComponent: Isolate a component for testing
-This function accepts a react element rendering a functional component and returns an [IsolatedComponent](interfaces/isolatedcomponent.md) -- see the linked docs for more information.
+This function accepts a react element rendering a functional component and returns an [IsolatedComponent](interfaces/IsolatedComponent.md) -- see the linked docs for more information.
 
 **`param`** A react element, usually created with JSX.
 
-**`example`** <caption>Import isolateComponent</caption>
+**`example`** Import isolateComponent
 
 ```js
 import { isolateComponent } from 'isolate-components'
 ```
 
-**`example`** <caption>Basic usage</caption>
+**`example`** Basic usage
 
 ```js
 // the component we will isolate for testing
@@ -46,7 +46,7 @@ console.log(component.findOne('h2').content()) // => "Hello Zaphod"
 console.log(component.toString()) // => "<h2>Hello Zaphod</h2>"
 ```
 
-**`example`** <caption>Use withContext to test a component that uses useContext</caption>
+**`example`** Test a component that uses useContext.
 
 ```js
 const NameContext = React.createContext('')
@@ -56,14 +56,17 @@ const HelloWithContext = (props) => {
   return  <h2>Hello {nameContext.value}</h2>
 }
 
-// To test this component, inject a context value as follows:
+// Use withContext to set the initial value of NameContext:
+// withContext can also be chained to set multiple context values (not shown)
 
 const component = isolateComponent.withContext(NameContext, 'Trillian')(<HelloWithContext />)
 console.log(component.toString()) // => "<h2>Hello Trillian</h2>"
 
-```
+// Use setContext to update the value:
+component.setContext(NameContext, 'Zaphod')(<HelloWithContext />)
+console.log(component.toString()) // => "<h2>Hello Zaphod</h2>"
 
-withContext can be chained to set multiple context values
+```
 
 **`returns`** IsolatedComponent
 
@@ -73,7 +76,7 @@ withContext can be chained to set multiple context values
 
 ### Selector
 
-Ƭ **Selector**: *string* \| RenderableComponent
+Ƭ **Selector**: `string` \| `RenderableComponent`
 
 Query for finding a child node of a component under test, used with the finder methods: `exists`, `findOne` and `findAll`.
 

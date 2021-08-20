@@ -189,7 +189,7 @@ component.cleanup()
 
 An isolated component has some methods to help exercise and inspect it.
 
-See the [Isolated component API docs](https://davidmfoley.github.io/isolate-components/interfaces/isolatedcomponent.html)
+See the [Isolated component API docs](https://davidmfoley.github.io/isolate-components/api)
 
 ### Project progress
 
