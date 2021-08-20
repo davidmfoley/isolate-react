@@ -28,9 +28,9 @@ export interface IsolateComponent {
   /**
    * @hidden
    **/
-  <Props>(componentElement: React.ReactElement<Props, any>): IsolatedComponent<
-    Props
-  >
+  <Props>(
+    componentElement: React.ReactElement<Props, any>
+  ): IsolatedComponent<Props>
 
   /**
    * Set context values, for testing components that use `useContext`.
