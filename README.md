@@ -1,5 +1,7 @@
 # isolate-components
 
+[npm](https://npmjs.com/package/isolate-components) | [github](https://github.com/davidmfoley/isolate-components) | [api docs](https://davidmfoley.github.io/isolate-components/api)
+
 Isolate and test your modern react components with full hooks support and without the need for DOM emulators.
 
 ```js
@@ -35,16 +37,31 @@ component.cleanup()
 //logs: "Goodbye Zaphod"
 ```
 
-## Links
+## Test-drive react
 
-[npm](https://npmjs.com/package/isolate-components) | [github](https://github.com/davidmfoley/isolate-components) | [api docs](https://davidmfoley.github.io/isolate-components/api)
+### Render react components in isolation
+- [x] functional components that use hooks
+- [x] class components
 
-## What does it do?
+### Flexible support for whatever level of testing you prefer:
+- [x] Render a single component at a time (isolated/unit testing) 
+- [x] Inline some (or all) of the elements rendered by the component. (*"small-i"* integration testing)
 
-- Allows unit-testing react functional and class components -- including full support for hooks.
-- Runs very fast because there is no DOM emulation.
+### Low -friction:
+- [x] Works with any test runner that runs in node (jest, mocha, tape, tap, etc.)
+- [x] Full hook support
+- [x] Easy access to set context values needed for testing.
+- [x] No virtual DOM or other tools to install
+- [x] Very fast
 
-## What doesn't it do?
+## Limitations
+
+### Unsupported react features
+- [ ] Portals
+- [ ] Refs to DOM elements
+
+### Testing without a DOM
+Certain things can be hard to test without a DOM: For example, 
 
 ### Run your tests
 
@@ -191,9 +208,7 @@ An isolated component has some methods to help exercise and inspect it.
 
 See the [API docs](https://davidmfoley.github.io/isolate-components/api)
 
-### Project progress
-
-This is a new project -- your feature requests and feedback are appreciated.
+### Issues & Progress
 
 See the [project tracker](https://github.com/davidmfoley/isolate-components/projects/1) for project progress.
 
