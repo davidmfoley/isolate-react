@@ -9,7 +9,7 @@ import { Selector } from './Selector'
  *
  *
  * @interface
- * @typeparam Props - Type of the component's props. You probably don't need to worry about this -- just note that if you are using typescript, the methods that set props (mergeProps and setProps) will be typesafe.
+ * @typeparam Props - Type of the component's props. This is inferred so you don't set it yourself -- just note that if you are using typescript, the methods that set props (mergeProps and setProps) will be typesafe.
  */
 export interface IsolatedComponent<Props> extends QueryableNode {
   /**

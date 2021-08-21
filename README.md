@@ -37,7 +37,7 @@ component.cleanup()
 
 ## Links
 
-[npm](https://npmjs.com/package/isolate-components) | [github](https://github.com/davidmfoley/isolate-components) | [api docs](https://davidmfoley.github.io/isolate-components)
+[npm](https://npmjs.com/package/isolate-components) | [github](https://github.com/davidmfoley/isolate-components) | [api docs](https://davidmfoley.github.io/isolate-components/api)
 
 ## What does it do?
 
@@ -189,7 +189,7 @@ component.cleanup()
 
 An isolated component has some methods to help exercise and inspect it.
 
-See the [Isolated component API docs](https://davidmfoley.github.io/isolate-components/api)
+See the [API docs](https://davidmfoley.github.io/isolate-components/api)
 
 ### Project progress
 
