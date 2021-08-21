@@ -11,6 +11,14 @@ const allNodes = (e: TreeNode) =>
 
 type TreeSource = any /* React.ReactElement<any, any> */
 
+const describeSelector = (selector?: Selector) => {
+  if (!selector) return '*'
+  if (typeof selector === 'string') return selector
+  if (selector.displayName) return selector.displayName
+  if (typeof selector.name === 'string') return selector.name
+  return `${selector}`
+}
+
 export const nodeTree = (top: TreeSource, renderer: IsolatedRenderer) => {
   let root = doInline(renderer, parse(top) as TreeNode)
 
@@ -25,11 +33,18 @@ export const nodeTree = (top: TreeSource, renderer: IsolatedRenderer) => {
     findAll,
     findOne: (selector?: Selector) => {
       const found = findAll(selector)
+
       if (found.length === 0)
-        throw new Error(`Could not find element matching ${selector}`)
+        throw new Error(
+          `Could not find element matching ${describeSelector(
+            selector
+          )} in ${root.toString()}`
+        )
       if (found.length > 1)
         throw new Error(
-          `Expected one element matching ${selector} but found ${found.length}`
+          `Expected one element matching ${describeSelector(
+            selector
+          )} but found ${found.length} elements in ${root.toString()}`
         )
       return found[0]
     },

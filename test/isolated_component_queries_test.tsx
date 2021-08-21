@@ -58,14 +58,16 @@ describe('IsolatedComponent queries', () => {
       const component = isolateComponent(<JustADiv />)
       expect(() => {
         component.findOne('p')
-      }).to.throw()
+      }).to.throw('Could not find element matching p')
     })
 
     it('throws if multiple matches', () => {
       const component = isolateComponent(<MultipleDivs />)
       expect(() => {
         component.findOne('div')
-      }).to.throw()
+      }).to.throw(
+        'Expected one element matching div but found 3 elements in <div className="the-thing"><div /><div /></div>'
+      )
     })
 
     it('can find by component', () => {
@@ -73,6 +75,13 @@ describe('IsolatedComponent queries', () => {
       const child = component.findOne(ExampleFC)
       expect(child.type).to.eq(ExampleFC)
       expect(child.props.name).to.eq('trillian')
+    })
+
+    it('throws a reasonable error if component not found', () => {
+      const component = isolateComponent(<MultipleDivs />)
+      expect(() => {
+        component.findOne(ExampleFC)
+      }).to.throw('Could not find element matching ExampleFC in <div')
     })
 
     it('can find component by name', () => {
