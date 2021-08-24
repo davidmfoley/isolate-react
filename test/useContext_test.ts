@@ -55,7 +55,39 @@ describe('useContext', () => {
     isolated()
 
     isolated.setContext(ExampleContext, 'nah')
+    expect(i).to.eq(2)
 
     expect(isolated.currentValue()).to.eq('nah2')
+  })
+
+  it('does not rerender with same reference', () => {
+    let i = 0
+    const isolated = isolateHooks(() => {
+      i++
+      return `${useContext(ExampleContext)}${i}`
+    })
+
+    isolated()
+
+    isolated.setContext(ExampleContext, 'nah')
+    isolated.setContext(ExampleContext, 'nah')
+    expect(i).to.eq(2)
+
+    expect(isolated.currentValue()).to.eq('nah2')
+  })
+
+  it('does not rerender on change of unused context', () => {
+    let i = 0
+    const UnusedContext = createContext<string>('yah')
+    const isolated = isolateHooks(() => {
+      i++
+      return `${useContext(ExampleContext)}${i}`
+    })
+
+    isolated()
+
+    isolated.setContext(UnusedContext, 'nah')
+    isolated.setContext(UnusedContext, 'nah')
+    expect(i).to.eq(1)
   })
 })
