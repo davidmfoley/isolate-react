@@ -1,5 +1,5 @@
 import { describe, it } from 'mocha'
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { expect } from 'chai'
 import { isolateComponent } from '../src'
 
@@ -161,5 +161,53 @@ describe('inlining ', () => {
     isolated.inline(ToggleButton)
     isolated.findOne('button').props.onClick()
     expect(isolated.findOne('button').props.className).to.eq('toggled')
+  })
+
+  it('handles inlining with useMemo', () => {
+    const Outer = ({ name }: { name: string }) => {
+      const Memoed = useMemo(() => () => <span>Hello {name}</span>, [name])
+      return <Memoed />
+    }
+
+    const isolated = isolateComponent(<Outer name="Arthur" />)
+    isolated.inline('*')
+    expect(isolated.toString()).to.eq('<span>Hello Arthur</span>')
+  })
+
+  describe('Inlining with React.memo', () => {
+    let renderedNames: string[] = []
+    const Outer = ({ name }: { name: string }) => {
+      const Memoed = React.memo(() => {
+        renderedNames.push(name)
+        return <span>Hello {name}</span>
+      })
+      return <Memoed />
+    }
+
+    beforeEach(() => {
+      renderedNames = []
+    })
+
+    it('renders', () => {
+      const isolated = isolateComponent(<Outer name="Arthur" />)
+      isolated.inline('*')
+      expect(isolated.toString()).to.eq('<span>Hello Arthur</span>')
+      expect(renderedNames).to.eql(['Arthur'])
+    })
+
+    it('updates upon change', () => {
+      const isolated = isolateComponent(<Outer name="Arthur" />)
+      isolated.inline('*')
+      isolated.setProps({ name: 'Trillian' })
+      expect(isolated.toString()).to.eq('<span>Hello Trillian</span>')
+    })
+
+    it.skip('does not rerender with no change', () => {
+      const isolated = isolateComponent(<Outer name="Arthur" />)
+      isolated.inline('*')
+      isolated.setProps({ name: 'Arthur' })
+      expect(isolated.toString()).to.eq('<span>Hello Arthur</span>')
+      expect(renderedNames).to.eql(['Arthur'])
+    })
   })
 })
