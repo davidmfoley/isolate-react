@@ -7,6 +7,7 @@ export const getRenderMethod = <P>(t: any): RenderMethod<P> => {
   let type = t['$$typeof']
 
   if (type?.toString() === 'Symbol(react.memo)') return wrapReactMemo(t)
+  if (type?.toString() === 'Symbol(react.forward_ref)') return t.render
 
   if (proto?.isReactComponent || type?.toString() === 'Symbol(react.memo)') {
     return wrapClassComponent(t)
