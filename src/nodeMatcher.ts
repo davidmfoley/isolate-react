@@ -11,8 +11,9 @@ export const nodeMatcher = (spec: Selector | null | undefined): NodeMatcher => {
     if (spec.includes('.')) {
       const [tag, className] = spec.split('.')
       return (node) =>
-        (!tag || tag === node.name) &&
-        node.props.className.split(' ').includes(className)
+        ((!tag || tag === node.name) &&
+          node.props.className.split(' ').includes(className)) ||
+        spec === node.name
     }
 
     if (/\[.+\]/.test(spec)) {

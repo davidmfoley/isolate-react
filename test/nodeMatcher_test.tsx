@@ -1,5 +1,6 @@
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
+import styled from 'styled-components'
 
 import { reactNode, htmlNode } from '../src/nodeTree/nodes'
 
@@ -33,6 +34,8 @@ const shouldMatchReact = (selector: string, fc: any, props: any) => {
 const shouldNotMatchReact = (selector: string, fc: any, props: any) => {
   shouldNotMatch(selector, reactNode(fc, props, []))
 }
+
+const StyledButton = styled.button``
 
 const Example = () => null
 
@@ -77,6 +80,8 @@ describe('nodeMatcher', () => {
   })
 
   describe('matching by props', () => {
+    shouldMatchReact('styled.button', StyledButton, {})
+
     shouldMatchHtmlNode('div[data-test-id=foo]', 'div', {
       'data-test-id': 'foo',
     })
