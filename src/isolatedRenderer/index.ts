@@ -1,4 +1,4 @@
-import isolateHooks from 'isolate-hooks'
+import isolateHooks, { IsolatedHook } from 'isolate-hooks'
 import { NodeMatcher } from '../nodeMatcher'
 import { nodeTree, NodeTree } from '../nodeTree'
 import { ComponentInstance } from '../types/ComponentInstance'
@@ -28,6 +28,9 @@ const applyProviderContext = (
   return renderContext
 }
 
+const componentIsContextProviderForType = (component: any, t: any) =>
+  t === component?._context
+
 export const isolatedRenderer = (
   renderContext: RenderContext
 ): IsolatedRenderer => {
@@ -36,35 +39,37 @@ export const isolatedRenderer = (
     props: P
   ) => {
     let tree: NodeTree
+    let hookRenderer: IsolatedHook<any>
 
-    const renderMethod = getRenderMethod(component)
+    renderContext = applyProviderContext(component, props, renderContext)
 
-    const createTree = (result: any) => {
-      tree = nodeTree(
-        result,
-        isolatedRenderer(applyProviderContext(component, props, renderContext))
-      )
-      renderHandler = updateTree
+    const setContext = (t: any, v: any) => {
+      renderContext = renderContext.withContext(t, v)
+      hookRenderer?.setContext(t, v)
+      tree?.setContext(t, v)
     }
 
-    const updateTree = (result: any) => tree.update(result)
+    const renderMethod = getRenderMethod(component, setContext)
 
-    let renderHandler = createTree
-
-    const render = isolateHooks(() => {
+    hookRenderer = isolateHooks(() => {
       const result = renderMethod(props)
-      renderHandler(result)
+      if (tree) return tree.update(result)
+      tree = nodeTree(
+        result,
+        () => isolatedRenderer(renderContext.copy()),
+        renderContext.shouldInline
+      )
     })
 
     renderContext.contexts.forEach(({ contextType, contextValue }) => {
-      render.setContext(contextType, contextValue)
+      hookRenderer.setContext(contextType, contextValue)
     })
 
-    render()
+    hookRenderer()
 
     const setProps = (nextProps: P) => {
       props = nextProps
-      render()
+      hookRenderer()
     }
 
     const mergeProps = (propsToMerge: Partial<P>) => {
@@ -72,11 +77,12 @@ export const isolatedRenderer = (
     }
 
     return {
-      render,
-      cleanup: () => render.cleanup(),
+      render: hookRenderer,
+      cleanup: () => hookRenderer.cleanup(),
       setProps,
-      setContext: (t, v) => {
-        render.setContext(t, v)
+      setContext: (t: any, v: any) => {
+        if (componentIsContextProviderForType(component, t)) return
+        setContext(t, v)
       },
       mergeProps,
       tree: () => tree,
@@ -86,5 +92,6 @@ export const isolatedRenderer = (
       },
     }
   }
+
   return { render, shouldInline: renderContext.shouldInline }
 }

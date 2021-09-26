@@ -9,9 +9,13 @@ const nullRenderer: IsolatedRenderer = {
   shouldInline: () => false,
 }
 
+const getNullRenderer = () => nullRenderer
+
+const nullShouldInline = () => false
+
 describe('nodeTree ', () => {
   it('can parse a single html element', () => {
-    const tree = nodeTree(<div />, nullRenderer)
+    const tree = nodeTree(<div />, getNullRenderer, nullShouldInline)
     const root = tree.root()
 
     expect(root.nodeType).to.eq('html')
@@ -21,7 +25,7 @@ describe('nodeTree ', () => {
 
   it('can parse a single component', () => {
     const Example = () => <div />
-    const tree = nodeTree(<Example />, nullRenderer)
+    const tree = nodeTree(<Example />, getNullRenderer, nullShouldInline)
     const root = tree.root()
 
     expect(root.nodeType).to.eq('react')
@@ -36,7 +40,8 @@ describe('nodeTree ', () => {
       <Parent>
         <Child />
       </Parent>,
-      nullRenderer
+      getNullRenderer,
+      nullShouldInline
     )
     const root = tree.root()
 
@@ -56,7 +61,8 @@ describe('nodeTree ', () => {
           </li>
         </ul>
       </section>,
-      nullRenderer
+      getNullRenderer,
+      nullShouldInline
     )
 
     const section = tree.findOne('section')
@@ -74,39 +80,43 @@ describe('nodeTree ', () => {
   })
 
   it('handles stringifying numbers in content', () => {
-    const tree = nodeTree(<span>{3}</span>, nullRenderer)
+    const tree = nodeTree(<span>{3}</span>, getNullRenderer, nullShouldInline)
     expect(tree.root().content()).to.eq('3')
   })
 
   it('handles stringifying numbers in props', () => {
     const MagicNumber = (_: { value: number }) => null
-    const tree = nodeTree(<MagicNumber value={3} />, nullRenderer)
+    const tree = nodeTree(
+      <MagicNumber value={3} />,
+      getNullRenderer,
+      nullShouldInline
+    )
 
     expect(tree.root().toString()).to.eq(`<MagicNumber value={3} />`)
   })
 
   it('handles an empty fragment', () => {
-    const parsed = nodeTree(<></>, nullRenderer)
+    const parsed = nodeTree(<></>, getNullRenderer, nullShouldInline)
     expect(parsed.root().toString()).to.eq('')
   })
 
   it('handles a fragment with a false boolean value', () => {
-    const parsed = nodeTree(<>{false}</>, nullRenderer)
+    const parsed = nodeTree(<>{false}</>, getNullRenderer, nullShouldInline)
     expect(parsed.root().toString()).to.eq('')
   })
 
   it('handles false', () => {
-    const parsed = nodeTree(false, nullRenderer)
+    const parsed = nodeTree(false, getNullRenderer, nullShouldInline)
     expect(parsed.root().toString()).to.eq('')
   })
 
   it('handles true', () => {
-    const parsed = nodeTree(true, nullRenderer)
+    const parsed = nodeTree(true, getNullRenderer, nullShouldInline)
     expect(parsed.root().toString()).to.eq('')
   })
 
   it('handles undefined', () => {
-    const parsed = nodeTree(undefined, nullRenderer)
+    const parsed = nodeTree(undefined, getNullRenderer, nullShouldInline)
     expect(parsed.root().toString()).to.eq('')
   })
 
@@ -118,7 +128,8 @@ describe('nodeTree ', () => {
         <ListItem>Arthur</ListItem>
         <ListItem>Trillian</ListItem>
       </List>,
-      nullRenderer
+      getNullRenderer,
+      nullShouldInline
     )
     const root = tree.root()
 

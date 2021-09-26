@@ -2,7 +2,23 @@ import { wrapClassComponent } from './wrapClassComponent'
 import { wrapReactMemo } from './wrapReactMemo'
 export type RenderMethod<P> = (props: P) => any
 
-export const getRenderMethod = <P>(t: any): RenderMethod<P> => {
+type OnContextChange = (t: any, v: any) => void
+
+const wrapContextProvider = (t: any, onContextChange: OnContextChange) => {
+  let value: any = t._currentValue
+  return (props: any) => {
+    if (value !== props.value) {
+      value = props.value
+      onContextChange(t, props.value)
+    }
+    return props.children
+  }
+}
+
+export const getRenderMethod = <P>(
+  t: any,
+  onContextChange: OnContextChange
+): RenderMethod<P> => {
   let proto = t.prototype
   let type = t['$$typeof']
 
@@ -13,7 +29,7 @@ export const getRenderMethod = <P>(t: any): RenderMethod<P> => {
     return wrapClassComponent(t)
   }
 
-  if (t._context) return (props: any) => props.children
+  if (t._context) return wrapContextProvider(t._context, onContextChange)
 
   return t
 }

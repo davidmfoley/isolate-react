@@ -5,6 +5,7 @@ import { Selector } from '../types/Selector'
 import { IsolatedRenderer } from '../isolatedRenderer'
 import { doInline } from './inline'
 import { reconcile } from './reconcile'
+import { doSetContext } from './context'
 
 const allNodes = (e: TreeNode) =>
   [e].concat(e.children.map(allNodes).reduce((a, b) => a.concat(b), []))
@@ -19,8 +20,12 @@ const describeSelector = (selector?: Selector) => {
   return `${selector}`
 }
 
-export const nodeTree = (top: TreeSource, renderer: IsolatedRenderer) => {
-  let root = doInline(renderer, parse(top) as TreeNode)
+export const nodeTree = (
+  top: TreeSource,
+  getRenderer: () => IsolatedRenderer,
+  shouldInline: NodeMatcher
+) => {
+  let root = doInline(getRenderer, shouldInline, parse(top) as TreeNode)
 
   const filter = (predicate: (node: TreeNode) => boolean) =>
     allNodes(root).filter(predicate)
@@ -51,10 +56,13 @@ export const nodeTree = (top: TreeSource, renderer: IsolatedRenderer) => {
     toString: () => root.toString(),
     content: () => root.content(),
     inlineAll: () => {
-      root = doInline(renderer, root)
+      root = doInline(getRenderer, shouldInline, root)
+    },
+    setContext: (t, v) => {
+      root = doSetContext(t, v, root)
     },
     update: (next: TreeSource) => {
-      root = doInline(renderer, reconcile(root, parse(next)))
+      root = doInline(getRenderer, shouldInline, reconcile(root, parse(next)))
     },
   }
 }

@@ -1,4 +1,5 @@
 import { IsolatedRenderer } from '../isolatedRenderer'
+import { NodeMatcher } from '../nodeMatcher'
 import { TreeNode } from '../types'
 import { parseIsolated } from './parse'
 
@@ -7,19 +8,23 @@ const inlineNode = (renderer: IsolatedRenderer, node: TreeNode) => {
   return parseIsolated(isolated, node.type as any, node.key)
 }
 
-export const doInline = (renderer: IsolatedRenderer, node: TreeNode) => {
-  if (node.nodeType === 'react' && renderer.shouldInline(node)) {
-    return inlineNode(renderer, node)
+export const doInline = (
+  getRenderer: () => IsolatedRenderer,
+  shouldInline: NodeMatcher,
+  node: TreeNode
+) => {
+  if (node.nodeType === 'react' && shouldInline(node)) {
+    return inlineNode(getRenderer(), node)
   } else if (node.nodeType === 'isolated') {
     node.componentInstance!.tree().inlineAll()
   } else {
     node.children.forEach((child, i) => {
-      if (child.nodeType === 'react' && renderer.shouldInline(child)) {
-        child = inlineNode(renderer, child)
+      if (child.nodeType === 'react' && shouldInline(child)) {
+        child = inlineNode(getRenderer(), child)
         node.children[i] = child
       }
 
-      doInline(renderer, child)
+      doInline(getRenderer, shouldInline, child)
     })
   }
 

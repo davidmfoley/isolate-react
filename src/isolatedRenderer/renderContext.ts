@@ -5,11 +5,11 @@ import { Selector } from '../types/Selector'
 export type Contexts = { contextType: React.Context<any>; contextValue: any }[]
 
 export interface RenderContext {
-  inlinedSelectors: Selector[]
   contexts: Contexts
   addInlinedSelector: (selector: Selector) => void
   shouldInline: (node: TreeNode) => boolean
   withContext: (type: any, value: any) => RenderContext
+  copy: () => RenderContext
 }
 
 export const makeRenderContext = (
@@ -17,7 +17,7 @@ export const makeRenderContext = (
   inlinedMatchers: NodeMatcher[] = []
 ): RenderContext => {
   return {
-    inlinedSelectors: [],
+    copy: () => makeRenderContext(contexts.slice(), inlinedMatchers),
     contexts,
     addInlinedSelector: (selector: Selector) => {
       inlinedMatchers.push(nodeMatcher(selector))
@@ -25,7 +25,9 @@ export const makeRenderContext = (
     shouldInline: (node: TreeNode) => !!inlinedMatchers.find((m) => m(node)),
     withContext: (contextType: any, contextValue: any) =>
       makeRenderContext(
-        contexts.concat({ contextType, contextValue }),
+        contexts
+          .filter((c) => c.contextType !== contextType)
+          .concat({ contextType, contextValue }),
         inlinedMatchers
       ),
   }
