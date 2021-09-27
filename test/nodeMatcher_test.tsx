@@ -79,9 +79,13 @@ describe('nodeMatcher', () => {
     shouldMatchReact('DisplayName', ExampleWithDisplayName, {})
   })
 
-  describe('matching by props', () => {
+  describe('styled components match on name', () => {
+    // Special case: handle exact match with a dot.
+    // Note this is the same syntax as `tag.class` matching.
     shouldMatchReact('styled.button', StyledButton, {})
+  })
 
+  describe('matching by props', () => {
     shouldMatchHtmlNode('div[data-test-id=foo]', 'div', {
       'data-test-id': 'foo',
     })
