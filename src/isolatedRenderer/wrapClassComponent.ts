@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react'
 export const wrapClassComponent = <P>(t: {
   new (): React.Component<P, any>
 }): ((p: P) => any) => {
-  const instance = new t() as any
-
   let first = true
   let lastResult: any = null
 
@@ -12,7 +10,9 @@ export const wrapClassComponent = <P>(t: {
   let prevState: any | null = null
   let setStateCallbacks: Function[] = []
 
+  let instance: any
   return (props: P) => {
+    instance = instance || (new t(props) as any)
     const [componentState, setComponentState] = useState(instance.state)
 
     instance.setState = (s: any, cb: Function) => {
