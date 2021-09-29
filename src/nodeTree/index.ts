@@ -6,6 +6,7 @@ import { IsolatedRenderer } from '../isolatedRenderer'
 import { doInline } from './inline'
 import { reconcile } from './reconcile'
 import { doSetContext } from './context'
+import { doDebug } from './debug'
 
 const allNodes = (e: TreeNode) =>
   [e].concat(e.children.map(allNodes).reduce((a, b) => a.concat(b), []))
@@ -64,6 +65,7 @@ export const nodeTree = (
     update: (next: TreeSource) => {
       root = doInline(getRenderer, shouldInline, reconcile(root, parse(next)))
     },
+    debug: () => doDebug(root),
   }
 }
 

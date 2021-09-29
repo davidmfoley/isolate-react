@@ -33,6 +33,25 @@ describe('nodeTree ', () => {
     expect(root.children).to.eql([])
   })
 
+  it('can parse context provider', () => {
+    const ExampleContext = React.createContext(3)
+    const tree = nodeTree(
+      <ExampleContext.Provider value={3}>
+        <ExampleContext.Consumer>
+          {(v) => <div>{v}v</div>}
+        </ExampleContext.Consumer>
+      </ExampleContext.Provider>,
+      getNullRenderer,
+      nullShouldInline
+    )
+    const root = tree.root()
+
+    expect(root.nodeType).to.eq('react')
+    expect(root.type).to.eq(ExampleContext.Provider)
+    expect(root.children.length).to.eql(1)
+    expect(root.children[0].type).to.eql(ExampleContext.Consumer)
+  })
+
   it('can parse children', () => {
     const Parent = ({ children }) => <div>{children}</div>
     const Child = () => <div />
@@ -49,6 +68,25 @@ describe('nodeTree ', () => {
     expect(root.type).to.eq(Parent)
     expect(root.children.length).to.eql(1)
     expect(root.children[0].type).to.eql(Child)
+  })
+
+  it('can parse children that are functions', () => {
+    const Parent = ({ children }) => <div>{children}</div>
+    const tree = nodeTree(
+      <Parent>{() => 'hi'}</Parent>,
+      getNullRenderer,
+      nullShouldInline
+    )
+    const root = tree.root()
+
+    expect(root.nodeType).to.eq('react')
+    expect(root.type).to.eq(Parent)
+    expect(root.children.length).to.eql(1)
+
+    const fn = root.children[0].type as any as Function
+
+    expect(typeof fn).to.eq('function')
+    expect(fn()).to.eql('hi')
   })
 
   it('can find children', () => {

@@ -9,6 +9,15 @@ describe('inline context', () => {
   const DisplayName = () => {
     return <div>{useContext(NameContext)}</div>
   }
+
+  const ConsumerDisplayName = () => {
+    return (
+      <NameContext.Consumer>
+        {(value) => <div>{value}</div>}
+      </NameContext.Consumer>
+    )
+  }
+
   const TestComponent: React.FC<{}> = (props) => (
     <section>{props.children}</section>
   )
@@ -24,6 +33,17 @@ describe('inline context', () => {
       const isolated = isolateComponent(
         <NameContext.Provider value="Ford">
           <DisplayName />
+        </NameContext.Provider>
+      )
+
+      isolated.inline('*')
+      expect(isolated.findOne('div').content()).to.eq('Ford')
+    })
+
+    it('can get provided context in consumer', () => {
+      const isolated = isolateComponent(
+        <NameContext.Provider value="Ford">
+          <ConsumerDisplayName />
         </NameContext.Provider>
       )
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 export const wrapClassComponent = <P>(t: {
-  new (): React.Component<P, any>
+  new (props: P): React.Component<P, any>
 }): ((p: P) => any) => {
   let first = true
   let lastResult: any = null

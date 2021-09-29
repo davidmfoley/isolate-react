@@ -43,6 +43,16 @@ export const nothingNode = (type: string): TreeNode => ({
   toString: () => '',
 })
 
+export const functionNode = (value: Function): TreeNode => ({
+  nodeType: 'function',
+  type: value,
+  children: [],
+  props: {},
+  name: '',
+  content: () => `[Function]`,
+  toString: () => `[Function]`,
+})
+
 export const valueNode = (value: string | number): TreeNode => ({
   nodeType: typeof value as any,
   type: '' + value,

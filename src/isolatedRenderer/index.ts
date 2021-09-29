@@ -22,14 +22,18 @@ const applyProviderContext = (
   props: any,
   renderContext: RenderContext
 ) => {
-  if (component._context) {
+  if (
+    component._context &&
+    componentIsContextProviderForType(component, component._context)
+  ) {
     return renderContext.withContext(component._context, props.value)
   }
   return renderContext
 }
 
-const componentIsContextProviderForType = (component: any, t: any) =>
-  t === component?._context
+const componentIsContextProviderForType = (component: any, t: any) => {
+  return t === component?._context && component === t.Provider
+}
 
 export const isolatedRenderer = (
   renderContext: RenderContext
@@ -90,6 +94,7 @@ export const isolatedRenderer = (
         renderContext.addInlinedSelector(selector)
         tree.inlineAll()
       },
+      debug: () => tree.debug(),
     }
   }
 

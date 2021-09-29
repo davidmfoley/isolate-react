@@ -120,4 +120,5 @@ export interface IsolatedComponent<Props> extends QueryableNode {
    *
    */
   inline(selector: Selector): void
+  debug: () => string
 }

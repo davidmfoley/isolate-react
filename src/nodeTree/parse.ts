@@ -3,12 +3,13 @@ import { InputNode } from '../types/InputNode'
 import { TreeNode } from '../types/TreeNode'
 import { Selector } from '../types/Selector'
 import {
-  valueNode,
   fragmentNode,
+  functionNode,
   htmlNode,
-  reactNode,
-  nothingNode,
   isolatedNode,
+  nothingNode,
+  reactNode,
+  valueNode,
 } from './nodes'
 import nodeMatcher from '../nodeMatcher'
 import { ComponentInstance } from '../types/ComponentInstance'
@@ -30,6 +31,7 @@ const parseChildren = (children: InputNode[]) =>
 const parseRawNode = (node: InputNode): TreeNode => {
   if (node === null) return nothingNode('null')
   if (typeof node === 'undefined') return nothingNode('undefined')
+  if (typeof node === 'function') return functionNode(node)
 
   // for now, treat array as fragment
   if (Array.isArray(node)) return fragmentNode(parseChildren(node))
