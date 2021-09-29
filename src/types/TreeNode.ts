@@ -14,6 +14,7 @@ export interface TreeNode extends NodeContent {
     | 'nothing'
     | 'fragment'
     | 'isolated'
+    | 'function'
   /**
    * For html elements, the tag name
    * For a react FC, the display name
@@ -27,7 +28,7 @@ export interface TreeNode extends NodeContent {
    * For an html node, the tag name.
    * For a string, the string.
    */
-  type: InputNode['type']
+  type: InputNode['type'] | Function
   key?: string
   /**
    * Children, if present, or else an empty array
