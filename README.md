@@ -2,50 +2,11 @@
 
 [npm](https://npmjs.com/package/isolate-components) | [github](https://github.com/davidmfoley/isolate-components) | [api docs](https://davidmfoley.github.io/isolate-components/api)
 
-Isolate and test your modern react components with full hooks support and without the need for DOM emulators.
-
-```js
-import { isolateComponent } from 'isolate-components'
-
-// Component with effect
-const ExampleWithHooks = (props) => {
-  useEffect(() => {
-    console.log(`Hello ${props.name}`)
-    // cleanup function
-    return () => {
-      console.log(`Goodbye ${props.name}`)
-    }
-  }, [props.name])
-  return <span className="hello">Hello {props.name}</span>
-}
-
-// render the component, in isolation
-const component = isolateComponent(<MyComponent name="Trillian" />)
-// logs: "Hello Trillian"
-
-// explore the rendered components
-console.log(component.findOne('span').props.className) // => "hello"
-console.log(component.findOne('span.hello').content()) // => "Hello Trillian"
-console.log(component.exists('.hello')) // => true
-console.log(component.findAll('.hello')) // => array with all matches
-
-component.setProps({ name: 'Zaphod' })
-//logs: "Goodbye Trillian" (effect cleanup)
-//logs: "Hello Zaphod" (effect runs because name prop has changed)
-
-component.cleanup()
-//logs: "Goodbye Zaphod"
-```
-
-## Test-drive react
-
-### Render react components in isolation
-- [x] functional components that use hooks
-- [x] class components
+## Test-drive react components
 
 ### Flexible support for whatever level of testing you prefer:
 - [x] Render a single component at a time (isolated/unit testing) 
-- [x] Inline some (or all) of the elements rendered by the component. (*"small-i"* integration testing)
+- [x] Render multiple components toegether (integrated testing)
 
 ### Low -friction:
 - [x] Works with any test runner that runs in node (jest, mocha, tape, tap, etc.)
@@ -53,6 +14,11 @@ component.cleanup()
 - [x] Easy access to set context values needed for testing.
 - [x] No virtual DOM or other tools to install
 - [x] Very fast
+
+### Render react components in isolation
+- [x] functional components that use hooks
+- [x] class components
+
 
 ## Limitations
 
@@ -110,6 +76,11 @@ You should probably install this as a dev dependency.
 
 See [API documentation](https://davidmfoley.github.io/isolate-components/globals.html#isolatecomponent).
 
+
+
+### Testing effects
+
+
 ```js
 import { isolateComponent } from 'isolate-components'
 
@@ -127,7 +98,9 @@ console.log(component.findOne('span').content()) // => 'Hello Zaphod'
 
 ### Usage with useContext
 
-You can test components that use `useContext` using the `.withContext()` decorator:
+#### withContext()
+
+The `withContext` method supports setting context values before render for testing components that use `useContext`.
 
 ```js
 const QuestionContext = React.createContext('')
@@ -149,7 +122,9 @@ const isolated = isolateComponent
 console.log(isolated.toString()) // => <div>what is the answer? 42</div>
 ```
 
-You can change context values used by a component with `.setContext()`:
+#### setContext()
+
+You can update context values of an isolated component with `.setContext()`:
 
 ```js
 const QuestionContext = React.createContext('')
@@ -161,25 +136,24 @@ const DisplayQuestionAndAnswer = () => (
   </div>
 )
 
-const isolated = isolateComponent.withContext(
-  QuestionContext,
-  'what is the answer?'
-)(<DisplayQuestionAndAnswer />)
+const isolated = isolateComponent(<DisplayQuestionAndAnswer />)
 
+isolated.setContext(QuestionContext, 'what is the answer?')
 isolated.setContext(AnswerContext, 42)
 
 console.log(isolated.toString()) // => <div>what is the answer? 42</div>
 ```
 
-### Usage with hooks
+### Effects
 
-Hooks are supported, including useEffect:
+Easily test components that use `useEffect`.
+Use `cleanup()` to test effect cleanup.
 
 ```js
 import { isolateComponent } from 'isolate-components'
 
 // Component with effect
-const ExampleWithHooks = (props) => {
+const EffectExample = (props) => {
   useEffect(() => {
     console.log(`Hello ${props.name}`)
     // cleanup function
@@ -191,7 +165,7 @@ const ExampleWithHooks = (props) => {
 }
 
 // render the component, in isolation
-const component = isolateComponent(<MyComponent name="Trillian" />)
+const component = isolateComponent(<EffectExample name="Trillian" />)
 // logs: "Hello Trillian"
 
 component.setProps({ name: 'Zaphod' })
