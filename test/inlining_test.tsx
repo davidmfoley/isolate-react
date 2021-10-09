@@ -173,41 +173,4 @@ describe('inlining ', () => {
     isolated.inline('*')
     expect(isolated.toString()).to.eq('<span>Hello Arthur</span>')
   })
-
-  describe('Inlining with React.memo', () => {
-    let renderedNames: string[] = []
-    const Outer = ({ name }: { name: string }) => {
-      const Memoed = React.memo(() => {
-        renderedNames.push(name)
-        return <span>Hello {name}</span>
-      })
-      return <Memoed />
-    }
-
-    beforeEach(() => {
-      renderedNames = []
-    })
-
-    it('renders', () => {
-      const isolated = isolateComponent(<Outer name="Arthur" />)
-      isolated.inline('*')
-      expect(isolated.toString()).to.eq('<span>Hello Arthur</span>')
-      expect(renderedNames).to.eql(['Arthur'])
-    })
-
-    it('updates upon change', () => {
-      const isolated = isolateComponent(<Outer name="Arthur" />)
-      isolated.inline('*')
-      isolated.setProps({ name: 'Trillian' })
-      expect(isolated.toString()).to.eq('<span>Hello Trillian</span>')
-    })
-
-    it.skip('does not rerender with no change', () => {
-      const isolated = isolateComponent(<Outer name="Arthur" />)
-      isolated.inline('*')
-      isolated.setProps({ name: 'Arthur' })
-      expect(isolated.toString()).to.eq('<span>Hello Arthur</span>')
-      expect(renderedNames).to.eql(['Arthur'])
-    })
-  })
 })
