@@ -4,4 +4,4 @@ coverage
 lib
 *.log
 .nyc_output
-docs
+.docusaurus
