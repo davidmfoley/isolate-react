@@ -9,5 +9,5 @@
     "esModuleInterop": true,
     "allowJs": false
   },
-  "include": ["src"],
+  "include": ["src"]
 }
