@@ -1,0 +1,23 @@
+{
+  "name": "isolate-react",
+  "version": "2.0.0",
+  "repository": "https://github.com/davidmfoley/isolate-react",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "author": "davidmfoley@gmail.com",
+  "license": "MIT",
+  "private": false,
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "build": "yarn clean && tsc -p tsconfig.build.json",
+    "clean": "rm -rf /lib"
+  },
+  "dependencies": {
+    "isolate-hooks": "2.0.0",
+    "isolate-components": "2.0.0"
+  },
+  "devDependencies": {
+  }
+}

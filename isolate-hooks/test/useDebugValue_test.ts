@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
-import isolateHooks from '../src'
+import isolateHook from '../src'
 import { useDebugValue } from 'react'
 
 describe('useDebugValue', () => {
@@ -12,7 +12,7 @@ describe('useDebugValue', () => {
       return 42
     }
 
-    const isolated = isolateHooks(useDebugValueExample)
+    const isolated = isolateHook(useDebugValueExample)
     expect(isolated()).to.eq(42)
   })
 })

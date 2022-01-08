@@ -1,7 +1,7 @@
 {
   "name": "isolate-components",
   "version": "1.3.1",
-  "repository": "https://github.com/davidmfoley/isolate-components",
+  "repository": "https://github.com/davidmfoley/isolate-react",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "author": "davidmfoley@gmail.com",

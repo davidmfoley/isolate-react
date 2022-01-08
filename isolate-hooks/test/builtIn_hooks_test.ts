@@ -1,13 +1,13 @@
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
-import isolateHooks from '../src'
+import isolateHook from '../src'
 import { useEffect, useState } from 'react'
 
 describe('built in hooks', () => {
   // examples of isolating hooks directly
   it('supports useState', () => {
-    const isolatedUseState = isolateHooks(useState)
+    const isolatedUseState = isolateHook(useState)
     const [person, setPerson] = isolatedUseState('arthur')
     expect(person).to.eq('arthur')
     setPerson('trillian')
@@ -18,7 +18,7 @@ describe('built in hooks', () => {
 
   it('supports useEffect', () => {
     const actions: string[] = []
-    const isolatedUseEffect = isolateHooks(useEffect)
+    const isolatedUseEffect = isolateHook(useEffect)
 
     isolatedUseEffect(() => {
       actions.push('effect')

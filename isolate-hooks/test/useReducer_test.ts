@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, afterEach } from 'mocha'
 import { expect } from 'chai'
 
-import isolateHooks from '../src'
+import isolateHook from '../src'
 import { useReducer } from 'react'
 
 describe('useReducer', () => {
@@ -12,13 +12,13 @@ describe('useReducer', () => {
   }
 
   it('has initial value', () => {
-    const isolated = isolateHooks(() => useReducer(counter, 0))
+    const isolated = isolateHook(() => useReducer(counter, 0))
     const [count] = isolated()
     expect(count).to.eq(0)
   })
 
   it('handles dispatch', () => {
-    const isolated = isolateHooks(() => useReducer(counter, 0))
+    const isolated = isolateHook(() => useReducer(counter, 0))
     const [_, dispatch] = isolated()
     dispatch('++')
     dispatch('++')

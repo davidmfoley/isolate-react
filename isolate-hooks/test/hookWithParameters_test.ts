@@ -1,13 +1,13 @@
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
-import isolateHooks from '../src'
+import isolateHook from '../src'
 import { useState } from 'react'
 
 describe('invoking a hook with parameters', () => {
   it('accepts the same parameters', () => {
     const usePassedValue = (value: number) => useState(value)
-    const isolated = isolateHooks(usePassedValue)
+    const isolated = isolateHook(usePassedValue)
     const [result] = isolated(2)
     expect(result).to.eq(2)
   })
@@ -19,7 +19,7 @@ describe('invoking a hook with parameters', () => {
       count++
     }
 
-    const isolated = isolateHooks(useCounter)
+    const isolated = isolateHook(useCounter)
     expect(count).to.eq(0)
     isolated()
     expect(count).to.eq(1)
@@ -37,7 +37,7 @@ describe('invoking a hook with parameters', () => {
       lastValue = value
       return value
     }
-    isolateHooks(usePassedValue)(2)
+    isolateHook(usePassedValue)(2)
     setter(42)
     expect(lastValue).to.eq(2)
   })

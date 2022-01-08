@@ -1,14 +1,14 @@
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
-import isolateHooks from '../src'
+import isolateHook from '../src'
 import { useCallback, useState } from 'react'
 
 describe('useCallback', () => {
   it('is stable with no deps', () => {
     const useCallbackExample = () => useCallback(() => {}, [])
 
-    const isolated = isolateHooks(useCallbackExample)
+    const isolated = isolateHook(useCallbackExample)
     const first = isolated()
     isolated()
     expect(first).to.eq(isolated())
@@ -23,7 +23,7 @@ describe('useCallback', () => {
       return useCallback(() => val, [val])
     }
 
-    const isolated = isolateHooks(useCallbackExample)
+    const isolated = isolateHook(useCallbackExample)
     const first = isolated()
     setValue(1)
     expect(first).not.to.eq(isolated())
@@ -39,7 +39,7 @@ describe('useCallback', () => {
       return useCallback(() => val, [val])
     }
 
-    const isolated = isolateHooks(useCallbackExample)
+    const isolated = isolateHook(useCallbackExample)
     isolated()
 
     setValue(1)

@@ -1,14 +1,14 @@
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
-import isolateHooks from '../src'
+import isolateHook from '../src'
 import { useContext, createContext } from 'react'
 
 describe('useContext', () => {
   const ExampleContext = createContext<string>('yah')
 
   it('has default value if no context specified', () => {
-    const result = isolateHooks(() => {
+    const result = isolateHook(() => {
       return useContext(ExampleContext)
     })
 
@@ -17,7 +17,7 @@ describe('useContext', () => {
 
   // deprecated way
   it('has specified value if one passed', () => {
-    const result = isolateHooks(
+    const result = isolateHook(
       () => {
         return useContext(ExampleContext)
       },
@@ -36,7 +36,7 @@ describe('useContext', () => {
 
   // new way
   it('has specified value if one is set', () => {
-    const isolated = isolateHooks(() => {
+    const isolated = isolateHook(() => {
       return useContext(ExampleContext)
     })
 
@@ -47,7 +47,7 @@ describe('useContext', () => {
 
   it('rerenders on change', () => {
     let i = 0
-    const isolated = isolateHooks(() => {
+    const isolated = isolateHook(() => {
       i++
       return `${useContext(ExampleContext)}${i}`
     })
@@ -62,7 +62,7 @@ describe('useContext', () => {
 
   it('does not rerender with same reference', () => {
     let i = 0
-    const isolated = isolateHooks(() => {
+    const isolated = isolateHook(() => {
       i++
       return `${useContext(ExampleContext)}${i}`
     })
@@ -79,7 +79,7 @@ describe('useContext', () => {
   it('does not rerender on change of unused context', () => {
     let i = 0
     const UnusedContext = createContext<string>('yah')
-    const isolated = isolateHooks(() => {
+    const isolated = isolateHook(() => {
       i++
       return `${useContext(ExampleContext)}${i}`
     })

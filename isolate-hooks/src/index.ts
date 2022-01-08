@@ -59,7 +59,7 @@ const checkHookFunction = (fn: any) => {
  * @param hookInvocation The hook to isolate.
  * @param options Optional options, for specifying context values.
  */
-const isolateHooks = <F extends (...args: any[]) => any>(
+export const isolateHook = <F extends (...args: any[]) => any>(
   hookInvocation: F,
   options: IsolatedHookOptions = {}
 ): IsolatedHook<F> => {
@@ -101,4 +101,4 @@ const isolateHooks = <F extends (...args: any[]) => any>(
   })
 }
 
-export default isolateHooks
+export default isolateHook

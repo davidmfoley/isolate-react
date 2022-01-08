@@ -1,7 +1,7 @@
 import { describe, it, beforeEach } from 'mocha'
 import { expect } from 'chai'
 
-import isolateHooks from '../src'
+import isolateHook from '../src'
 import { useEffect, useLayoutEffect, useState } from 'react'
 
 describe('effects', () => {
@@ -18,7 +18,7 @@ describe('effects', () => {
         return ''
       }
 
-      isolateHooks(useEffectExample)()
+      isolateHook(useEffectExample)()
       expect(invocations).to.eql(['effect'])
     })
 
@@ -30,7 +30,7 @@ describe('effects', () => {
         invocations.push('render')
       }
 
-      isolateHooks(useEffectExample)()
+      isolateHook(useEffectExample)()
       expect(invocations).to.eql(['render', 'effect'])
     })
 
@@ -46,7 +46,7 @@ describe('effects', () => {
         return ''
       }
 
-      isolateHooks(useEffectExample)()
+      isolateHook(useEffectExample)()
       setName('ford')
 
       expect(invocations).to.eql(['hello arthur', 'hello ford'])
@@ -61,7 +61,7 @@ describe('effects', () => {
         return name
       }
 
-      const isolated = isolateHooks(useEffectExample)
+      const isolated = isolateHook(useEffectExample)
 
       expect(isolated()).to.eq('trillian')
     })
@@ -78,7 +78,7 @@ describe('effects', () => {
         return ''
       }
 
-      isolateHooks(useEffectExample)()
+      isolateHook(useEffectExample)()
       setName('arthur')
 
       expect(invocations).to.eql(['hello arthur'])
@@ -99,7 +99,7 @@ describe('effects', () => {
         return ''
       }
 
-      const isolated = isolateHooks(useEffectExample)
+      const isolated = isolateHook(useEffectExample)
       isolated()
       setName('ford')
       isolated.cleanup()
@@ -132,7 +132,7 @@ describe('effects', () => {
         return ''
       }
 
-      const isolated = isolateHooks(useEffectOrderExample)
+      const isolated = isolateHook(useEffectOrderExample)
       isolated()
       isolated.cleanup()
       expect(invocations).to.eql([

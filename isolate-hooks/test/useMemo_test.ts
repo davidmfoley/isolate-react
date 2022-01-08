@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
-import isolateHooks from '../src'
+import isolateHook from '../src'
 import { useMemo } from 'react'
 
 describe('useMemo', () => {
@@ -14,7 +14,7 @@ describe('useMemo', () => {
         return count
       }, [])
 
-    const isolated = isolateHooks(useMemoExample)
+    const isolated = isolateHook(useMemoExample)
     expect(isolated()).to.eq(1)
   })
 
@@ -27,7 +27,7 @@ describe('useMemo', () => {
         return count
       }, [])
 
-    const isolated = isolateHooks(useMemoExample)
+    const isolated = isolateHook(useMemoExample)
     expect(isolated()).to.eq(1)
   })
 
@@ -40,7 +40,7 @@ describe('useMemo', () => {
         return count
       }, [count])
 
-    const isolated = isolateHooks(useMemoExample)
+    const isolated = isolateHook(useMemoExample)
     isolated()
     expect(isolated()).to.eq(2)
   })

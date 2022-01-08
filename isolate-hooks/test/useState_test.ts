@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, afterEach } from 'mocha'
 import { expect } from 'chai'
 
-import isolateHooks from '../src'
+import isolateHook from '../src'
 import { useState } from 'react'
 
 describe('useState', () => {
@@ -11,7 +11,7 @@ describe('useState', () => {
       return value
     }
 
-    const isolated = isolateHooks(useStateExample)
+    const isolated = isolateHook(useStateExample)
 
     const value = isolated()
     expect(value).to.equal('initial')
@@ -26,7 +26,7 @@ describe('useState', () => {
       return value
     }
 
-    const isolated = isolateHooks(useStateExample)
+    const isolated = isolateHook(useStateExample)
     isolated()
     setValue('updated')
 
@@ -40,7 +40,7 @@ describe('useState', () => {
       return value
     }
 
-    const isolated = isolateHooks(useStateExample)
+    const isolated = isolateHook(useStateExample)
     const value = isolated()
 
     expect(value).to.equal('initial')
@@ -51,7 +51,7 @@ describe('useState', () => {
       return useState(() => 'initial')
     }
 
-    const isolated = isolateHooks(useStateExample)
+    const isolated = isolateHook(useStateExample)
     const [value, setValue] = isolated()
     setValue(() => 'updated')
 
@@ -73,14 +73,14 @@ describe('useState', () => {
     }
 
     it('has initial values', () => {
-      const isolated = isolateHooks(useStateExample)
+      const isolated = isolateHook(useStateExample)
 
       const value = isolated()
       expect(value).to.equal('A42')
     })
 
     it('can set values', () => {
-      const isolated = isolateHooks(useStateExample)
+      const isolated = isolateHook(useStateExample)
       isolated()
       setLetter('B')
       setNumber(3)
@@ -90,7 +90,7 @@ describe('useState', () => {
     })
 
     it('can set multiple values', () => {
-      const isolated = isolateHooks(useStateExample)
+      const isolated = isolateHook(useStateExample)
       isolated()
       setLetter('A')
       setLetter('B')

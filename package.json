@@ -15,7 +15,9 @@
   },
   "workspaces": [
     "isolate-components",
-    "isolate-hooks"
+    "isolate-hooks",
+    "isolate-react",
+    "docusaurus"
   ],
   "devDependencies": {
     "@types/chai": "^4.2.12",
