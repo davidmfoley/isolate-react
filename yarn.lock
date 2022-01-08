@@ -5511,11 +5511,6 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
-isolate-hooks@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/isolate-hooks/-/isolate-hooks-1.5.0.tgz#232d98ea3fb6393210a72965d67f4218e1efed59"
-  integrity sha512-IRGJvwngCuWr1FadRpI9L4V2HS+vR2pUK6O3hcNBlk3Mk/zM6VytSfV8Rpcb3/duxJHy+JUVHW7Yk4BPK4FrVA==
-
 istanbul-lib-coverage@^3.0.0, istanbul-lib-coverage@^3.0.0-alpha.1:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/istanbul-lib-coverage/-/istanbul-lib-coverage-3.0.0.tgz#f5944a37c70b550b02a78a5c3b2055b280cec8ec"
