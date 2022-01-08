@@ -1,6 +1,6 @@
 # isolate-components
 
-[npm](https://npmjs.com/package/isolate-components) | [github](https://github.com/davidmfoley/isolate-components) | [api docs](https://davidmfoley.github.io/isolate-components/api)
+[npm](https://npmjs.com/package/isolate-react) | [github](https://github.com/davidmfoley/isolate-react) | [api docs](https://davidmfoley.github.io/isolate-react/api)
 
 ## Test-drive react components
 
@@ -70,11 +70,11 @@ Cypress and similar tools are used for _acceptance testing_. `isolate-components
 
 You should probably install this as a dev dependency.
 
-`yarn add --dev isolate-components` or `npm install -D isolate-components`
+`yarn add --dev isolate-react` or `npm install -D isolate-react`
 
 ## Usage
 
-See [API documentation](https://davidmfoley.github.io/isolate-components/globals.html#isolatecomponent).
+See [API documentation](https://davidmfoley.github.io/isolate-react/globals.html#isolatecomponent).
 
 
 
@@ -82,7 +82,7 @@ See [API documentation](https://davidmfoley.github.io/isolate-components/globals
 
 
 ```js
-import { isolateComponent } from 'isolate-components'
+import { isolateComponent } from 'isolate-react'
 
 // the component we are going to test
 const MyComponent = (props) => <span>Hello {props.name}</span>
@@ -150,7 +150,7 @@ Easily test components that use `useEffect`.
 Use `cleanup()` to test effect cleanup.
 
 ```js
-import { isolateComponent } from 'isolate-components'
+import { isolateComponent } from 'isolate-react'
 
 // Component with effect
 const EffectExample = (props) => {
@@ -180,10 +180,10 @@ component.cleanup()
 
 An isolated component has some methods to help exercise and inspect it.
 
-See the [API docs](https://davidmfoley.github.io/isolate-components/api)
+See the [API docs](https://davidmfoley.github.io/isolate-react/api)
 
 ### Issues & Progress
 
-See the [project tracker](https://github.com/davidmfoley/isolate-components/projects/1) for project progress.
+See the [project tracker](https://github.com/davidmfoley/isolate-react/projects/1) for project progress.
 
-File an [issue](https://github.com/davidmfoley/isolate-components/issues) if you have a suggestion or request.
+File an [issue](https://github.com/davidmfoley/isolate-react/issues) if you have a suggestion or request.
