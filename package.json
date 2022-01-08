@@ -9,13 +9,12 @@
     "lib/**/*"
   ],
   "scripts": {
-    "ci:hooks": "cd isolate-hooks && yarn ci",
-    "ci:components": "cd isolate-components && yarn ci",
-    "ci": "yarn ci:hooks && yarn ci:components"
+    "ci:package": "cd isolate-react && yarn ci",
+    "ci:examples": "cd examples && yarn ci",
+    "ci": "yarn ci:package && yarn ci:examples"
   },
   "workspaces": [
-    "isolate-components",
-    "isolate-hooks",
+    "examples",
     "isolate-react",
     "docusaurus"
   ],

@@ -6,7 +6,8 @@
     "target": "es6",
     "rootDir": "src",
     "outDir": "lib",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "allowJs": false
   },
   "include": ["src"]
 }

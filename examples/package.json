@@ -1,0 +1,51 @@
+{
+  "name": "isolate-hooks",
+  "version": "2.0.0",
+  "repository": "https://github.com/davidmfoley/isolate-react",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "author": "davidmfoley@gmail.com",
+  "license": "MIT",
+  "private": true,
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "examples": "mocha --recursive .",
+    "examples:watch": "nodemon -q -e ts,tsx --exec \"yarn examples\" --watch .",
+    "prettier": "prettier -c './**/*.{ts,tsx}'",
+    "fix:prettier": "prettier --write './**/*.{ts,tsx}'",
+    "ci": "yarn examples && yarn prettier"
+  },
+  "dependencies": {
+    "isolate-react": "*"
+  },
+  "devDependencies": {
+  },
+  "mocha": {
+    "extension": [
+      "ts"
+    ],
+    "require": [
+      "source-map-support/register",
+      "ts-node/register"
+    ],
+    "watch-files": [
+      "./**/*.ts"
+    ],
+    "reporter": "dot"
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "reporter": [
+      "html"
+    ],
+    "all": true
+  }
+}
