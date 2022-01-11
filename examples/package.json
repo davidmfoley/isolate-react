@@ -11,7 +11,7 @@
     "lib/**/*"
   ],
   "scripts": {
-    "examples": "mocha --recursive .",
+    "examples": "jest",
     "examples:watch": "nodemon -q -e ts,tsx --exec \"yarn examples\" --watch .",
     "prettier": "prettier -c './**/*.{ts,tsx}'",
     "fix:prettier": "prettier --write './**/*.{ts,tsx}'",
@@ -21,31 +21,7 @@
     "isolate-react": "*"
   },
   "devDependencies": {
-  },
-  "mocha": {
-    "extension": [
-      "ts"
-    ],
-    "require": [
-      "source-map-support/register",
-      "ts-node/register"
-    ],
-    "watch-files": [
-      "./**/*.ts"
-    ],
-    "reporter": "dot"
-  },
-  "nyc": {
-    "extension": [
-      ".ts",
-      ".tsx"
-    ],
-    "include": [
-      "src/**/*.ts"
-    ],
-    "reporter": [
-      "html"
-    ],
-    "all": true
+    "jest": "^27.4.7",
+    "ts-jest": "^27.1.2"
   }
 }
