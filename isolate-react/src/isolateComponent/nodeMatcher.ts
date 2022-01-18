@@ -10,7 +10,7 @@ const classOrExactMatcher = (spec: string): NodeMatcher => {
   const [tag, className] = spec.split('.')
   return (node) =>
     ((!tag || tag === node.name) &&
-      node.props.className.split(' ').includes(className)) ||
+      (node.props.className || '').split(' ').includes(className)) ||
     spec === node.name
 }
 

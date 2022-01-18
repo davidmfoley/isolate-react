@@ -56,6 +56,7 @@ describe('nodeMatcher', () => {
     shouldMatchHtmlNode('.awesome', 'span', { className: 'awesome' })
     shouldMatchHtmlNode('.awesome', 'span', { className: 'awesome and stuff' })
     shouldNotMatchHtmlNode('div.awesome', 'span', { className: 'awesome' })
+    shouldNotMatchHtmlNode('.whatever', 'div', {})
 
     shouldMatchReact('Example.awesome', Example, { className: 'awesome' })
     shouldMatchReact('.awesome', Example, { className: 'awesome' })
