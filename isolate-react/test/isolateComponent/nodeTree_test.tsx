@@ -133,6 +133,16 @@ describe('nodeTree ', () => {
     expect(tree.root().toString()).to.eq(`<MagicNumber value={3} />`)
   })
 
+  it('handles stringifying functions in content', () => {
+    const tree = nodeTree(
+      <span>{(a: string) => 42}</span>,
+      getNullRenderer,
+      nullShouldInline
+    )
+    expect(tree.root().content()).to.eq('[Function]')
+    expect(tree.root().toString()).to.eq('<span>[Function]</span>')
+  })
+
   it('handles an empty fragment', () => {
     const parsed = nodeTree(<></>, getNullRenderer, nullShouldInline)
     expect(parsed.root().toString()).to.eq('')
