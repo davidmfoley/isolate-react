@@ -1,6 +1,8 @@
 import { ComponentNode } from './ComponentNode'
 import { Selector } from './Selector'
 
+type SelectorProps<T> = T extends React.ComponentType<infer P> ? P : any
+
 export interface QueryableNode {
   /**
    * Find all child nodes that match.
@@ -25,7 +27,7 @@ export interface QueryableNode {
    *
    * See {@link Selector} docs for all supported selctor syntax.
    */
-  findAll(selector?: Selector): ComponentNode[]
+  findAll<T extends Selector>(selector?: T): ComponentNode<SelectorProps<T>>[]
   /**
    * Find a single child node that matches, and throw if not found.
    *
@@ -55,7 +57,7 @@ export interface QueryableNode {
    * ```
    * See {@link Selector} docs for all supported selctor syntax.
    */
-  findOne(selector?: Selector): ComponentNode
+  findOne<T extends Selector>(selector?: T): ComponentNode<SelectorProps<T>>
 
   /**
    * Check for the existence of any html elements or react components matching the selector.

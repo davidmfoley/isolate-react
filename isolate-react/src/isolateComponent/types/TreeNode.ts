@@ -2,7 +2,7 @@ import { ComponentInstance } from './ComponentInstance'
 import { InputNode } from './InputNode'
 import { NodeContent } from './NodeContent'
 
-export interface TreeNode extends NodeContent {
+export interface TreeNode<Props = any> extends NodeContent {
   /**
    * The type of node: a react component, html, string or null.
    */
@@ -38,5 +38,5 @@ export interface TreeNode extends NodeContent {
   /**
    * React or html props, excluding children.
    */
-  props: any
+  props: Props
 }

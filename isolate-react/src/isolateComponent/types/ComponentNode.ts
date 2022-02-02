@@ -11,4 +11,6 @@ import { TreeNode } from './TreeNode'
  * @interface
  *
  */
-export interface ComponentNode extends TreeNode, QueryableNode {}
+export interface ComponentNode<Props = any>
+  extends TreeNode<Props>,
+    QueryableNode {}
