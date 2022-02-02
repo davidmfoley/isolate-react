@@ -137,6 +137,19 @@ describe('inlining ', () => {
     })
   })
 
+  it('handles render child', () => {
+    const RenderChild = ({ children }: { children: () => any }) => (
+      <div>{children()}</div>
+    )
+    const isolated = isolateComponent(
+      <RenderChild>{() => <div>Yo</div>}</RenderChild>
+    )
+    isolated.inline('*')
+
+    expect(isolated.content()).to.eq('<div>Yo</div>')
+    expect(isolated.toString()).to.eq('<div><div>Yo</div></div>')
+  })
+
   it('can handle state updates in inlined components', () => {
     const ToggleButton = (props: { text: string }) => {
       const [toggled, setToggled] = React.useState(false)
