@@ -26,10 +26,11 @@ describe('getting component content', () => {
         <Child>a b c</Child>
       </Parent>
     )
+    expect(isolated.content()).to.eq('<Child>a b c</Child>')
+    expect(isolated.toString()).to.eq('<div><Child>a b c</Child></div>')
   })
 
   it('handles fragments', () => {
-    const answer = isolateComponent(<Answer answer={42} />)
     const FragmentExample = () => (
       <>
         <div>A</div>
@@ -39,6 +40,14 @@ describe('getting component content', () => {
 
     const isolated = isolateComponent(<FragmentExample />)
     expect(isolated.content()).to.eq('<div>A</div><div>B</div>')
+  })
+
+  it('handles child function', () => {
+    const FragmentExample = () => <div>{() => '42'}</div>
+
+    const isolated = isolateComponent(<FragmentExample />)
+    expect(isolated.content()).to.eq('[Function]')
+    expect(isolated.toString()).to.eq('<div>[Function]</div>')
   })
 
   it('handles deep fragments', () => {
