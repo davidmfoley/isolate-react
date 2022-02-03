@@ -1,7 +1,7 @@
 import { describe, it, beforeEach } from 'mocha'
 import { expect } from 'chai'
 
-import isolateHook from '../../src/isolateHook'
+import { isolateHook } from '../../src/isolateHook'
 import { useEffect, useLayoutEffect, useState } from 'react'
 
 describe('effects', () => {

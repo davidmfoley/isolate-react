@@ -1,7 +1,7 @@
-import { describe, it, beforeEach, afterEach } from 'mocha'
+import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
-import isolateHook from '../../src/isolateHook'
+import { isolateHook } from '../../src/isolateHook'
 import { useReducer } from 'react'
 
 describe('useReducer', () => {

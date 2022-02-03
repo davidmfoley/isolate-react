@@ -1,13 +1,13 @@
-import { describe, it, beforeEach, afterEach } from 'mocha'
+import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
-import isolateHook from '../../src/isolateHook'
+import { isolateHook } from '../../src/isolateHook'
 import { useState } from 'react'
 
 describe('useState', () => {
   it('has initial value', () => {
     const useStateExample = () => {
-      const [value, setter] = useState('initial')
+      const [value] = useState('initial')
       return value
     }
 

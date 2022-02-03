@@ -1,31 +1,8 @@
 import { createEffectSet } from './effectSet'
+import { IsolatedHookOptions } from './types/IsolatedHookOptions'
 export type IsolatedHookState = ReturnType<typeof createIsolatedHookState>
 
 type HookState<T> = [{ value: T }, (value: (previous: T) => T) => void]
-
-/**
- * A context value used for testing useContext
- */
-interface IsolatedHookContext {
-  /**
-   * The type of context. The return value of `React.CreateContext`.
-   */
-  type: React.Context<any>
-  /**
-   * Value for the context.
-   */
-  value: any
-}
-
-/**
- * Options when isolating hook, passed as 2nd argument
- */
-export type IsolatedHookOptions = {
-  /**
-   * An array of context values, useful when testing useContext
-   */
-  context?: IsolatedHookContext[]
-}
 
 type StateType =
   | 'useRef'
