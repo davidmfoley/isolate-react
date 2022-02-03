@@ -89,6 +89,17 @@ describe('nodeTree ', () => {
     expect(fn()).to.eql('hi')
   })
 
+  it('throws non-ridiculous errors with child functions', () => {
+    const Parent = ({ children }) => <div>{children}</div>
+    const tree = nodeTree(
+      <Parent>{() => 'hi'}</Parent>,
+      getNullRenderer,
+      nullShouldInline
+    )
+    // don't include the function body in the error message
+    expect(() => tree.findOne('li')).to.throw(/<Parent>\[Function\]/)
+  })
+
   it('can find children', () => {
     const tree = nodeTree(
       <section>
