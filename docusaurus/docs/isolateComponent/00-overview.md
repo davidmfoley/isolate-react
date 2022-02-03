@@ -2,28 +2,7 @@
 title: Overview
 ---
 
-`isolateComponent` renders a react component in isolation and gives you a set of tools for testing its behavior. 
+`isolateComponent` renders a react component, and provides you a set of tools for testing its behavior. 
  
-# TLDR
-```javascript
-import { isolateComponent } from 'isolate-react'
-import React, { useState } from 'react'
+It allows testing a single component (without rendering any child components), and also supports testing multiple components that work together. The next couple of pages show examples of each.
 
-// this is the component we want to test
-const CounterButton = () => {
-  const [count, setCount] = useState(0)
-  return (
-  <div>
-    <span className="count">{count}</span>
-    <button type='button' onClick= {() => setCount(count + 1)}>+1</button>
-  </div>
-  )
-}
-
-test('starts at zero', () => {
-  const button = isolateComponent(<CounterButton />)
-  expect(button.
-})
-```
-
- `isolateComponent` 
