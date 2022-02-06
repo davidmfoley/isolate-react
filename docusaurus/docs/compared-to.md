@@ -13,10 +13,10 @@ Enzyme shallow works great for react class components but doesn't support the fu
 
 These tools allow testing components and hooks but they:
 
-1. Require a dom emulator. This makes tests run _very_ slowly compared to tests that use isolate-components.
-1. Require testing _all_ rendered components. This is _sometimes_ desirable but often is not. isolate-components allows you to test a single component in isolation, or to test multiple components together -- it's up to you.
+1. Require a dom emulator. This makes tests run _very_ slowly compared to tests that use isolate-react.
+1. Require testing _all_ rendered components. This is _sometimes_ desirable but often is not. isolate-react allows you to test a single component in isolation, or to test multiple components together -- it's up to you.
 
 ### cypress, selenium, etc.
 
-Cypress and similar tools are used for _acceptance testing_. `isolate-components` facilitates isolated testing of a single component (_unit testing_) or a small set of components. Acceptance testing is orthogonal to unit testing -- you can do either or both.
+Cypress and similar tools are used for _acceptance testing_. `isolate-react` facilitates isolated testing of a single component (_unit testing_) or a small set of components. Acceptance testing is orthogonal to unit testing -- you can do either or both.
 

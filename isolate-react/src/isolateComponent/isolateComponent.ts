@@ -52,7 +52,7 @@ const isolateComponentWithContext = (contexts: Contexts) =>
  * @example Import isolateComponent
  *
  * ```js
- * import { isolateComponent } from 'isolate-components'
+ * import { isolateComponent } from 'isolate-react'
  * ```
  *
  * @example Basic usage

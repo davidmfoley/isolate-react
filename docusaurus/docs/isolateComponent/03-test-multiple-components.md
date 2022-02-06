@@ -4,7 +4,7 @@ title: Test multiple components
 
 Sometimes we want to test a component by rendering its entire component tree. You may be familiar with this technique from using enzyme's `mount` functionality or `react-testing-library`.
 
-With isolate-components, you can choose render none, some, or all of the components in the "tree" of elements that are returned by the component you are testing.
+With isolateComponent, you can choose render none, some, or all of the components in the "tree" of elements that are returned by the component you are testing.
 
 An isolated component exposes a method `inline()` that will render elements that are part of the component's rendered output.
 
