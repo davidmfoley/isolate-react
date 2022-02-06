@@ -1,5 +1,5 @@
 {
-  "name": "isolate-hooks",
+  "name": "isolate-react-examples",
   "version": "2.0.0",
   "repository": "https://github.com/davidmfoley/isolate-react",
   "main": "lib/index.js",
@@ -17,11 +17,15 @@
     "fix:prettier": "prettier --write './**/*.{ts,tsx}'",
     "ci": "yarn examples && yarn prettier"
   },
-  "dependencies": {
-    "isolate-react": "*"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "@types/react": "^17.0.39",
+    "isolate-react": "*",
     "jest": "^27.4.7",
-    "ts-jest": "^27.1.2"
+    "prettier": "^2.5.1",
+    "react": "^17.0.2",
+    "ts-jest": "^27.1.2",
+    "typescript": "^4.5.5"
   }
 }

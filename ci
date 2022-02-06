@@ -1,0 +1,16 @@
+#! /bin/bash
+
+pushd isolate-react
+yarn
+yarn ci
+popd
+
+pushd examples
+yarn
+yarn ci
+popd
+
+pushd docusaurus
+yarn
+yarn build
+popd
