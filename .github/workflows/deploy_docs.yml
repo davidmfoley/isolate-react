@@ -8,22 +8,23 @@ jobs:
   deploy:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docusaurus
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
-        working-directory: docusaurus
         with:
           node-version: 14.x
           cache: yarn
       - name: Build docs
-        working-directory: docusaurus
         run: |
           yarn install --frozen-lockfile
           yarn build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
-        working-directory: docusaurus
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
