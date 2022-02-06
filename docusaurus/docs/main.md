@@ -1,16 +1,18 @@
 ---
 id: main
-title: Overview
+title: isolate-react
 ---
 
 ## Test-drive react components and hooks
 
-isolate-react gives you tools to test-drive your react components that focus on speed and simplicity.
+isolate-react is the missing tool for test-driving your react components.
+
+It's focused on speed and simplicity, has zero dependencies, doesn't require a DOM emulator, and supports any test runner.
 
 ### Flexible support for whatever level of testing you prefer:
 - [x] Test custom hooks
 - [x] Render a single component at a time (isolated/unit testing) 
-- [x] Render multiple components toegether (integrated testing)
+- [x] Render multiple components together (integrated testing)
 
 ### Low-friction:
 - [x] Works with any test runner that runs in node (jest, mocha, tape, tap, etc.)
@@ -21,27 +23,9 @@ isolate-react gives you tools to test-drive your react components that focus on 
 
 `isolate-react` exports two main functions:
 
-### isolateHook
-
-[isolateHook](isolateHook/01-overview.md) enables unit-testing hooks.
-
-### isolateComponent
-
-[isolateComponent](isolateComponent/01-overview.md) enables unit-testing react components.
-
-
 ## Usage
 
-See [API documentation](https://davidmfoley.github.io/isolate-react/globals.html#isolatecomponent).
-
-
-
-
-### Isolated component API
-
-An isolated component has some methods to help exercise and inspect it.
-
-See the [API docs](https://davidmfoley.github.io/isolate-react/api)
+See the [API documentation](./api.md) for usage, or jump right into the documentation for [isolateComponent](./isolateComponent/01-overview.md) or [isolateHook](./isolateHook/01-overview.md)
 
 ### Issues & Progress
 
