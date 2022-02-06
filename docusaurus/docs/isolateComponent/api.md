@@ -22,50 +22,75 @@ const Hello = (props) => <div>Hello {props.name}</div>
 const isolated = isolateComponent(<Hello name="Arthur" />)
 ```
 
-
 ## IsolatedComponent
 
 `IsolatedComponent` is the return type of [isolateComponent](#isolatecomponent). It provides methods for exploring and manipulating the isolated component.
 
-### mergeProps(partialProps)
+### content(), toString()
+
+Returns a string representation of the component's content.
+
+### inline(selector)
+
+Finds all components that match the given [Selector](#selector) and inlines them, incorporating them into the rendered output.
+Allows for testing some or all of the child components rendered by the isolated component together.
+
+### setProps and mergeProps
+
+These methods both update the props of the component under test. The difference is that mergeProps preserves the props that are not set, while setProps replaces all of the props.
+
+#### mergeProps(newProps)
 
 Set a subset of props, and re-render the component under test.
 
 ```javascript
-const Hello = (props) => <div>Hello {props.name}</div>
+const FirstLast = (props) => <div>{props.first} {props.last}</div>
 
-const isolated = isolateComponent(<Hello name="Arthur" />)
-
-isolated.mergeProps({name: 
+const isolated = isolateComponent(<FirstLast first="Ford" last="Prefect" />)
+console.log(isolated.toString())    // => <div>Ford Prefect</div>
+isolated.mergeProps({last: Focus})
+console.log(isolated.toString())    // => <div>Ford Focus</div>
 ```
 
-### setProps(newProps)
+#### setProps(newProps)
 
 Replace all props, and re-render the component under test
 
-### content()
+```javascript
+const FirstLast = (props) => <div>{props.first} {props.last}</div>
 
-Returns a string representation of the component's content.
-
-### toString()
-
-Returns a string representation of the component's content.
+const isolated = isolateComponent(<FirstLast first="Ford" last="Prefect" />)
+console.log(isolated.toString()())    // => <div>Ford Prefect</div>
+isolated.mergeProps({first: 'Arthur', last: 'Dent'})
+console.log(isolated.toString()())    // => <div>Arthur Dent</div>
+```
 
 ### cleanup()
 
 Cleans up the component and runs all effect cleanups (functions returned by useEffect handlers).
+
 This is equivalent to unmounting a component/removing it from the tree.
 
 ### setContext
 
 Set a context value.
 
-Useful when testing a component that uses `useContext`
+Useful when testing a component that uses values from `useContext:`
 
-### inline(selector)
+```javascript
+const NameContext = createContext('Zaphod')
 
-Finds all components that match the given [Selector](#selector) and inlines them, incorporating them into the rendered output.
-Allows for testing some or all of the child components rendered by the isolated component together.
+const HelloFromContext = () => {
+  const name = useContext(NameContext)
+  return <div>Hello ${name}</div>
+}
+
+const isolated = isolateComponent(<Hello />)
+console.log(isolated.toString()())    // => <div>Zaphod</div>
+
+isolated.setContext(NameContext, 'Trillian')
+console.log(isolated.toString()())    // => <div>Trillian</div>
+```
 
 ### findAll(selector)
 
