@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'isolate-react',
-  tagline: 'Test-driven react (like you mean it)',
+  tagline: 'The missing tool for testing react applications',
   url: 'https://davidmfoley.github.io',
   baseUrl: '/isolate-react/',
   onBrokenLinks: 'throw',
@@ -59,7 +59,7 @@ const config = {
       },
       footer: {
         style: 'dark',
-        copyright: `Copyright © ${new Date().getFullYear()} Dave Foley. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Dave Foley`,
       },
       prism: {
         theme: lightCodeTheme,

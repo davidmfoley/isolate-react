@@ -1,6 +1,6 @@
 ---
 id: main
-title: isolate-react
+title: Overview
 ---
 
 ## Test-drive react components and hooks
