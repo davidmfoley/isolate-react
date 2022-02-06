@@ -1,18 +1,19 @@
 ---
-id: hello
-title: hello
+id: main
+title: Overview
 ---
 
-## Test-drive react components
+## Test-drive react components and hooks
 
 ### Flexible support for whatever level of testing you prefer:
+- [x] Test custom hooks
 - [x] Render a single component at a time (isolated/unit testing) 
 - [x] Render multiple components toegether (integrated testing)
 
-### Low -friction:
+### Low-friction:
 - [x] Works with any test runner that runs in node (jest, mocha, tape, tap, etc.)
 - [x] Full hook support
-- [x] Easy access to set context values needed for testing.
+- [x] Easy access to set context values needed for testing
 - [x] No virtual DOM or other tools to install
 - [x] Very fast
 
@@ -40,23 +41,6 @@ Approaches that require a DOM emulator to test react components will always be s
 Other options that are fast, such as enzyme's `shallow`, rely on a poorly-maintained shallow renderer that is part of react. This renderer doesn't fully support hooks, so they don't support testing any functional component that uses useEffect or useContext.
 
 Fast, isolated automated testing tools are useful for test-driven development practices.
-
-## How does this compare to (insert tool here)?
-
-### enzyme shallow
-
-Enzyme shallow works great for react class components but doesn't support the full set of hooks necessary to build stateful functional components.
-
-### enzyme mount and react-testing-library
-
-These tools allow testing components that use hooks but they:
-
-1. Require a dom emulator. This makes tests run _very_ slow compared to isolate-components.
-1. Require testing _all_ rendered components. This is _sometimes_ desirable but often is not. isolate-components allows you to test a single component in isolation, or to test multiple components together -- it's up to you.
-
-### cypress, selenium, etc.
-
-Cypress and similar tools are used for _acceptance testing_. `isolate-components` facilitates isolated testing of a single component (_unit testing_) or a small set of components. Acceptance testing is orthogonal to unit testing -- you can do either or both.
 
 ## Installation
 

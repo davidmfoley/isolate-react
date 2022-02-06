@@ -1,8 +1,6 @@
 ---
-title: API documentation
+title: isolateComponent API
 ---
-
-## isolateComponent API
 
 ### isolateComponent
 
