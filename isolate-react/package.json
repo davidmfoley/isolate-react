@@ -11,11 +11,8 @@
     "lib/**/*"
   ],
   "scripts": {
-    "build": "yarn clean && yarn build:tsc && yarn docs",
+    "build": "yarn clean && yarn build:tsc",
     "build:tsc": "tsc -p tsconfig.build.json",
-    "docs": "yarn docs:clean && yarn docs:typedoc",
-    "docs:clean": "rm -rf ./docs/api",
-    "docs:typedoc": "typedoc --plugin typedoc-plugin-markdown --options typedoc.json src/index.ts ",
     "clean": "rm -rf ./lib/",
     "test": "mocha",
     "test:watch": "nodemon -q -e ts,tsx --exec \"yarn test\" --watch src --watch test",
