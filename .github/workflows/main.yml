@@ -1,4 +1,4 @@
-name: isolate-react
+name: Checks
 on: [push]
 
 jobs:
