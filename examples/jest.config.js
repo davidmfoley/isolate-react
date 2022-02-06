@@ -2,6 +2,6 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  testMatch: ["**/**_test.tsx"]
+  testMatch: ["**/**_test.{ts,tsx}"]
 
 };

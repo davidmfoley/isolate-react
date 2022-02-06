@@ -29,10 +29,14 @@ export const useTodos = (): TodoState => {
   return {
     todos,
 
-    addTodo: (title: string) =>
-      setTodos([...todos, { id: nextId(), title, state: 'todo' }]),
+    addTodo: (title: string) => {
+      const newTodo = { id: nextId(), title, state: 'todo' }
+      setTodos([...todos, newTodo])
+    },
 
-    deleteTodo: (id: TodoId) => setTodos(todos.filter((t) => t.id !== id)),
+    deleteTodo: (id: TodoId) => {
+      setTodos(todos.filter((t) => t.id !== id))
+    },
 
     updateTodoTitle: (id: TodoId, title: string) =>
       updateById(id, (t) => ({ ...t, title })),
