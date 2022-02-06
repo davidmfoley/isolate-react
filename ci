@@ -9,8 +9,3 @@ pushd examples
 yarn
 yarn ci
 popd
-
-pushd docusaurus
-yarn
-yarn build
-popd

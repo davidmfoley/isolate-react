@@ -59,18 +59,7 @@ const config = {
       },
       footer: {
         style: 'dark',
-        links: [
-          {
-            title: 'Docs',
-            items: [
-              {
-                label: 'Welcome',
-                to: '/docs/welcome',
-              },
-            ],
-          },
-        ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Dave Foley. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
