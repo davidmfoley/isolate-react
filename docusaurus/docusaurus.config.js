@@ -46,7 +46,7 @@ const config = {
             label: 'Hello',
           },
           {
-            href: 'https://github.com/davidmfoley/isolate-components',
+            href: 'https://github.com/davidmfoley/isolate-react',
             label: 'GitHub',
             position: 'right',
           },
@@ -59,8 +59,8 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/intro',
+                label: 'Welcome',
+                to: '/docs/welcome',
               },
             ],
           },
