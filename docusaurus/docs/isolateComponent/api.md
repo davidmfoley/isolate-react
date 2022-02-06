@@ -2,6 +2,7 @@
 title: isolateComponent API
 ---
 
+
 ## isolateComponent
 
 `isolateComponent` accepts React elements, usually rendered with JSX, and returns an [IsolatedComponent](#isolatedcomponent)
@@ -31,7 +32,11 @@ const isolated = isolateComponent(<Hello name="Arthur" />)
 Set a subset of props, and re-render the component under test.
 
 ```javascript
-  mergeProps(props: Partial<Props>): void
+const Hello = (props) => <div>Hello {props.name}</div>
+
+const isolated = isolateComponent(<Hello name="Arthur" />)
+
+isolated.mergeProps({name: 
 ```
 
 ### setProps(newProps)
