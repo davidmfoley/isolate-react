@@ -4,6 +4,7 @@ import { createIsolatedDispatcher } from './dispatcher'
 import { createIsolatedHookState } from './isolatedHookState'
 import { IsolatedHook } from './types/IsolatedHook'
 import { IsolatedHookOptions } from './types/IsolatedHookOptions'
+import { IsolateHook } from './types/IsolateHook'
 
 const { ReactCurrentDispatcher } = (React as any)
   .__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
@@ -24,11 +25,12 @@ const checkHookFunction = (fn: any) => {
 }
 
 /**
- * Run a react hook in isolation
+ * @category Entry Point
+ * @returns IsolatedHook
  * @param hookInvocation The hook to isolate.
  * @param options Optional options, for specifying context values.
  */
-export const isolateHook = <F extends (...args: any[]) => any>(
+export const isolateHook: IsolateHook = <F extends (...args: any[]) => any>(
   hookInvocation: F,
   options: IsolatedHookOptions = {}
 ): IsolatedHook<F> => {

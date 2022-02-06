@@ -26,18 +26,3 @@ export type IsolatedHookMethods<F extends (...args: any) => any> = {
  */
 export type IsolatedHook<F extends (...args: any) => any> =
   IsolatedHookMethods<F> & F
-
-const checkHookFunction = (fn: any) => {
-  if (fn === null) {
-    throw new Error('isolateHooks: Expected a hook function but got null')
-  }
-  if (fn === undefined) {
-    throw new Error('isolateHooks: Expected a hook function but got undefined')
-  }
-
-  if (typeof fn !== 'function') {
-    throw new Error(
-      `isolateHooks: Expected a hook function but got ${typeof fn} (${fn})`
-    )
-  }
-}

@@ -3,6 +3,5 @@
   "tsconfig": "tsconfig.build.json",
   "out": "../docs/api",
   "categorizeByGroup": false,
-  "disableSources": true,
-  "toc": ["IsolateComponent", "IsolatedComponent"]
+  "disableSources": true
 }
