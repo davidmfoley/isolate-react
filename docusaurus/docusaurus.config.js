@@ -41,13 +41,18 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'hello',
+            docId: 'main',
             position: 'left',
-            label: 'Hello',
+            label: 'isolate-react',
           },
           {
             href: 'https://github.com/davidmfoley/isolate-react',
             label: 'GitHub',
+            position: 'right',
+          },
+          {
+            href: 'https://npmjs.com/package/isolate-react',
+            label: 'NPM',
             position: 'right',
           },
         ],
