@@ -12,6 +12,12 @@ function HomepageHeader() {
       <div className="container">
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p>No dependencies</p>
+        <p>No DOM emulators</p>
+        <p>Ultra-fast tests</p>
+        <p>Test your custom hooks</p>
+        <p>Test your components</p>
+        <p>Test anything</p>
         <div className={styles.buttons}>
           <Link className="button button--secondary button--lg" to="/docs/main">
             To the Docs!

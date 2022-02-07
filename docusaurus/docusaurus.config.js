@@ -40,12 +40,6 @@ const config = {
         title: 'isolate-react',
         items: [
           {
-            type: 'doc',
-            docId: 'main',
-            position: 'left',
-            label: 'isolate-react',
-          },
-          {
             href: 'https://github.com/davidmfoley/isolate-react',
             label: 'GitHub',
             position: 'right',
