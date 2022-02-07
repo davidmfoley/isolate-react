@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "examples": "jest",
-    "examples:watch": "nodemon -q -e ts,tsx --exec \"yarn examples\" --watch .",
+    "examples:watch": "jest --watch",
     "prettier": "prettier -c './**/*.{ts,tsx}'",
     "fix:prettier": "prettier --write './**/*.{ts,tsx}'",
     "ci": "yarn examples && yarn prettier"

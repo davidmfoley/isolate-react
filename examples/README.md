@@ -8,5 +8,10 @@ You can clone these examples and run them yourself:
 
 `yarn`
 
+Run the examples once:
+
 `yarn examples`
 
+Watch the examples and run them on change:
+
+`yarn examples`
