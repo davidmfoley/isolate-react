@@ -32,12 +32,12 @@ const isolated = isolateComponent(<Hello name="Arthur" />)
 
 ### content()
 
-returns the component's *outer content*.
+returns the component's *inner* content.
 
 
 ### toString()
 
-returns the component's *inner content*.
+returns the component's *outer* content.
 
 ```javascript
 const Answer = ({ answer }: { answer: number }) => (
@@ -45,8 +45,8 @@ const Answer = ({ answer }: { answer: number }) => (
 )
 
 const answer = isolateComponent(<Answer answer={42} />)
-console.log(answer.content()).to.eq('The answer is 42')
-console.log(answer.toString()).to.eq('<span>The answer is 42</span>')
+console.log(answer.content()) // => 'The answer is 42'
+console.log(answer.toString()) // => '<span>The answer is 42</span>'
 ```
 
 ## IsolatedComponent: find child nodes
