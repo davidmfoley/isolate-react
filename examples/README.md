@@ -14,4 +14,4 @@ Run the examples once:
 
 Watch the examples and run them on change:
 
-`yarn examples`
+`yarn examples:watch`
