@@ -18,6 +18,7 @@ function HomepageHeader() {
         <p>Test your custom hooks</p>
         <p>Test your components</p>
         <p>Test anything</p>
+        <p>Test everything</p>
         <div className={styles.buttons}>
           <Link className="button button--secondary button--lg" to="/docs/main">
             To the Docs!

@@ -3,7 +3,9 @@ title: API
 ---
 
 
-## isolateComponent
+# isolateComponent API
+
+## isolateComponent()
 
 `isolateComponent` accepts React elements, usually rendered with JSX, and returns an [IsolatedComponent](#isolatedcomponent)
 
@@ -22,24 +24,65 @@ const Hello = (props) => <div>Hello {props.name}</div>
 const isolated = isolateComponent(<Hello name="Arthur" />)
 ```
 
-## IsolatedComponent
+# IsolatedComponent
 
 `IsolatedComponent` is the return type of [isolateComponent](#isolatecomponent). It provides methods for exploring and manipulating the isolated component.
 
-### content(), toString()
+## IsolatedComponent: inspect content
 
-Returns a string representation of the component's content.
+### content()
+
+returns the component's *outer content*.
+
+
+### toString()
+
+returns the component's *inner content*.
+
+```javascript
+const Answer = ({ answer }: { answer: number }) => (
+  <span>The answer is {answer}</span>
+)
+
+const answer = isolateComponent(<Answer answer={42} />)
+console.log(answer.content()).to.eq('The answer is 42')
+console.log(answer.toString()).to.eq('<span>The answer is 42</span>')
+```
+
+## IsolatedComponent: find child nodes
+
+### findAll(selector)
+
+Find all nodes that match the given [Selector](#selector).
+
+Returns an array of [ComponentNodes](#componentnode).
+
+
+### findOne(selector)
+
+Find a single child node that matches the given [Selector](#selector).
+
+Returns a [ComponentNode](#componentnode) if and only if there is a single matching node.
+
+Throws an Error if there are zero or multiple matching nodes.
+
+### exists(selector)
+
+Check for the existence of any html elements or react components matching the selector.
+Returns true if any found, false if none found.
+
+## IsolatedComponent: inline child components
 
 ### inline(selector)
 
 Finds all components that match the given [Selector](#selector) and inlines them, incorporating them into the rendered output.
 Allows for testing some or all of the child components rendered by the isolated component together.
 
-### setProps and mergeProps
+## IsolatedComponent: Update props
 
 These methods both update the props of the component under test. The difference is that mergeProps preserves the props that are not set, while setProps replaces all of the props.
 
-#### mergeProps(newProps)
+### mergeProps(newProps)
 
 Set a subset of props, and re-render the component under test.
 
@@ -52,7 +95,7 @@ isolated.mergeProps({last: Focus})
 console.log(isolated.toString())    // => <div>Ford Focus</div>
 ```
 
-#### setProps(newProps)
+### setProps(newProps)
 
 Replace all props, and re-render the component under test
 
@@ -61,15 +104,30 @@ const FirstLast = (props) => <div>{props.first} {props.last}</div>
 
 const isolated = isolateComponent(<FirstLast first="Ford" last="Prefect" />)
 console.log(isolated.toString()())    // => <div>Ford Prefect</div>
-isolated.mergeProps({first: 'Arthur', last: 'Dent'})
+isolated.setProps({first: 'Arthur', last: 'Dent'})
 console.log(isolated.toString()())    // => <div>Arthur Dent</div>
 ```
 
 ### cleanup()
 
-Cleans up the component and runs all effect cleanups (functions returned by useEffect handlers).
+Cleans up the component and runs all effect cleanups (functions returned by useEffect or useLayoutEffect handlers).
 
 This is equivalent to unmounting a component/removing it from the tree.
+
+```javascript
+
+// component that logs 'Goodbye' on unmount:
+const Goodbye = () => {
+  useEffect(() => {
+    return () => { console.log('Goodbye') }
+  }, [])
+
+  return <div />
+}
+
+const isolated = isolateComponent(<Goodbye />)
+isolated.cleanup() // Logs 'Goodbye'
+```
 
 ### setContext
 
@@ -91,26 +149,6 @@ console.log(isolated.toString()())    // => <div>Zaphod</div>
 isolated.setContext(NameContext, 'Trillian')
 console.log(isolated.toString()())    // => <div>Trillian</div>
 ```
-
-### findAll(selector)
-
-Find all nodes that match the given [Selector](#selector).
-
-Returns an array of [ComponentNodes](#componentnode).
-
-
-### findOne(selector)
-
-Find a single child node that matches the given [Selector](#selector).
-
-Returns a [ComponentNode](#componentnode) if and only if there is a single matching node.
-
-Throws an Error if there are zero or multiple matching nodes.
-
-### exists(selector)
-
-Check for the existence of any html elements or react components matching the selector.
-Returns true if any found, false if none found.
 
 ## Selector
 
@@ -144,7 +182,6 @@ Selector strings support a subset of css-like matching, including matching id or
 ### React component as selector
 
 You can use a react component function as a selector
-
 
 ## ComponentNode
 
