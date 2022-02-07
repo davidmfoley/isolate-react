@@ -1,5 +1,5 @@
 ---
-title: isolateComponent API
+title: API
 ---
 
 

@@ -1,5 +1,5 @@
 ---
-title: isolateHook API
+title: API
 ---
 
 ## isolateHook(hookToIsolate)
