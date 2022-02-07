@@ -95,3 +95,12 @@ Simulate interactions by using `findOne` or `findAll` to find rendered component
   button.findOne('button').props.onClick()
 ```
 
+### Step 4: Verify the updated content
+
+Again, there are a few different ways to do this:
+
+```javascript
+  expect(button.content()).toContain('3')
+
+  expect(button.findOne('span.count').content()).toEqual('0')
+```
