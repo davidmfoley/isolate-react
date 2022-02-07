@@ -1,1 +1,1 @@
-A very simple example showing the very basics of `isolateComponent`
+A simple example showing the very basics of `isolateComponent`
