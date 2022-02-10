@@ -99,11 +99,10 @@ export const createIsolatedDispatcher = (
     useLayoutEffect: useLayoutEffect as any,
     useContext: (type) => isolatedHookState.contextValue(type),
     useRef: (initialValue?: any) => {
-      const [ref] = isolatedHookState.nextHookState(
-        'useRef',
-        () => initialValue
-      )
-      return { current: ref.value }
+      const [ref] = isolatedHookState.nextHookState('useRef', () => ({
+        current: initialValue,
+      }))
+      return ref.value
     },
   }
 }

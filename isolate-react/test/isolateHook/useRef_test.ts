@@ -2,7 +2,7 @@ import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
 import { isolateHook } from '../../src/isolateHook'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 describe('useRef', () => {
   const useRefExample = (refValue: string) => {
@@ -21,5 +21,22 @@ describe('useRef', () => {
     isolated.invoke()
 
     expect(isolated.currentValue()).to.eq('ford')
+  })
+
+  it('maintains same reference each invocation', () => {
+    const useMounted = () => {
+      const mounted = useRef(true)
+      useEffect(
+        () => () => {
+          mounted.current = false
+        },
+        []
+      )
+
+      return mounted
+    }
+
+    const isolated = isolateHook(useMounted)
+    expect(isolated()).to.eq(isolated())
   })
 })

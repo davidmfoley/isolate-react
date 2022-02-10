@@ -68,7 +68,7 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
 
   const setRef = (index: number, value: any) => {
     const refs = hookStates.filter((s) => s.type === 'useRef')
-    refs[index].value = value
+    refs[index].value.current = value
   }
 
   const contextValue = (type: React.Context<any>) =>
