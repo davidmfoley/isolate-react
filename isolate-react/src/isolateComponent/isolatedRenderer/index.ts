@@ -84,6 +84,7 @@ export const isolatedRenderer = (
       render: hookRenderer,
       cleanup: () => hookRenderer.cleanup(),
       setProps,
+      setRef: hookRenderer.setRef,
       setContext: (t: any, v: any) => {
         if (componentIsContextProviderForType(component, t)) return
         setContext(t, v)

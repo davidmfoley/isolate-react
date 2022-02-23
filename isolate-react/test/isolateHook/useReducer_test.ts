@@ -29,4 +29,11 @@ describe('useReducer', () => {
     const [count] = isolated()
     expect(count).to.eq(3)
   })
+
+  it('returns a stable dispatch', () => {
+    const isolated = isolateHook(() => useReducer(counter, 0))
+    const [, dispatch1] = isolated()
+    const [, dispatch2] = isolated()
+    expect(dispatch1).to.eq(dispatch2)
+  })
 })

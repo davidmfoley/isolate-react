@@ -52,10 +52,20 @@ describe('useState', () => {
     }
 
     const isolated = isolateHook(useStateExample)
-    const [value, setValue] = isolated()
+    const [, setValue] = isolated()
     setValue(() => 'updated')
 
     expect(isolated()[0]).to.equal('updated')
+  })
+
+  it('state setter is stable across invocations', () => {
+    const useStability = () => {
+      const [state, setState] = useState('blah')
+      return setState
+    }
+
+    const isolated = isolateHook(useStability)
+    expect(isolated()).to.eq(isolated())
   })
 
   describe('with two independent setStates', () => {

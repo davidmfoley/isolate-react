@@ -23,6 +23,7 @@ const isolateComponent_ = <P>(
     mergeProps: instance.mergeProps,
     setProps: instance.setProps,
     setContext: instance.setContext,
+    setRef: instance.setRef,
     content: () => instance.tree().content(),
     toString: () => instance.tree().toString(),
     debug: () => instance.tree().debug(),

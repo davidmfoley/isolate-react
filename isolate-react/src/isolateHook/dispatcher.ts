@@ -27,15 +27,22 @@ export const createIsolatedDispatcher = (
       ? initialState
       : () => initialState) as unknown as () => T
 
-    const [state, updateState] = isolatedHookState.nextHookState(
-      'useState',
-      factory
-    )
+    const [state, updateState] = isolatedHookState.nextHookState<T>({
+      type: 'useState',
+      create: factory,
+      update: (current: T, next: T | React.SetStateAction<T>) => {
+        if (next instanceof Function) {
+          return { value: next(current) }
+        }
+        return { value: next }
+      },
+    })
 
     return [
       state.value,
-      (next: T | ((current: T) => T)) =>
-        updateState(typeof next === 'function' ? (next as any) : () => next),
+      updateState,
+      /*
+       */
     ]
   }
 
@@ -47,16 +54,15 @@ export const createIsolatedDispatcher = (
       ? initialState
       : () => initialState) as unknown as () => S
 
-    const [state, updateState] = isolatedHookState.nextHookState(
-      'useReducer',
-      factory
-    )
+    const [state, updateState] = isolatedHookState.nextHookState({
+      type: 'useReducer',
+      create: factory,
+      update: (current: S, action: A) => ({
+        value: reducer(current, action),
+      }),
+    })
 
-    const dispatch = (action: A) => {
-      updateState((prev: S) => reducer(prev, action))
-    }
-
-    return [state.value, dispatch]
+    return [state.value, updateState as any]
   }
   type Deps = any[] | undefined
 
@@ -74,10 +80,13 @@ export const createIsolatedDispatcher = (
     fn: Function,
     deps: any
   ) => {
-    const [state] = isolatedHookState.nextHookState(type, () => ({
-      value: fn(),
-      deps,
-    }))
+    const [state] = isolatedHookState.nextHookState({
+      type,
+      create: () => ({
+        value: fn(),
+        deps,
+      }),
+    })
     if (dirtyDependencies(deps, state.value.deps)) {
       state.value.value = fn()
       state.value.deps = deps
@@ -99,9 +108,12 @@ export const createIsolatedDispatcher = (
     useLayoutEffect: useLayoutEffect as any,
     useContext: (type) => isolatedHookState.contextValue(type),
     useRef: (initialValue?: any) => {
-      const [ref] = isolatedHookState.nextHookState('useRef', () => ({
-        current: initialValue,
-      }))
+      const [ref] = isolatedHookState.nextHookState({
+        type: 'useRef',
+        create: () => ({
+          current: initialValue,
+        }),
+      })
       return ref.value
     },
   }

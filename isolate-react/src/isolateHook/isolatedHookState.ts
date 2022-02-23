@@ -3,6 +3,16 @@ import { IsolatedHookOptions } from './types/IsolatedHookOptions'
 export type IsolatedHookState = ReturnType<typeof createIsolatedHookState>
 
 type HookState<T> = [{ value: T }, (value: (previous: T) => T) => void]
+interface HookStateDef<T> {
+  type: StateType
+  create: () => T
+  update?: (
+    current: T,
+    next: any
+  ) => {
+    value: T
+  }
+}
 
 type StateType =
   | 'useRef'
@@ -32,28 +42,42 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
 
   let onUpdated = () => {}
 
-  const updater = (target: any) => (nextValue: (previous: any) => any) => {
-    target.value = nextValue(target.value)
-    if (!dirty) {
-      dirty = true
-      onUpdated()
-    }
-  }
-
-  const addHookState = <T>(type: StateType, value: T): HookState<T> => {
-    let newState = { value, type }
-    nextHookStates.push(newState)
-    return [newState, updater(newState)]
-  }
-
-  const nextHookState = <T>(
+  const addHookState = <T>(
     type: StateType,
-    factory: () => T
+    value: T,
+    updateValue?: any
   ): HookState<T> => {
-    if (first) return addHookState(type, factory())
+    let newState = { value, type }
+
+    const updater = updateValue
+      ? (next: any) => {
+          const updateResult = updateValue(newState.value, next)
+
+          newState.value = updateResult.value
+
+          dirty = true
+          onUpdated()
+        }
+      : () => {
+          throw new Error(`Could not update ${type}`)
+        }
+
+    const state = [newState, updater] as HookState<T>
+
+    nextHookStates.push(state)
+
+    return state
+  }
+
+  const nextHookState = <T>({
+    type,
+    create,
+    update,
+  }: HookStateDef<T>): HookState<T> => {
+    if (first) return addHookState(type, create(), update)
     let state = hookStates.shift()
     nextHookStates.push(state)
-    return [state, updater(state)]
+    return state
   }
 
   const endPass = () => {
@@ -67,8 +91,8 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
   }
 
   const setRef = (index: number, value: any) => {
-    const refs = hookStates.filter((s) => s.type === 'useRef')
-    refs[index].value.current = value
+    const refs = hookStates.filter(([s]) => s.type === 'useRef')
+    refs[index][0].value.current = value
   }
 
   const contextValue = (type: React.Context<any>) =>
