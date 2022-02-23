@@ -7,6 +7,7 @@ export interface ComponentInstance<P> {
   cleanup: () => void
   setProps: (props: P) => void
   setContext: <T>(type: React.Context<T>, value: T) => void
+  setRef: (index: number, value?: any) => void
   tree(): NodeTree
   mergeProps: (props: Partial<P>) => void
   inlineAll: (selector: Selector) => void

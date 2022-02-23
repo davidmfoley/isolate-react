@@ -31,36 +31,30 @@ export interface IsolatedComponent<Props> extends QueryableNode {
   mergeProps(props: Partial<Props>): void
 
   /**
-   * Set a context value.
+   * Set a context value and triggers rendering of components that depend on it.
    *
    * Useful when testing a component that uses `useContext`
    *
    * @param type - A React.Context -- this is the value returned from React.createContext().
-   * @example
-   * ```js
-   * const currentUserContext = React.createContext({ id: 0, name: 'unknown' })
-   *
-   * const Greeting = () => {
-   *   const currentUser = useContext(currentUserContext)
-   *   return <h2>Hello {currentUser.name}</h2>
-   * }
-   *
-   * const component = isolateComponent(
-   *   <Greeting/>
-   * )
-   *
-   * component.setContext(
-   *   currentUserContext,
-   *   { id: 42, name: 'arthur' }
-   * })
-   *
-   * console.log(component.findOne('h2').content())
-   * // logs: "Hello arthur"
-   *
-   * ```
-   *
+   * @param value - The value of the context to set
    */
   setContext: <T>(type: React.Context<T>, value: T) => void
+
+  /**
+   * Set a context value and triggers rendering of components that depend on it.
+   *
+   * Useful when testing a component that uses `useContext`
+   *
+   * @param type - A React.Context -- this is the value returned from React.createContext().
+   * @param value - The value of the context to set
+   */
+
+  /**
+   * Set the current value of a ref
+   * @param index The zero-based index of the ref (zero for the first useRef, one for the second, etc.)
+   * @param value Value to set.
+   */
+  setRef: (index: number, value?: any) => void
 
   /**
    * Replace all props, and re-render the component under test
