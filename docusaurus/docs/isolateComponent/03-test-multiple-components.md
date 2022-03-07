@@ -8,6 +8,8 @@ With isolateComponent, you can choose render none, some, or all of the component
 
 An isolated component exposes a method `inline()` that will render elements that are part of the component's rendered output.
 
+See the [inline() documentation here](./api#inlineselector)
+
 Let's take an example of a shopping list component that allows adding and removing items from a list:
 
 ```javascript

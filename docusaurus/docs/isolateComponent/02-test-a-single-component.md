@@ -4,6 +4,8 @@ title: Test a single component
 
 The simplest use of `isolateComponent` is to test a single component in isolation.
 
+In this style of testing we render only the component we are testing, and test its logic.
+
 Let's say we want to create a button that counts how many times it's been clicked and displays that count:
 
 ```javascript

@@ -75,8 +75,15 @@ Returns true if any found, false if none found.
 
 ### inline(selector)
 
-Finds all components that match the given [Selector](#selector) and inlines them, incorporating them into the rendered output.
+Finds all elements rendered by the isolated component that match the given [Selector](#selector) and inlines them, incorporating them into the rendered output.
 Allows for testing some or all of the child components rendered by the isolated component together.
+
+Use the '*' wildcard to inline *all* child elements `inline('*')`.
+
+Important things to know:
+
+- Inlining is recursive. The same inlining rules are 
+- An isolated component remembers all inlined selectors for the duration of its existence. If a new element is created that matches any inlined selector, it will also be inlined.
 
 ## IsolatedComponent: Update props
 
