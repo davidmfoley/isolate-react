@@ -23,7 +23,7 @@ export const CounterButton = () => {
 }
 ```
 
-We might test this by:
+We can test this by:
 1. Isolating the component using `isolateComponent`
 2. Looking at the content rendered by the isolated component to see that it is 0.
 3. Simulating clicks on the button
@@ -104,5 +104,5 @@ Again, there are a few different ways to do this:
 ```javascript
   expect(button.content()).toContain('3')
 
-  expect(button.findOne('span.count').content()).toEqual('0')
+  expect(button.findOne('span.count').content()).toEqual('3')
 ```
