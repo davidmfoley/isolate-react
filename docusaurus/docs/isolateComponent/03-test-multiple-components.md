@@ -112,7 +112,7 @@ export const AddItem = (props: {
 }
 ```
 
-Now let's use inline to test all of these components together:
+We can use `inline` to test all of these components together:
 
 ```javascript
   test('add a shopping list item', () => {
@@ -143,9 +143,9 @@ Now let's use inline to test all of these components together:
   })
 ```
 
-The choice between testing components individually or together 
-Testing multiple components together has different tradeoffs depending on the components being tested. 
+The choice between testing components individually or together has different tradeoffs depending on the components being tested. 
 
 In general, testing components together gives confidence in the way the components integrate with each other, at the cost of  increased [coupling](https://en.wikipedia.org/wiki/Coupling_(computer_programming)) between tests and implementations.
 
-The decision about how to test each component is up to you, and depends on the context.
+Testing components 
+

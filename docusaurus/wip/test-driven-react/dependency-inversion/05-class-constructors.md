@@ -12,9 +12,9 @@ In tests, pass test implementations into the constructor.
 
 ## Notes
 
-This requires using classes.
+This requires the use of classes.
 
-This is very similar to using closures.
+The mechanics are very similar to [closures](./02-closures)
 
 ## Example
 
@@ -74,3 +74,4 @@ describe("getWidgetName", () => {
 
 ## Cons
 
+On many projects, classes are not commonly used. If that is the case, consider using [closures](./02-closures).
