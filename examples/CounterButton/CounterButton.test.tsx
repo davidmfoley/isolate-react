@@ -1,19 +1,6 @@
-import { test, expect } from '@jest/globals'
 import { isolateComponent } from 'isolate-react'
-import React, { useState } from 'react'
-
-// this is the component we want to test
-const CounterButton = () => {
-  const [count, setCount] = useState(0)
-  return (
-    <div>
-      <span className="count">{count}</span>
-      <button type="button" onClick={() => setCount(count + 1)}>
-        +1
-      </button>
-    </div>
-  )
-}
+import React from 'react'
+import { CounterButton } from './CounterButton'
 
 test('starts at zero', () => {
   const counterButton = isolateComponent(<CounterButton />)

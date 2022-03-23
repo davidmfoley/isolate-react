@@ -1,21 +1,21 @@
-import { TodoState, useTodos } from './useTodos'
+import { useTodos } from './useTodos'
 import { isolateHook, IsolatedHook } from 'isolate-react'
 
 describe('useTodos', () => {
-  let isolated: IsolatedHook<() => TodoState>
+  let useTestTodos: IsolatedHook<typeof useTodos>
 
   beforeEach(() => {
-    isolated = isolateHook(useTodos)
+    useTestTodos = isolateHook(useTodos)
   })
 
   it('initially has no todos', () => {
-    expect(isolated().todos).toEqual([])
+    expect(useTestTodos().todos).toEqual([])
   })
 
   it('can add a todo', () => {
-    isolated().addTodo('Escape planet earth')
+    useTestTodos().addTodo('Escape planet earth')
 
-    const { todos } = isolated()
+    const { todos } = useTestTodos()
 
     expect(todos.length).toEqual(1)
     expect(todos[0].title).toEqual('Escape planet earth')
@@ -23,29 +23,30 @@ describe('useTodos', () => {
 
   describe('todo state', () => {
     beforeEach(() => {
-      isolated().addTodo('Escape planet earth')
+      useTestTodos().addTodo('Escape planet earth')
     })
+
     it('initially is todo', () => {
-      expect(isolated().todos[0].state).toEqual('todo')
+      expect(useTestTodos().todos[0].state).toEqual('todo')
     })
 
     it('goes to doing when started', () => {
-      isolated().startTodo(isolated().todos[0].id)
-      expect(isolated().todos[0].state).toEqual('doing')
+      useTestTodos().startTodo(useTestTodos().todos[0].id)
+      expect(useTestTodos().todos[0].state).toEqual('doing')
     })
 
     it('goes to done when started then finishedd', () => {
-      isolated().startTodo(isolated().todos[0].id)
-      isolated().finishTodo(isolated().todos[0].id)
-      expect(isolated().todos[0].state).toEqual('done')
+      useTestTodos().startTodo(useTestTodos().todos[0].id)
+      useTestTodos().finishTodo(useTestTodos().todos[0].id)
+      expect(useTestTodos().todos[0].state).toEqual('done')
     })
   })
 
   it('sorts todos in the order added', () => {
-    isolated().addTodo('Escape planet earth')
-    isolated().addTodo('Make tea')
+    useTestTodos().addTodo('Escape planet earth')
+    useTestTodos().addTodo('Make tea')
 
-    const { todos } = isolated()
+    const { todos } = useTestTodos()
 
     expect(todos.length).toEqual(2)
     expect(todos[0].title).toEqual('Escape planet earth')

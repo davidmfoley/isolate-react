@@ -22,7 +22,8 @@ describe('ShoppingList -- with inline', () => {
   test('add a shopping list item', () => {
     const isolated = isolateComponent(<ShoppingList />)
 
-    // can also do isolated.inline('*')
+    // Using '*' will inline all components:
+    // isolated.inline('*')
     isolated.inline(ShoppingListItem)
     isolated.inline(AddItem)
 
