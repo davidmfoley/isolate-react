@@ -37,6 +37,7 @@ console.log(isolated().count) // => 1
 
 ```
 
+
 ## IsolatedHook
 
 An `IsolatedHook` is returned by [isolateHook](#isolatehook).
@@ -52,7 +53,18 @@ const testHello = isolateHook(useHello)
 console.log(testHello("Trillian")) // => Hello Trillian
 ```
 
-It also provides some helpful methods:
+Sometimes it is convenient to initialize the isolated hook separately from its declaration.
+
+If you're using typescript, type that declaration like this:
+
+```typescript
+let testHello: IsolatedHook<typeof useHello>
+
+// ... 
+
+testHello = isolateHook(useHello)
+```
+
 
 ## currentValue()
 Returns the return value from the last invocation of the hook. Does not execute the hook function.
@@ -68,7 +80,7 @@ console.log(testHello.currentValue()) // Hello Trillian
 
 ## cleanup()
 
-Cleans up the hook by running any effect cleanup functions returns from useEffect or useLayoutEffect.
+Cleans up the hook by running any effect cleanup functions returned from useEffect or useLayoutEffect.
 
 ```javascript
 const useHelloGoodbye = () => {
@@ -104,7 +116,7 @@ testLogHello.invoke() // => logs 'Hello Arthur'
 
 Sets a context value used by the hook and executes the hook. 
 
-Note that the hook will not be executed if it does not use the specified context).
+Note that the hook will not be executed if it does not use the specified context.
 
 ```javascript
 const NameContext = createContext('Zaphod')
