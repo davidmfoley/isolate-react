@@ -19,7 +19,10 @@ export type IsolatedHookMethods<F extends (...args: any) => any> = {
    * @param value Value to set.
    */
   setRef: (index: number, value?: any) => void
+
   setContext: <T>(contextType: React.Context<T>, value: T) => void
+
+  waitForUpdate: () => Promise<ReturnType<F>>
 }
 /**
  *  A hook running in isolation. This is the return value from isolateHook.

@@ -37,6 +37,8 @@ export const isolateHook: IsolateHook = <F extends (...args: any[]) => any>(
   checkHookFunction(hookInvocation)
   const hookState = createIsolatedHookState(options)
   const dispatcher = createIsolatedDispatcher(hookState)
+  let updateWaiters = [] as ((val: ReturnType<F>) => void)[]
+
   let lastArgs: Parameters<F>
 
   let lastResult: ReturnType<F>
@@ -56,10 +58,20 @@ export const isolateHook: IsolateHook = <F extends (...args: any[]) => any>(
     lastArgs = args
 
     hookState.onUpdated(invoke)
+
+    updateWaiters.forEach((waiter) => waiter(lastResult))
+    updateWaiters = []
+
     return lastResult
   }
 
   const currentValue = () => lastResult
+
+  const waitForUpdate = () => {
+    return new Promise<ReturnType<F>>((resolve) => {
+      updateWaiters.push(resolve)
+    })
+  }
 
   return Object.assign(invokeHook as any as F, {
     currentValue,
@@ -69,6 +81,7 @@ export const isolateHook: IsolateHook = <F extends (...args: any[]) => any>(
     invoke,
     setRef: hookState.setRef,
     setContext: hookState.setContext,
+    waitForUpdate,
   })
 }
 
