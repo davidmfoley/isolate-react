@@ -16,7 +16,8 @@ describe('waitForUpdate', () => {
   it('is called when an update occurs', async () => {
     const isolated = isolateHook(useUpdateImmediate)
     expect(isolated()).to.eq(0)
-    await isolated.waitForUpdate()
+    const updated = await isolated.waitForUpdate()
+    expect(updated).to.eq(1)
     expect(isolated.currentValue()).to.eq(1)
   })
 })

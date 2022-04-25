@@ -20,8 +20,16 @@ export type IsolatedHookMethods<F extends (...args: any) => any> = {
    */
   setRef: (index: number, value?: any) => void
 
+  /**
+   * Set the value of a react context used by the hook under test
+   * @param contextType The type of the context
+   * @param value Value to set.
+   */
   setContext: <T>(contextType: React.Context<T>, value: T) => void
 
+  /**
+   * Returns a promise that resolves when the hook has been updated
+   */
   waitForUpdate: () => Promise<ReturnType<F>>
 }
 /**

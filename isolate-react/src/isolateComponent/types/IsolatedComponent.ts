@@ -114,5 +114,12 @@ export interface IsolatedComponent<Props> extends QueryableNode {
    *
    */
   inline(selector: Selector): void
+
+  /**
+   * Returns a promise that resolves after the next render.
+   * Useful when waiting for anasynchronous effect to cause an update.
+   */
+  waitForRender(): Promise<void>
+
   debug: () => string
 }

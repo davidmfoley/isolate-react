@@ -28,6 +28,7 @@ const isolateComponent_ = <P>(
     toString: () => instance.tree().toString(),
     debug: () => instance.tree().debug(),
     cleanup: instance.cleanup,
+    waitForRender: instance.waitForRender,
     inline: (selector?: RenderableComponent) => instance.inlineAll(selector),
   }
 }

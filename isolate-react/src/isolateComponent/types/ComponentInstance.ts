@@ -11,4 +11,5 @@ export interface ComponentInstance<P> {
   tree(): NodeTree
   mergeProps: (props: Partial<P>) => void
   inlineAll: (selector: Selector) => void
+  waitForRender: () => Promise<void>
 }

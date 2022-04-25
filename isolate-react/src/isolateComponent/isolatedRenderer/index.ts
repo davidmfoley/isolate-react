@@ -95,6 +95,7 @@ export const isolatedRenderer = (
         renderContext.addInlinedSelector(selector)
         tree.inlineAll()
       },
+      waitForRender: () => hookRenderer.waitForUpdate().then(() => {}),
       debug: () => tree.debug(),
     }
   }
