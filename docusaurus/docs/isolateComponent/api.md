@@ -34,7 +34,6 @@ const isolated = isolateComponent(<Hello name="Arthur" />)
 
 returns the component's *inner* content.
 
-
 ### toString()
 
 returns the component's *outer* content.
@@ -47,6 +46,38 @@ const Answer = ({ answer }: { answer: number }) => (
 const answer = isolateComponent(<Answer answer={42} />)
 console.log(answer.content()) // => 'The answer is 42'
 console.log(answer.toString()) // => '<span>The answer is 42</span>'
+```
+
+## IsolatedComponent: wait for next render
+
+### waitForRender()
+
+Returns a promise that resolves after the next render.
+
+Useful for testing components with asynchronous behavior.
+
+```javascript
+const DelayedAnswer = () => {
+  // initial value
+  const [answer, setAnswer] = useState("unknown")
+
+  // update the value 100 milliseconds later
+  useEffect(() => {
+    setTimeout(() => { setAnswer("forty-two") }, 100)
+  }, [])
+
+  return (
+    <span>The answer is {answer}</span>
+  )
+}
+
+const answer = isolateComponent(<DelayedAnswer />)
+console.log(answer.content()) // => 'The answer is unknown'
+
+// wait for the next render
+await answer.waitForRender()
+
+console.log(answer.content()) // => 'The answer is forty-two'
 ```
 
 ## IsolatedComponent: find child nodes

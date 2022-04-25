@@ -112,6 +112,36 @@ testLogHello.invoke() // => logs 'Hello Arthur'
 
 ```
 
+### waitForUpdate()
+
+Returns a promise that resolves with the next value of the hook after it is executed.
+
+Useful for testing hooks with asynchronous behavior.
+
+```javascript
+const useDelayedAnswer = () => {
+  // initial value
+  const [answer, setAnswer] = useState("unknown")
+
+  // update the value 100 milliseconds later
+  useEffect(() => {
+    setTimeout(() => { setAnswer("forty-two") }, 100)
+  }, [])
+
+  return answer
+}
+
+const testDelayedAnswer = isolateHook(useDelayedAnswer)
+console.log(testDelayedAnswer()) // => 'unknown'
+
+// wait for the next invocation of the hook
+const updated = await testDelayedAnswer.waitForUpdate()
+
+console.log(updated) // => 'forty-two'
+console.log(testDelayedAnswer.currentValue()) // => 'forty-two'
+
+```
+
 ## setContext(ContextType, value)
 
 Sets a context value used by the hook and executes the hook. 
