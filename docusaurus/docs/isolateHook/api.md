@@ -112,7 +112,7 @@ testLogHello.invoke() // => logs 'Hello Arthur'
 
 ```
 
-### waitForUpdate()
+## waitForUpdate()
 
 Returns a promise that resolves with the next value of the hook after it is executed.
 
