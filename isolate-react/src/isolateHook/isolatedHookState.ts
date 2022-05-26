@@ -33,6 +33,7 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
 
   const layoutEffects = createEffectSet()
   const effects = createEffectSet()
+  const insertionEffects = createEffectSet()
 
   if (options.context) {
     options.context.forEach((c) => {
@@ -84,6 +85,7 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
     dirty = false
     first = false
 
+    insertionEffects.flush()
     layoutEffects.flush()
     effects.flush()
 
@@ -109,6 +111,7 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
   return {
     layoutEffects,
     effects,
+    insertionEffects,
     endPass,
     nextHookState,
     setContext,
@@ -119,6 +122,7 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
       onUpdated = handler
     },
     cleanup: () => {
+      insertionEffects.cleanup()
       layoutEffects.cleanup()
       effects.cleanup()
     },

@@ -2,7 +2,7 @@ import { describe, it, beforeEach } from 'mocha'
 import { expect } from 'chai'
 
 import { isolateHook } from '../../src/isolateHook'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useEffect, useInsertionEffect, useLayoutEffect, useState } from 'react'
 
 describe('effects', () => {
   let invocations: string[]
@@ -113,8 +113,8 @@ describe('effects', () => {
     })
   })
 
-  describe('useLayoutEffect', () => {
-    it('runs before useEffect', () => {
+  describe('effect order', () => {
+    it('insertion effect -> layout effect -> effect', () => {
       const useEffectOrderExample = () => {
         useEffect(() => {
           invocations.push('useEffect')
@@ -129,6 +129,13 @@ describe('effects', () => {
             invocations.push('cleanup useLayoutEffect')
           }
         }, [])
+
+        useInsertionEffect(() => {
+          invocations.push('useInsertionEffect')
+          return () => {
+            invocations.push('cleanup useInsertionEffect')
+          }
+        }, [])
         return ''
       }
 
@@ -136,8 +143,10 @@ describe('effects', () => {
       isolated()
       isolated.cleanup()
       expect(invocations).to.eql([
+        'useInsertionEffect',
         'useLayoutEffect',
         'useEffect',
+        'cleanup useInsertionEffect',
         'cleanup useLayoutEffect',
         'cleanup useEffect',
       ])

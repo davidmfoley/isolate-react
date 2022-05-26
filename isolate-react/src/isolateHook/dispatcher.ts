@@ -13,6 +13,7 @@ interface Dispatcher {
   useEffect: typeof React.useEffect
   useImperativeHandle: typeof React.useImperativeHandle
   useLayoutEffect: typeof React.useEffect
+  useInsertionEffect: typeof React.useInsertionEffect
   useMemo: typeof React.useMemo
   useState: typeof React.useState
   useReducer: typeof React.useReducer
@@ -79,6 +80,9 @@ export const createIsolatedDispatcher = (
 
   const useEffect = useEffectHandler(isolatedHookState.effects)
   const useLayoutEffect = useEffectHandler(isolatedHookState.layoutEffects)
+  const useInsertionEffect = useEffectHandler(
+    isolatedHookState.insertionEffects
+  )
 
   const memoize = (
     type: 'useMemo' | 'useCallback',
@@ -117,6 +121,7 @@ export const createIsolatedDispatcher = (
     useReducer: useReducer as any,
     useEffect: useEffect as any,
     useLayoutEffect: useLayoutEffect as any,
+    useInsertionEffect: useInsertionEffect as any,
     useContext: (type) => isolatedHookState.contextValue(type),
     useId: () => useState(generateId)[0],
     useTransition: () => [
