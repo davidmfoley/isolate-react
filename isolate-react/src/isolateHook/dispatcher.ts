@@ -4,6 +4,8 @@ import { IsolatedHookState } from './isolatedHookState'
 
 type SetState<T> = React.Dispatch<React.SetStateAction<T>>
 
+let nextUseIdValue = 0
+
 interface Dispatcher {
   useCallback: typeof React.useCallback
   useContext: typeof React.useContext
@@ -15,6 +17,7 @@ interface Dispatcher {
   useState: typeof React.useState
   useReducer: typeof React.useReducer
   useRef: typeof React.useRef
+  useId: typeof React.useId
 }
 
 export const createIsolatedDispatcher = (
@@ -93,6 +96,11 @@ export const createIsolatedDispatcher = (
     }
     return state.value.value
   }
+
+  const generateId = () => {
+    nextUseIdValue++
+    return `useId-${nextUseIdValue}`
+  }
   return {
     useMemo: ((fn: any, deps: any) => {
       return memoize('useMemo', fn, deps)
@@ -107,6 +115,7 @@ export const createIsolatedDispatcher = (
     useEffect: useEffect as any,
     useLayoutEffect: useLayoutEffect as any,
     useContext: (type) => isolatedHookState.contextValue(type),
+    useId: () => useState(generateId)[0],
     useRef: (initialValue?: any) => {
       const [ref] = isolatedHookState.nextHookState({
         type: 'useRef',

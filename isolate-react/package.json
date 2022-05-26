@@ -21,7 +21,9 @@
     "cover": "COVERAGE=1 nyc mocha && open coverage/index.html",
     "ci": "yarn build:tsc && yarn test && yarn prettier"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@types/react": "^18.0.9"
+  },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
@@ -32,7 +34,6 @@
     "@babel/register": "^7.12.1",
     "@types/chai": "^4.2.12",
     "@types/mocha": "^8.0.3",
-    "@types/react": "16.9.12",
     "chai": "^4.2.0",
     "core-js": "^3.8.3",
     "mocha": "^8.1.3",
