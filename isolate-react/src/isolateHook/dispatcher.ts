@@ -19,6 +19,7 @@ interface Dispatcher {
   useRef: typeof React.useRef
   useId: typeof React.useId
   useTransition: typeof React.useTransition
+  useDeferredValue: typeof React.useDeferredValue
 }
 
 export const createIsolatedDispatcher = (
@@ -110,6 +111,7 @@ export const createIsolatedDispatcher = (
       return memoize('useCallback', () => fn, deps)
     }) as any,
     useDebugValue: () => {},
+    useDeferredValue: (value) => value,
     useImperativeHandle: () => {},
     useState: useState as any,
     useReducer: useReducer as any,
