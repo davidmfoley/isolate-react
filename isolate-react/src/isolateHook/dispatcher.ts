@@ -21,6 +21,7 @@ interface Dispatcher {
   useId: typeof React.useId
   useTransition: typeof React.useTransition
   useDeferredValue: typeof React.useDeferredValue
+  useSyncExternalStore: typeof React.useSyncExternalStore
 }
 
 export const createIsolatedDispatcher = (
@@ -107,6 +108,37 @@ export const createIsolatedDispatcher = (
     nextUseIdValue++
     return `useId-${nextUseIdValue}`
   }
+
+  const useSyncExternalStore: typeof React.useSyncExternalStore = (
+    subscribe,
+    getSnapshot,
+    _getServerSnapshot
+  ) => {
+    const [state] = isolatedHookState.nextHookState<any>({
+      type: 'useSyncExternalStore',
+      create: () => ({
+        getSnapshot,
+        subscribe,
+        unsubscribe: () => {},
+        value: getSnapshot(),
+      }),
+      update: (previous, next) => {
+        return { value: { ...previous, value: next } }
+      },
+      onCreated: (update, value) => {
+        const updateState = () => {
+          update(value.getSnapshot())
+        }
+        value.unsubscribe = value.subscribe(updateState)
+      },
+      cleanup: (value) => {
+        value.unsubscribe()
+      },
+    })
+
+    return state.value.value
+  }
+
   return {
     useMemo: ((fn: any, deps: any) => {
       return memoize('useMemo', fn, deps)
@@ -124,6 +156,7 @@ export const createIsolatedDispatcher = (
     useInsertionEffect: useInsertionEffect as any,
     useContext: (type) => isolatedHookState.contextValue(type),
     useId: () => useState(generateId)[0],
+    useSyncExternalStore,
     useTransition: () => [
       false,
       (fn) => {

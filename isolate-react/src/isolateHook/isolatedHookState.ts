@@ -3,15 +3,24 @@ import { IsolatedHookOptions } from './types/IsolatedHookOptions'
 export type IsolatedHookState = ReturnType<typeof createIsolatedHookState>
 
 type HookState<T> = [{ value: T }, (value: (previous: T) => T) => void]
+
 interface HookStateDef<T> {
   type: StateType
   create: () => T
+
   update?: (
     current: T,
     next: any
   ) => {
     value: T
   }
+
+  cleanup?: (value: T) => void
+
+  onCreated?: (
+    update: (getNextValue: (previous: T) => T) => void,
+    value: T
+  ) => void
 }
 
 type StateType =
@@ -20,6 +29,7 @@ type StateType =
   | 'useMemo'
   | 'useCallback'
   | 'useReducer'
+  | 'useSyncExternalStore'
 
 export const createIsolatedHookState = (options: IsolatedHookOptions) => {
   let dirty = false
@@ -46,9 +56,11 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
   const addHookState = <T>(
     type: StateType,
     value: T,
-    updateValue?: any
+    updateValue?: any,
+    onCreated?: any,
+    cleanup?: (value: T) => void
   ): HookState<T> => {
-    let newState = { value, type }
+    let newState = { value, type, cleanup }
 
     const updater = updateValue
       ? (next: any) => {
@@ -65,6 +77,8 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
 
     const state = [newState, updater] as HookState<T>
 
+    if (onCreated) onCreated(updater, newState.value)
+
     nextHookStates.push(state)
 
     return state
@@ -74,8 +88,10 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
     type,
     create,
     update,
+    onCreated,
+    cleanup,
   }: HookStateDef<T>): HookState<T> => {
-    if (first) return addHookState(type, create(), update)
+    if (first) return addHookState(type, create(), update, onCreated, cleanup)
     let state = hookStates.shift()
     nextHookStates.push(state)
     return state
@@ -108,6 +124,12 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
     }
   }
 
+  const cleanupHookStates = () => {
+    for (let [hookState] of hookStates) {
+      if (hookState.cleanup) hookState.cleanup(hookState.value)
+    }
+  }
+
   return {
     layoutEffects,
     effects,
@@ -125,6 +147,7 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
       insertionEffects.cleanup()
       layoutEffects.cleanup()
       effects.cleanup()
+      cleanupHookStates()
     },
     contextValue: (contextType: React.Context<any>) => {
       usedContextTypes.add(contextType)
