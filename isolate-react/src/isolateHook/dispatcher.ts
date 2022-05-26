@@ -18,6 +18,7 @@ interface Dispatcher {
   useReducer: typeof React.useReducer
   useRef: typeof React.useRef
   useId: typeof React.useId
+  useTransition: typeof React.useTransition
 }
 
 export const createIsolatedDispatcher = (
@@ -116,6 +117,12 @@ export const createIsolatedDispatcher = (
     useLayoutEffect: useLayoutEffect as any,
     useContext: (type) => isolatedHookState.contextValue(type),
     useId: () => useState(generateId)[0],
+    useTransition: () => [
+      false,
+      (fn) => {
+        fn()
+      },
+    ],
     useRef: (initialValue?: any) => {
       const [ref] = isolatedHookState.nextHookState({
         type: 'useRef',
