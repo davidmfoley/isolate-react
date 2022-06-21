@@ -4,12 +4,10 @@ title: API
 
 ## isolateHook(hookToIsolate)
 
-`isolateHook` allows testing of hook logic.
-
-`isolateHook()` accepts a hook and returns an [IsolatedHook](#isolatedhook).
+`isolateHook` accepts a hook and returns an [IsolatedHook](#isolatedhook).
 
 
-Import isolateHook:
+Import `isolateHook`:
 
 ```javascript
 import { isolateHook } from 'isolate-react'
@@ -29,17 +27,11 @@ const useCounter = () => {
 
 const isolated = isolateHook(useCounter)
 
-console.log(isolated().count) // => 0
-
-isolated().increment()
-
-console.log(isolated().count) // => 1
-
+console.log(isolated()) // => 0
 ```
 
 
 ## IsolatedHook
-
 An `IsolatedHook` is returned by [isolateHook](#isolatehook).
 
 It is a function that wraps the hook -- so it accepts the same parameters that the hook function accepts:
@@ -53,6 +45,7 @@ const testHello = isolateHook(useHello)
 console.log(testHello("Trillian")) // => Hello Trillian
 ```
 
+### IsolatedHook: Typescript type declaration
 Sometimes it is convenient to initialize the isolated hook separately from its declaration.
 
 If you're using typescript, type that declaration like this:
@@ -65,8 +58,12 @@ let testHello: IsolatedHook<typeof useHello>
 testHello = isolateHook(useHello)
 ```
 
+## Helper methods
 
-## currentValue()
+An isolated hook has some helper methods that are useful when testing hook loigc:
+
+
+### currentValue()
 Returns the return value from the last invocation of the hook. Does not execute the hook function.
 
 ```javascript
@@ -78,7 +75,7 @@ testHello("Trillian")
 console.log(testHello.currentValue()) // Hello Trillian
 ```
 
-## cleanup()
+### cleanup()
 
 Cleans up the hook by running any effect cleanup functions returned from useEffect or useLayoutEffect.
 
@@ -96,7 +93,7 @@ testHelloAndGoodbye() // Logs 'Hello'
 testHelloAndGoodbye.cleanup() // Logs 'Goodbye'
 ```
 
-## invoke() 
+### invoke() 
 
 Re-executes the hook function, with the parameters from the most recent invocation.
 
@@ -112,7 +109,7 @@ testLogHello.invoke() // => logs 'Hello Arthur'
 
 ```
 
-## waitForUpdate()
+### waitForUpdate()
 
 Returns a promise that resolves with the next value of the hook after it is executed.
 
@@ -142,9 +139,9 @@ console.log(testDelayedAnswer.currentValue()) // => 'forty-two'
 
 ```
 
-## setContext(ContextType, value)
+### setContext(ContextType, value)
 
-Sets a context value used by the hook and executes the hook. 
+Sets a context value used by the hook and executes the hook, if necessary. 
 
 Note that the hook will not be executed if it does not use the specified context.
 
@@ -165,7 +162,7 @@ testHelloContext.setContext(NameContext, 'Trillian')
 console.log(testHelloContext()) // => Hello Trillian
 ```
 
-## setRef(index, value)
+### setRef(index, value)
 
 Sets the value of a ref. *Does not* execute the hook function.
 
