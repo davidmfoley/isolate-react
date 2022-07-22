@@ -45,6 +45,13 @@ const parseRawNode = (node: InputNode): TreeNode => {
   const props = node.props || {}
 
   const parsedChildren = parseChildren(children)
+
+  if (node.type === null) {
+    throw new Error(
+      'Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: null.'
+    )
+  }
+
   if (isFragment(node)) return fragmentNode(parsedChildren)
 
   if (typeof node.type === 'string')
