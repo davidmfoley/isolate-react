@@ -4,10 +4,11 @@ import { expect } from 'chai'
 import { isolateComponent } from '../../src/isolateComponent'
 
 describe('inlining ', () => {
-  const ListItem: React.FC<{}> = (props) => <li>{props.children}</li>
+  const ListItem = (props: { children: React.ReactNode }) => (
+    <li>{props.children}</li>
+  )
 
   it('can inline a component', () => {
-    const ListItem: React.FC<{}> = (props) => <li>{props.children}</li>
     const List = () => (
       <ul>
         <ListItem>list item content</ListItem>
@@ -92,7 +93,10 @@ describe('inlining ', () => {
   })
 
   describe('with a recursive hierarchy', () => {
-    const Section: React.FC<{ caption: string }> = (props) => (
+    const Section = (props: {
+      caption: string
+      children?: React.ReactNode
+    }) => (
       <section>
         <h2>{props.caption}</h2>
         {props.children}

@@ -14,7 +14,9 @@ describe('IsolatedComponent queries', () => {
     </div>
   )
   const JustAnFC = () => <ExampleFC name="trillian" />
-  const ChildrenExample: React.FC<{}> = ({ children }) => <div>{children}</div>
+  const ChildrenExample = ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  )
 
   describe('exists', () => {
     it('returns true for a matching html element', () => {

@@ -19,8 +19,10 @@ describe('getting component content', () => {
   })
 
   it('handles child text', () => {
-    const Parent: React.FC<{}> = (props) => <div>{props.children}</div>
-    const Child: React.FC<{}> = () => undefined
+    const Parent = (props: { children: React.ReactNode }) => (
+      <div>{props.children}</div>
+    )
+    const Child = (props: { children: React.ReactNode }) => undefined
     const isolated = isolateComponent(
       <Parent>
         <Child>a b c</Child>
@@ -43,9 +45,9 @@ describe('getting component content', () => {
   })
 
   it('handles child function', () => {
-    const FragmentExample = () => <div>{() => '42'}</div>
+    const FunctionExample = () => <div>{(() => '42') as any}</div>
 
-    const isolated = isolateComponent(<FragmentExample />)
+    const isolated = isolateComponent(<FunctionExample />)
     expect(isolated.content()).to.eq('[Function]')
     expect(isolated.toString()).to.eq('<div>[Function]</div>')
   })

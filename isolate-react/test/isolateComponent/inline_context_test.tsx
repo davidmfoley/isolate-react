@@ -18,11 +18,14 @@ describe('inline context', () => {
     )
   }
 
-  const TestComponent: React.FC<{}> = (props) => (
+  const TestComponent = (props: { children: React.ReactNode }) => (
     <section>{props.children}</section>
   )
 
-  const PropsToContext: React.FC<{ name: string }> = (props) => (
+  const PropsToContext = (props: {
+    name: string
+    children: React.ReactNode
+  }) => (
     <NameContext.Provider value={props.name}>
       {props.children}
     </NameContext.Provider>

@@ -146,7 +146,7 @@ describe('nodeTree ', () => {
 
   it('handles stringifying functions in content', () => {
     const tree = nodeTree(
-      <span>{(a: string) => 42}</span>,
+      <span>{((a: string) => 42) as any}</span>,
       getNullRenderer,
       nullShouldInline
     )
@@ -180,8 +180,9 @@ describe('nodeTree ', () => {
   })
 
   it('exposes content via content() and toString()', () => {
-    const List: React.FC<{ className: string }> = () => null
-    const ListItem: React.FC<{}> = () => null
+    const List = (props: { className: string; children: React.ReactNode }) =>
+      null
+    const ListItem = (props: { children: React.ReactNode }) => null
     const tree = nodeTree(
       <List className="listy-list">
         <ListItem>Arthur</ListItem>

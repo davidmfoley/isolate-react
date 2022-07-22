@@ -23,7 +23,9 @@ describe('function as child', () => {
   })
 
   it('can inline', () => {
-    const Outer: React.FC = ({ children }) => <section>{children}</section>
+    const Outer = (props: { children: React.ReactNode }) => (
+      <section>{props.children}</section>
+    )
     const isolated = isolateComponent(
       <Outer>
         <FunctionWrapper name="Trillian">

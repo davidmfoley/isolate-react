@@ -4,7 +4,10 @@ import { expect } from 'chai'
 import { isolateComponent } from '../../src/isolateComponent'
 
 describe('children', () => {
-  const ToggleChildren: React.FC<{ show: boolean }> = (props) => {
+  const ToggleChildren = (props: {
+    show: boolean
+    children: React.ReactNode
+  }) => {
     if (props.show) return <>{props.children}</>
     return <></>
   }
@@ -41,7 +44,7 @@ describe('children', () => {
   })
 
   describe('inlined', () => {
-    const Wrapper: React.FC<{ show: boolean }> = (props) => (
+    const Wrapper = (props: { show: boolean; children: React.ReactNode }) => (
       <ToggleChildren show={props.show}>{props.children}</ToggleChildren>
     )
 

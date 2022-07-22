@@ -9,6 +9,7 @@ describe('effects', () => {
   beforeEach(() => {
     invocations = []
   })
+
   describe('useEffect', () => {
     it('invokes effect first time', () => {
       const useEffectExample = () => {

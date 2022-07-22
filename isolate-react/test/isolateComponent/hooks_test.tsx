@@ -48,7 +48,9 @@ describe('hooks', () => {
     const EffectExample = (props: { name: string }) => {
       useEffect(() => {
         calls.push(`hello ${props.name}`)
-        return () => calls.push(`goodbye ${props.name}`)
+        return () => {
+          calls.push(`goodbye ${props.name}`)
+        }
       }, [props.name])
 
       return <div />
