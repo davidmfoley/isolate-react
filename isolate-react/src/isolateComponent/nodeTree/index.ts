@@ -21,6 +21,17 @@ const describeSelector = (selector?: Selector) => {
   return `${selector}`
 }
 
+const findInvalidNodePaths = (node: TreeNode<any>, path: string[] = []) => {
+  if (node.nodeType === 'invalid') return [[...path, node.name]]
+  let invalidChildPaths = []
+  for (const child of node.children)
+    invalidChildPaths = [
+      ...invalidChildPaths,
+      ...findInvalidNodePaths(child, [...path, node.name]),
+    ]
+  return invalidChildPaths
+}
+
 export const nodeTree = (
   top: TreeSource,
   getRenderer: () => IsolatedRenderer,
@@ -66,6 +77,7 @@ export const nodeTree = (
       root = doInline(getRenderer, shouldInline, reconcile(root, parse(next)))
     },
     debug: () => doDebug(root),
+    invalidNodePaths: () => findInvalidNodePaths(root, []),
   }
 }
 

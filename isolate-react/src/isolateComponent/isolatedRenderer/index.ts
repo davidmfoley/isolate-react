@@ -45,6 +45,7 @@ export const isolatedRenderer = (
     let tree: NodeTree
     let hookRenderer: IsolatedHook<any>
 
+    const componentName = component.displayName || component.name || component
     renderContext = applyProviderContext(component, props, renderContext)
 
     const setContext = (t: any, v: any) => {
@@ -56,13 +57,39 @@ export const isolatedRenderer = (
     const renderMethod = getRenderMethod(component, setContext)
 
     hookRenderer = isolateHook(() => {
-      const result = renderMethod(props)
-      if (tree) return tree.update(result)
-      tree = nodeTree(
-        result,
-        () => isolatedRenderer(renderContext.copy()),
-        renderContext.shouldInline
-      )
+      let result: any
+
+      try {
+        result = renderMethod(props)
+      } catch (e) {
+        throw new Error(`Failed to render <${componentName}>: ${e.message}`)
+      }
+
+      try {
+        if (tree) {
+          tree.update(result)
+        } else {
+          tree = nodeTree(
+            result,
+            () => isolatedRenderer(renderContext.copy()),
+            renderContext.shouldInline
+          )
+        }
+      } catch (e) {
+        throw new Error(
+          `Failed to parse elements rendered by <${componentName}>: ${e.message}`
+        )
+      }
+
+      const invalidPaths = tree.invalidNodePaths()
+      if (invalidPaths.length)
+        throw new Error(
+          `Invalid element${
+            invalidPaths.length > 1 ? 's' : ''
+          } rendered by ${componentName}\nat:\n${invalidPaths
+            .map((p) => p.join(' > '))
+            .join('\n')}`
+        )
     })
 
     renderContext.contexts.forEach(({ contextType, contextValue }) => {

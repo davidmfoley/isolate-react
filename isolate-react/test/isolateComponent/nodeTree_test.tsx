@@ -3,6 +3,7 @@ import React from 'react'
 import { nodeTree } from '../../src/isolateComponent/nodeTree'
 import { expect } from 'chai'
 import { IsolatedRenderer } from '../../src/isolateComponent/isolatedRenderer'
+import { disableReactWarnings } from './disableReactWarnings'
 
 const nullRenderer: IsolatedRenderer = {
   render: () => ({} as any),
@@ -14,6 +15,7 @@ const getNullRenderer = () => nullRenderer
 const nullShouldInline = () => false
 
 describe('nodeTree ', () => {
+  disableReactWarnings()
   it('can parse a single html element', () => {
     const tree = nodeTree(<div />, getNullRenderer, nullShouldInline)
     const root = tree.root()
@@ -31,6 +33,27 @@ describe('nodeTree ', () => {
     expect(root.nodeType).to.eq('react')
     expect(root.type).to.eq(Example)
     expect(root.children).to.eql([])
+  })
+
+  it('can parse an invalid null react element', () => {
+    const Null = null as any
+    const tree = nodeTree(
+      <div>
+        <Null />
+      </div>,
+      getNullRenderer,
+      nullShouldInline
+    )
+    const root = tree.root()
+
+    expect(root.nodeType).to.eq('html')
+    expect(root.type).to.eq('div')
+    expect(root.children.length).to.eql(1)
+
+    const [nullNode] = root.children
+    expect(nullNode.nodeType).to.eq('invalid')
+
+    expect(tree.invalidNodePaths()).to.eql([['div', 'null']])
   })
 
   it('can parse context provider', () => {

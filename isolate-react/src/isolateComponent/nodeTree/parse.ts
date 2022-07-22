@@ -6,6 +6,7 @@ import {
   fragmentNode,
   functionNode,
   htmlNode,
+  invalidNode,
   isolatedNode,
   nothingNode,
   reactNode,
@@ -47,9 +48,11 @@ const parseRawNode = (node: InputNode): TreeNode => {
   const parsedChildren = parseChildren(children)
 
   if (node.type === null) {
-    throw new Error(
-      'Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: null.'
-    )
+    return invalidNode('null')
+  }
+
+  if (typeof node.type === 'undefined') {
+    return invalidNode('undefined')
   }
 
   if (isFragment(node)) return fragmentNode(parsedChildren)
@@ -76,7 +79,23 @@ export const parseIsolated = (
   return isolated
 }
 
-export const parse = (node: InputNode): ComponentNode => {
+type InvalidNodePaths = string[][]
+
+const findInvalidNodePaths = (node: TreeNode<any>, path: string[] = []) => {
+  console.log(path, node)
+  if (node.nodeType === 'invalid') return [[...path, node.name]]
+  let invalidChildPaths = []
+  for (const child of node.children)
+    invalidChildPaths = [
+      ...invalidChildPaths,
+      ...findInvalidNodePaths(child, [...path, node.name]),
+    ]
+  return invalidChildPaths
+}
+
+export const parse = (
+  node: InputNode
+): ComponentNode & { invalidNodePaths: () => InvalidNodePaths } => {
   const parsed = parseRawNode(node)
   if (node) parsed.key = '' + node.key
 
@@ -98,5 +117,6 @@ export const parse = (node: InputNode): ComponentNode => {
         )
       return found[0]
     },
+    invalidNodePaths: () => findInvalidNodePaths(parsed, [parsed.name]),
   }
 }

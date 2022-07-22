@@ -15,6 +15,7 @@ export interface TreeNode<Props = any> extends NodeContent {
     | 'fragment'
     | 'isolated'
     | 'function'
+    | 'invalid'
   /**
    * For html elements, the tag name
    * For a react FC, the display name
