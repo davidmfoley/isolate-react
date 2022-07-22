@@ -6,7 +6,9 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
-    "sourceMap": true
+    "sourceMap": true,
+    "outDir": "lib",
+    "noEmit": true
   },
   "include": ["src" , "test"],
   "compileOnSave": false
