@@ -76,4 +76,27 @@ describe('getting component content', () => {
     const isolated = isolateComponent(<ArrayExample />)
     expect(isolated.content()).to.eq('<div>A</div><div>B</div>')
   })
+
+  it('handles updating inlined components', () => {
+    const Div = ({ children }: { children: React.ReactNode }) => (
+      <div>{children}</div>
+    )
+
+    const Example = (props: { items: string[] }) => (
+      <section>
+        {props.items.map((x, i) => (
+          <Div key={i}>{x}</Div>
+        ))}
+      </section>
+    )
+
+    const isolated = isolateComponent(<Example items={['A']} />)
+
+    isolated.inline('*')
+
+    expect(isolated.content()).to.eq('<div>A</div>')
+
+    isolated.setProps({ items: ['A', 'B'] })
+    expect(isolated.content()).to.eq('<div>A</div><div>B</div>')
+  })
 })

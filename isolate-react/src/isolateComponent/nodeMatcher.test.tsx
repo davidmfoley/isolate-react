@@ -2,10 +2,10 @@ import { describe, it } from 'mocha'
 import { expect } from 'chai'
 import styled from 'styled-components'
 
-import { reactNode, htmlNode } from '../../src/isolateComponent/nodeTree/nodes'
+import { reactNode, htmlNode } from './nodeTree/nodes'
 
-import nodeMatcher from '../../src/isolateComponent/nodeMatcher'
-import { TreeNode } from '../../src/isolateComponent/types/TreeNode'
+import nodeMatcher from './nodeMatcher'
+import { TreeNode } from './types/TreeNode'
 
 const shouldMatch = (selector: string, node: TreeNode) => {
   it(`${selector} should match ${node.toString()}`, () => {

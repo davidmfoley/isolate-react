@@ -53,6 +53,7 @@
       "ts",
       "tsx"
     ],
+    "spec": ["./**/*.test.ts*"],
     "require": [
       "test/babel-register.js"
     ],

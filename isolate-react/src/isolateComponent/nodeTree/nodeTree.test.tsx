@@ -1,9 +1,9 @@
 import { describe, it } from 'mocha'
 import React from 'react'
-import { nodeTree } from '../../src/isolateComponent/nodeTree'
+import { nodeTree } from '../nodeTree'
 import { expect } from 'chai'
-import { IsolatedRenderer } from '../../src/isolateComponent/isolatedRenderer'
-import { disableReactWarnings } from './disableReactWarnings'
+import { IsolatedRenderer } from '../isolatedRenderer'
+import { disableReactWarnings } from '../../../test/isolateComponent/disableReactWarnings'
 
 const nullRenderer: IsolatedRenderer = {
   render: () => ({} as any),
