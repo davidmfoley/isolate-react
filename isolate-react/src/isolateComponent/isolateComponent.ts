@@ -8,13 +8,17 @@ import { makeRenderContext } from './isolatedRenderer/renderContext'
 
 const isolateComponent_ = <P>(
   contexts: Contexts,
-  componentElement: React.ReactElement<P, any>
+  componentElement: React.ReactElement<P, any>,
+  inlineSelectors: Selector[]
 ): IsolatedComponent<P> => {
   const renderer = isolatedRenderer(makeRenderContext(contexts))
   const instance: ComponentInstance<P> = renderer.render(
     componentElement.type,
     componentElement.props
   )
+
+  for (const inlineSelector of inlineSelectors)
+    instance.inlineAll(inlineSelector)
 
   return {
     findAll: (spec?: Selector) => instance.tree().findAll(spec),
@@ -33,14 +37,18 @@ const isolateComponent_ = <P>(
   }
 }
 
-const isolateComponentWithContext = (contexts: Contexts) =>
+const isolateComponentWithContext = (
+  contexts: Contexts,
+  inlineSelectors: Selector[]
+) =>
   Object.assign(
     <Props>(componentElement: React.ReactElement<Props>) =>
-      isolateComponent_(contexts, componentElement),
+      isolateComponent_(contexts, componentElement, inlineSelectors),
     {
       withContext: <T>(contextType: React.Context<T>, contextValue: T) =>
         isolateComponentWithContext(
-          contexts.concat([{ contextType, contextValue }])
+          contexts.concat([{ contextType, contextValue }]),
+          inlineSelectors
         ),
     }
   )
@@ -96,5 +104,8 @@ const isolateComponentWithContext = (contexts: Contexts) =>
  * @typeparam Props - Type of the component's props
  **/
 export const isolateComponent: IsolateComponent = isolateComponentWithContext(
+  [],
   []
 )
+
+export const isolateComponentTree = isolateComponentWithContext([], ['*'])
