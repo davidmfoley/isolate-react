@@ -79,23 +79,7 @@ export const parseIsolated = (
   return isolated
 }
 
-type InvalidNodePaths = string[][]
-
-const findInvalidNodePaths = (node: TreeNode<any>, path: string[] = []) => {
-  console.log(path, node)
-  if (node.nodeType === 'invalid') return [[...path, node.name]]
-  let invalidChildPaths = []
-  for (const child of node.children)
-    invalidChildPaths = [
-      ...invalidChildPaths,
-      ...findInvalidNodePaths(child, [...path, node.name]),
-    ]
-  return invalidChildPaths
-}
-
-export const parse = (
-  node: InputNode
-): ComponentNode & { invalidNodePaths: () => InvalidNodePaths } => {
+export const parse = (node: InputNode): ComponentNode => {
   const parsed = parseRawNode(node)
   if (node) parsed.key = '' + node.key
 
@@ -117,6 +101,5 @@ export const parse = (
         )
       return found[0]
     },
-    invalidNodePaths: () => findInvalidNodePaths(parsed, [parsed.name]),
   }
 }
