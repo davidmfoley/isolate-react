@@ -1,4 +1,5 @@
 import { TreeNode } from '../types'
+import { fragmentNode, htmlNode } from './nodes'
 
 const matchChildren = (
   previous: TreeNode[],
@@ -21,14 +22,25 @@ export const reconcile = (
 ): TreeNode => {
   if (!previous) return next
   if (next.type !== previous.type) return next
+
   if (previous.nodeType === 'isolated') {
     previous.componentInstance!.setProps(next.props)
     return previous
   }
 
   const matchedChildren = matchChildren(previous.children, next.children)
+  const reconciledChildren = matchedChildren.map(([p, n]) => reconcile(p, n))
+
+  if (previous.nodeType === 'html') {
+    return htmlNode(next.type as string, next.props, reconciledChildren)
+  }
+
+  if (previous.nodeType === 'fragment') {
+    return fragmentNode(reconciledChildren)
+  }
+
   return {
     ...next,
-    children: matchedChildren.map(([p, n]) => reconcile(p, n)),
+    children: reconciledChildren,
   }
 }
