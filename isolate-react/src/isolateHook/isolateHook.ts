@@ -35,6 +35,7 @@ export const isolateHook: IsolateHook = <F extends (...args: any[]) => any>(
   options: IsolatedHookOptions = {}
 ): IsolatedHook<F> => {
   checkHookFunction(hookInvocation)
+
   const hookState = createIsolatedHookState(options)
   const dispatcher = createIsolatedDispatcher(hookState)
   let updateWaiters = [] as ((val: ReturnType<F>) => void)[]
@@ -45,15 +46,23 @@ export const isolateHook: IsolateHook = <F extends (...args: any[]) => any>(
 
   const invoke = () => invokeHook(...(lastArgs || ([] as any)))
 
+  const doWhileDirty = (fn: () => void) => {
+    do {
+      hookState.startPass()
+      fn()
+      hookState.endPass()
+    } while (hookState.dirty())
+  }
+
   const invokeHook = (...args: Parameters<F>): ReturnType<F> => {
     hookState.onUpdated(() => {})
     const previousDispatcher = ReactCurrentDispatcher.current
     ReactCurrentDispatcher.current = dispatcher
-    do {
-      lastResult = hookInvocation(...args)
 
-      hookState.endPass()
-    } while (hookState.dirty())
+    doWhileDirty(() => {
+      lastResult = hookInvocation(...args)
+    })
+
     ReactCurrentDispatcher.current = previousDispatcher
     lastArgs = args
 
@@ -82,6 +91,7 @@ export const isolateHook: IsolateHook = <F extends (...args: any[]) => any>(
     setRef: hookState.setRef,
     setContext: hookState.setContext,
     waitForUpdate,
+    wrapUpdates: doWhileDirty,
   })
 }
 

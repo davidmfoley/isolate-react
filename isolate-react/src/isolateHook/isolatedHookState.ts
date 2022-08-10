@@ -32,12 +32,14 @@ type StateType =
   | 'useSyncExternalStore'
 
 export const createIsolatedHookState = (options: IsolatedHookOptions) => {
+  let inProgress = false
   let dirty = false
   let first = true
 
   let hookStates: any[] = []
   let nextHookStates: any[] = []
   let usedContextTypes = new Set<React.Context<any>>()
+  let pendingStateUpdates = [] as (() => void)[]
 
   const context = new Map<React.Context<any>, any>()
 
@@ -53,6 +55,14 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
 
   let onUpdated = () => {}
 
+  const executeOutsideRenderPass = (fn: () => void) => {
+    if (inProgress) {
+      pendingStateUpdates.push(fn)
+    } else {
+      fn()
+    }
+  }
+
   const addHookState = <T>(
     type: StateType,
     value: T,
@@ -66,10 +76,12 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
       ? (next: any) => {
           const updateResult = updateValue(newState.value, next)
 
-          newState.value = updateResult.value
+          executeOutsideRenderPass(() => {
+            newState.value = updateResult.value
 
-          dirty = true
-          onUpdated()
+            dirty = true
+            onUpdated()
+          })
         }
       : () => {
           throw new Error(`Could not update ${type}`)
@@ -97,13 +109,26 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
     return state
   }
 
+  const startPass = () => {
+    inProgress = true
+  }
+
+  const flushStateUpdates = () => {
+    for (let update of pendingStateUpdates) {
+      update()
+    }
+    pendingStateUpdates = []
+  }
+
   const endPass = () => {
+    inProgress = false
     dirty = false
     first = false
 
     insertionEffects.flush()
     layoutEffects.flush()
     effects.flush()
+    flushStateUpdates()
 
     hookStates = nextHookStates
   }
@@ -134,6 +159,7 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
     layoutEffects,
     effects,
     insertionEffects,
+    startPass,
     endPass,
     nextHookState,
     setContext,

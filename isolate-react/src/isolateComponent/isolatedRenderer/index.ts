@@ -120,7 +120,8 @@ export const isolatedRenderer = (
       tree: () => tree,
       inlineAll: (selector: Selector) => {
         renderContext.addInlinedSelector(selector)
-        tree.inlineAll()
+
+        hookRenderer.wrapUpdates(tree.inlineAll)
       },
       waitForRender: () => hookRenderer.waitForUpdate().then(() => {}),
       debug: () => tree.debug(),

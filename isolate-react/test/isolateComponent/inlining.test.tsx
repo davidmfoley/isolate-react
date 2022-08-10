@@ -1,7 +1,10 @@
 import { describe, it } from 'mocha'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { expect } from 'chai'
-import { isolateComponent } from '../../src/isolateComponent'
+import {
+  isolateComponent,
+  isolateComponentTree,
+} from '../../src/isolateComponent'
 
 describe('inlining ', () => {
   const ListItem = (props: { children: React.ReactNode }) => (
@@ -189,5 +192,38 @@ describe('inlining ', () => {
     const isolated = isolateComponent(<Outer name="Arthur" />)
     isolated.inline('*')
     expect(isolated.toString()).to.eq('<span>Hello Arthur</span>')
+  })
+
+  describe('Inner component setting state in effect', () => {
+    const SetNameUponMount = (props: {
+      name: string
+      setName: (name: string) => void
+    }) => {
+      useEffect(() => {
+        props.setName('Arthur')
+      }, [])
+      return <div>{props.name}</div>
+    }
+
+    const Wrapper = () => {
+      const [name, setName] = useState('')
+
+      return (
+        <>
+          <SetNameUponMount setName={setName} name={name} />
+        </>
+      )
+    }
+
+    it('with isolateComponentTree', () => {
+      const isolated = isolateComponentTree(<Wrapper />)
+      expect(isolated.toString()).to.eq('<div>Arthur</div>')
+    })
+
+    it('inlined after render', () => {
+      const isolated = isolateComponent(<Wrapper />)
+      isolated.inline(SetNameUponMount)
+      expect(isolated.toString()).to.eq('<div>Arthur</div>')
+    })
   })
 })

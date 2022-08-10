@@ -31,6 +31,8 @@ export type IsolatedHookMethods<F extends (...args: any) => any> = {
    * Returns a promise that resolves when the hook has been updated
    */
   waitForUpdate: () => Promise<ReturnType<F>>
+
+  wrapUpdates: (fn: () => void) => void
 }
 /**
  *  A hook running in isolation. This is the return value from isolateHook.
