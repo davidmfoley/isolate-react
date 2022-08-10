@@ -4,15 +4,12 @@ title: Test multiple components
 
 Sometimes we want to test a component by rendering its entire component tree. You may be familiar with this technique from using enzyme's `mount` functionality or `react-testing-library`.
 
-With isolateComponent, you can choose render none, some, or all of the components in the "tree" of elements that are returned by the component you are testing.
+We can use `isolateComponentTree` for this.
 
-An isolated component exposes a method `inline()` that will render elements that are part of the component's rendered output.
-
-See the [inline() documentation here](./api#inlineselector)
 
 Let's take an example of a shopping list component that allows adding and removing items from a list:
 
-```javascript
+```typescript
 export const ShoppingList = () => {
   // items in the shopping list
   const [items, setItems] = useState<Item[]>([])
@@ -43,33 +40,7 @@ export const ShoppingList = () => {
     </ul>
   )
 }
-```
 
-We can test this functionality in a couple of different ways using `isolateComponent`. One way is to check the interactions between `ShoppingList`, `ShoppingListItem`, and `AddItem`. 
-
-```javascript
-describe('ShoppingList -- without inline', () => {
-  test('starts empty', () => {
-    const isolated = isolateComponent(<ShoppingList />)
-    expect(isolated.exists(ShoppingListItem)).toEqual(false)
-  })
-  test('add a shopping list item', () => {
-    const isolated = isolateComponent(<ShoppingList />)
-    isolated.findOne(AddItem).props.onAddItem('Avocado')
-    expect(isolated.findAll(ShoppingListItem).length).toEqual(1)
-    expect(isolated.findOne(ShoppingListItem).props.item.description).toEqual(
-      'Avocado'
-    )
-  })
-})
-```
-
-These tests do *not* actually render `ShoppingListItem` or `AddItem`. This lets us test the components individually.
-
-Sometimes, though, we want to test how all these components work together. That's where `inline` comes in.
-
-First, let's look at the implementations of `ShoppingListItem` and `AddItem`:
-```javascript
 export const ShoppingListItem = (props: {
   item: Item
   onDeleteItem: () => void
@@ -112,17 +83,12 @@ export const AddItem = (props: {
 }
 ```
 
-We can use `inline` to test all of these components together:
+We can use `isolateComponentTree` to test all of these components together:
+
 
 ```javascript
   test('add a shopping list item', () => {
-    const isolated = isolateComponent(<ShoppingList />)
-
-    // include child components in the rendered output
-    // can also inline *all* react components with:
-    // isolated.inline('*')
-    isolated.inline(ShoppingListItem)
-    isolated.inline(AddItem)
+    const isolated = isolateComponentTree(<ShoppingList />)
 
     isolated
       // find the input element by name
@@ -145,7 +111,6 @@ We can use `inline` to test all of these components together:
 
 The choice between testing components individually or together has different tradeoffs depending on the components being tested. 
 
-In general, testing components together gives confidence in the way the components integrate with each other, at the cost of  increased [coupling](https://en.wikipedia.org/wiki/Coupling_(computer_programming)) between tests and implementations.
+In general, testing components together gives confidence in the way the components integrate with each other, at the cost of increased [coupling](https://en.wikipedia.org/wiki/Coupling_(computer_programming)) between tests and implementations.
 
-Testing components 
 
