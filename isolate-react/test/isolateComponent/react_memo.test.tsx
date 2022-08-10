@@ -3,7 +3,7 @@ import React from 'react'
 import { expect } from 'chai'
 import { isolateComponent } from '../../src/isolateComponent'
 
-describe('Inlining with heact.memo', () => {
+describe('Inlining with react.memo', () => {
   let renderedNames: string[] = []
 
   beforeEach(() => {
