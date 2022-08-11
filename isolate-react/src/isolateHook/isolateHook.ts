@@ -54,22 +54,36 @@ export const isolateHook: IsolateHook = <F extends (...args: any[]) => any>(
     } while (hookState.dirty())
   }
 
-  const invokeHook = (...args: Parameters<F>): ReturnType<F> => {
+  const withPausedUpdates = (fn: () => void) => {
     hookState.onUpdated(() => {})
+    fn()
+    hookState.onUpdated(invoke)
+  }
+
+  const withOverridenDispatch = (fn: () => void) => {
     const previousDispatcher = ReactCurrentDispatcher.current
     ReactCurrentDispatcher.current = dispatcher
-
-    doWhileDirty(() => {
-      lastResult = hookInvocation(...args)
-    })
+    fn()
 
     ReactCurrentDispatcher.current = previousDispatcher
-    lastArgs = args
+  }
 
-    hookState.onUpdated(invoke)
-
+  const flushUpdates = () => {
     updateWaiters.forEach((waiter) => waiter(lastResult))
     updateWaiters = []
+  }
+
+  const invokeHook = (...args: Parameters<F>): ReturnType<F> => {
+    withPausedUpdates(() => {
+      withOverridenDispatch(() => {
+        doWhileDirty(() => {
+          lastResult = hookInvocation(...args)
+        })
+      })
+    })
+
+    lastArgs = args
+    flushUpdates()
 
     return lastResult
   }
