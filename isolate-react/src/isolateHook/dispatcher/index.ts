@@ -4,8 +4,9 @@ import { createUseState } from './useState'
 import { createMemoizer } from './memoize'
 import { createUseReducer } from './useReducer'
 import { createUseSyncExternalStore } from './useSyncExternalStore'
-
-let nextUseIdValue = 0
+import { createUseRef } from './useRef'
+import { createUseId } from './useId'
+import { createEffectHandler } from './effects'
 
 interface Dispatcher {
   useCallback: typeof React.useCallback
@@ -28,30 +29,7 @@ interface Dispatcher {
 export const createIsolatedDispatcher = (
   isolatedHookState: IsolatedHookState
 ): Dispatcher => {
-  const useState = createUseState(isolatedHookState)
-  const useReducer = createUseReducer(isolatedHookState)
-
-  type Deps = any[] | undefined
-
-  const useEffectHandler =
-    (effectSet: any) =>
-    (effect: () => (() => void) | undefined, deps: Deps) => {
-      effectSet.nextEffect(effect, deps)
-    }
-
-  const useEffect = useEffectHandler(isolatedHookState.effects)
-  const useLayoutEffect = useEffectHandler(isolatedHookState.layoutEffects)
-  const useInsertionEffect = useEffectHandler(
-    isolatedHookState.insertionEffects
-  )
-
   const memoize = createMemoizer(isolatedHookState)
-  const generateId = () => {
-    nextUseIdValue++
-    return `useId-${nextUseIdValue}`
-  }
-
-  const useSyncExternalStore = createUseSyncExternalStore(isolatedHookState)
 
   return {
     useMemo: ((fn: any, deps: any) => {
@@ -63,28 +41,20 @@ export const createIsolatedDispatcher = (
     useDebugValue: () => {},
     useDeferredValue: (value) => value,
     useImperativeHandle: () => {},
-    useState: useState as any,
-    useReducer: useReducer as any,
-    useEffect: useEffect as any,
-    useLayoutEffect: useLayoutEffect as any,
-    useInsertionEffect: useInsertionEffect as any,
+    useState: createUseState(isolatedHookState) as any,
+    useReducer: createUseReducer(isolatedHookState) as any,
+    useEffect: createEffectHandler(isolatedHookState.effects),
+    useLayoutEffect: createEffectHandler(isolatedHookState.layoutEffects),
+    useInsertionEffect: createEffectHandler(isolatedHookState.insertionEffects),
     useContext: (type) => isolatedHookState.contextValue(type),
-    useId: () => useState(generateId)[0],
-    useSyncExternalStore,
+    useId: createUseId(isolatedHookState),
+    useSyncExternalStore: createUseSyncExternalStore(isolatedHookState),
     useTransition: () => [
       false,
       (fn) => {
         fn()
       },
     ],
-    useRef: (initialValue?: any) => {
-      const [ref] = isolatedHookState.nextHookState({
-        type: 'useRef',
-        create: () => ({
-          current: initialValue,
-        }),
-      })
-      return ref.value
-    },
+    useRef: createUseRef(isolatedHookState),
   }
 }
