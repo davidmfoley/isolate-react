@@ -6,7 +6,7 @@ import { IsolatedRenderer } from '../isolatedRenderer'
 import { disableReactWarnings } from '../../../test/isolateComponent/disableReactWarnings'
 
 const nullRenderer: IsolatedRenderer = {
-  initialize: () => ({} as any),
+  render: () => ({} as any),
   shouldInline: () => false,
 }
 
