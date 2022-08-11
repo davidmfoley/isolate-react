@@ -6,7 +6,10 @@ export type StateType =
   | 'useReducer'
   | 'useSyncExternalStore'
 
-export type HookState<T> = [{ value: T }, (value: (previous: T) => T) => void]
+export type HookState<T> = [
+  { value: T; type: StateType; cleanup?: (value: T) => void },
+  (update: (previous: T) => T) => void
+]
 
 export interface HookStateDef<T> {
   type: StateType
@@ -27,13 +30,27 @@ export interface HookStateDef<T> {
   ) => void
 }
 
+/**
+ * Updatable hook states hold a value that can be updated.
+ * When it is updated, they can effect a re-invocation of the containing hook.
+ *
+ * This is the backing storage for:
+ * - useState
+ * - useRef
+ * - useSyncExternalStore
+ * - useReducer
+ * - useMemo
+ * - useCalback
+ *
+ * Within a hook invocation, they must have the same order.
+ */
 export const createUpdatableHookStates = () => {
   let inProgress = false
   let dirty = false
   let first = true
 
-  let hookStates: any[] = []
-  let nextHookStates: any[] = []
+  let hookStates: HookState<any>[] = []
+  let nextHookStates: HookState<any>[] = []
   let pendingStateUpdates = [] as (() => void)[]
 
   let onUpdated = () => {}
