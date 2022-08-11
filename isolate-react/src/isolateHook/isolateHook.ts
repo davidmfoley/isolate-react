@@ -46,14 +46,6 @@ export const isolateHook: IsolateHook = <F extends (...args: any[]) => any>(
 
   const invoke = () => invokeHook(...(lastArgs || ([] as any)))
 
-  const doWhileDirty = (fn: () => void) => {
-    do {
-      hookState.startPass()
-      fn()
-      hookState.endPass()
-    } while (hookState.dirty())
-  }
-
   const withPausedUpdates = (fn: () => void) => {
     hookState.onUpdated(() => {})
     fn()
@@ -76,7 +68,7 @@ export const isolateHook: IsolateHook = <F extends (...args: any[]) => any>(
   const invokeHook = (...args: Parameters<F>): ReturnType<F> => {
     withPausedUpdates(() => {
       withOverridenDispatch(() => {
-        doWhileDirty(() => {
+        hookState.invokeWhileDirty(() => {
           lastResult = hookInvocation(...args)
         })
       })
@@ -105,7 +97,7 @@ export const isolateHook: IsolateHook = <F extends (...args: any[]) => any>(
     setRef: hookState.setRef,
     setContext: hookState.setContext,
     waitForUpdate,
-    wrapUpdates: doWhileDirty,
+    wrapUpdates: hookState.invokeWhileDirty,
   })
 }
 
