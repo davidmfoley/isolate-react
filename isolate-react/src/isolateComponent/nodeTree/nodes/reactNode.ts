@@ -1,12 +1,16 @@
 import { TreeNode } from '../../types'
-import { componentNode } from './componentNode'
-import { proxyNode } from './proxyNode'
+import { componentToString, displayName, formatChildren } from './common'
 
 export const reactNode = (
   fc: React.FC<any>,
   props: any,
   children: TreeNode[]
-): TreeNode => {
-  const proxy = proxyNode(componentNode(fc, props, children))
-  return proxy
-}
+): TreeNode => ({
+  nodeType: 'react',
+  type: fc,
+  name: displayName(fc),
+  children,
+  props,
+  content: () => formatChildren(children),
+  toString: () => componentToString(fc, children, props),
+})
