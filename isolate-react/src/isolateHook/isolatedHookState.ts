@@ -1,31 +1,20 @@
 import { createEffectSet } from './effectSet'
-import { IsolatedHookOptions } from './types/IsolatedHookOptions'
+import { createHookContexts } from './hookContexts'
 import { createUpdatableHookStates } from './updatableHookStates'
+
+import { IsolatedHookOptions } from './types/IsolatedHookOptions'
 export type IsolatedHookState = ReturnType<typeof createIsolatedHookState>
 
 export const createIsolatedHookState = (options: IsolatedHookOptions) => {
   let first = true
-
-  let usedContextTypes = new Set<React.Context<any>>()
-
-  const context = new Map<React.Context<any>, any>()
+  let onUpdated = () => {}
 
   const layoutEffects = createEffectSet()
   const effects = createEffectSet()
   const insertionEffects = createEffectSet()
   const updatableStates = createUpdatableHookStates()
 
-  if (options.context) {
-    options.context.forEach((c) => {
-      context.set(c.type, c.value)
-    })
-  }
-
-  let onUpdated = () => {}
-
-  const startPass = () => {
-    updatableStates.startPass()
-  }
+  const contexts = createHookContexts(options?.context || [], () => onUpdated())
 
   const endPass = () => {
     first = false
@@ -33,28 +22,19 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
     insertionEffects.flush()
     layoutEffects.flush()
     effects.flush()
+
     updatableStates.endPass()
-  }
-
-  const contextValue = (type: React.Context<any>) =>
-    context.has(type) ? context.get(type) : (type as any)._currentValue
-
-  const setContext = (contextType: React.Context<any>, value: any) => {
-    if (contextValue(contextType) === value) return
-    context.set(contextType, value)
-    if (usedContextTypes.has(contextType)) {
-      onUpdated()
-    }
   }
 
   return {
     layoutEffects,
     effects,
     insertionEffects,
-    startPass,
+    startPass: updatableStates.startPass,
     endPass,
     nextHookState: updatableStates.nextHookState,
-    setContext,
+    setContext: contexts.setContext,
+    contextValue: contexts.contextValue,
     setRef: updatableStates.setRef,
     firstPass: () => first,
     dirty: () => updatableStates.dirty(),
@@ -67,10 +47,6 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
       layoutEffects.cleanup()
       effects.cleanup()
       updatableStates.cleanup()
-    },
-    contextValue: (contextType: React.Context<any>) => {
-      usedContextTypes.add(contextType)
-      return contextValue(contextType)
     },
   }
 }
