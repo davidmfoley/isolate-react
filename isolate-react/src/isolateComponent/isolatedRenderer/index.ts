@@ -5,8 +5,9 @@ import { ComponentInstance } from '../types/ComponentInstance'
 import { Selector } from '../types/Selector'
 import { getRenderMethod } from './renderMethod'
 import { RenderContext } from './renderContext'
-
-export type Contexts = { contextType: React.Context<any>; contextValue: any }[]
+import { applyProviderContext } from './applyProviderContext'
+import { componentIsContextProviderForType } from './componentIsContextProviderForType'
+export { Contexts } from './renderContext'
 
 export type IsolatedRenderer = {
   render: <P>(
@@ -15,24 +16,6 @@ export type IsolatedRenderer = {
   ) => ComponentInstance<P>
 
   shouldInline: NodeMatcher
-}
-
-const applyProviderContext = (
-  component: any,
-  props: any,
-  renderContext: RenderContext
-) => {
-  if (
-    component._context &&
-    componentIsContextProviderForType(component, component._context)
-  ) {
-    return renderContext.withContext(component._context, props.value)
-  }
-  return renderContext
-}
-
-const componentIsContextProviderForType = (component: any, t: any) => {
-  return t === component?._context && component === t.Provider
 }
 
 export const isolatedRenderer = (
@@ -96,8 +79,6 @@ export const isolatedRenderer = (
       hookRenderer.setContext(contextType, contextValue)
     })
 
-    hookRenderer()
-
     const setProps = (nextProps: P) => {
       props = nextProps
       hookRenderer()
@@ -106,6 +87,8 @@ export const isolatedRenderer = (
     const mergeProps = (propsToMerge: Partial<P>) => {
       setProps({ ...props, ...propsToMerge })
     }
+
+    hookRenderer()
 
     return {
       render: hookRenderer,

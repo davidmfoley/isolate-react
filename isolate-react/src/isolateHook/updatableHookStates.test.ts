@@ -12,7 +12,7 @@ describe('updatableHookStates', () => {
     expect(value).to.eq(42)
   })
 
-  test('update function is stable', () => {
+  test('update function is sable', () => {
     const states = createUpdatableHookStates()
     const [, first] = states.nextHookState({
       type: 'useState',

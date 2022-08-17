@@ -140,7 +140,6 @@ export const createUpdatableHookStates = () => {
     endPass,
     nextHookState,
     setRef,
-    firstPass: () => first,
     dirty: () => dirty,
     onUpdated: (handler: () => void) => {
       onUpdated = handler
