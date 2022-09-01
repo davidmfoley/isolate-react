@@ -1,5 +1,5 @@
 ---
-title: Test multiple components
+title: isolateComponentTree - Test multiple components
 ---
 
 Sometimes we want to test a component by rendering its entire component tree. You may be familiar with this technique from using enzyme's `mount` functionality or `react-testing-library`.

@@ -7,7 +7,44 @@ title: Overview
 
 isolate-react is the missing tool for test-driving your react components.
 
-It's focused on speed and simplicity, has zero dependencies, doesn't require a DOM emulator, and supports any test runner.
+* zero dependencies 
+* no DOM emulator required
+* supports any test runner
+
+## Examples/TLDR
+
+### Testing a component with isolateComponent:
+
+```typescript
+// the component we want to test
+import React, { useState } from 'react'
+
+const CounterButton = () => {
+  const [count, setCount] = useState(0)
+  return (
+    <div>
+      <span className="count">{count}</span>
+      <button type="button" onClick={() => setCount(count + 1)}>
+        +1
+      </button>
+    </div>
+  )
+}
+
+test('starts at zero', () => {
+  const counterButton = isolateComponent(<CounterButton />)
+  expect(counterButton.findOne('span.count').content()).toEqual('0')
+})
+
+test('increments upon click', () => {
+  const counterButton = isolateComponent(<CounterButton />)
+
+  counterButton.findOne('button').props.onClick()
+  expect(counterButton.findOne('span.count').content()).toEqual('1')
+})
+```
+
+## Why use isolate-react?
 
 ### Flexible support for whatever level of testing you prefer:
 - [x] Test custom hooks
@@ -21,31 +58,11 @@ It's focused on speed and simplicity, has zero dependencies, doesn't require a D
 - [x] No virtual DOM or other tools to install
 - [x] Very fast
 
-## 
-`isolate-react` exposes two functions: `isolateHook` and `isolateComponent`
 
-Import them as follows:
-
-```javascript
-import { isolateComponent, isolateHook } from 'isolate-react'
-```
-
-`isolateComponent` is used to isolate a react component for testing. 
-
-More about `isolateComponent`:
-
-* [Overview and Examples](./isolateComponent/01-overview.md)
-* [API](./isolateComponent/api.md)
-
-`isolateHook` is used to isolate a custom hook for testing. 
-
-More about `isolateHook`:
-
-* [Overview and Examples](./isolateHook/01-overview.md)
-* [API](./isolateHook/api.md)
-## Usage
-
-See the [API documentation](./api.md) for usage, or jump right into the documentation for [isolateComponent](./isolateComponent/01-overview.md) or [isolateHook](./isolateHook/01-overview.md)
+See the [API documentation](./api.md) for usage, or jump right into the documentation:
+* [isolateComponent](./Testing Components/02-isolateComponent.md) 
+* [isolateComponentTree](./Testing Components/03-isolateComponentTree.md) 
+* [isolateHook](./Testing Hooks/01-overview.md)
 
 ### Issues & Progress
 

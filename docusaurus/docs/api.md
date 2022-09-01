@@ -2,24 +2,26 @@
 title: API
 ---
 
-`isolate-react` exposes two functions: `isolateHook` and `isolateComponent`
+`isolate-react` exposes three functions: `isolateHook`, `isolateComponent`, and `isolateComponentTree`.
 
 Import them as follows:
 
 ```javascript
-import { isolateComponent, isolateHook } from 'isolate-react'
+import { isolateComponent, isolateComponentTree, isolateHook } from 'isolate-react'
 ```
 
-`isolateComponent` is used to isolate a react component for testing. 
+Each function serves a different purpose:
 
-More about `isolateComponent`:
+- `isolateHook` is used for testing custom hooks.
+- `isolateComponent` is used for testing a single compoment *without* rendering its child components, similar to "shallow" rendering with a tool like enzyme.
+- `isolateComponentTree` is used for testing a compoment *with* all of its children.
 
-* [Overview and Examples](./isolateComponent/01-overview.md)
-* [API](./isolateComponent/api.md)
+Learn about testing components:
 
-`isolateHook` is used to isolate a custom hook for testing. 
+* [Overview and Examples](./Testing Components/01-overview.md)
+* [API](./Testing Components/api.md)
 
-More about `isolateHook`:
+Learn about testing hooks:
 
-* [Overview and Examples](./isolateHook/01-overview.md)
-* [API](./isolateHook/api.md)
+* [Overview and Examples](./Testing Hooks/01-overview.md)
+* [API](./Testing Hooks/api.md)

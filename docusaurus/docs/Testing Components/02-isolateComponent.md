@@ -1,5 +1,5 @@
 ---
-title: Test a single component
+title: isolateComponent - Test a single component
 ---
 
 The simplest use of `isolateComponent` is to test a single component in isolation.
