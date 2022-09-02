@@ -1,5 +1,5 @@
 ---
-title: Default arguments
+title: Setter function
 ---
 
 ## Description

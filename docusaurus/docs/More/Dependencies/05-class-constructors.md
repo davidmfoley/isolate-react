@@ -14,7 +14,7 @@ In tests, pass test implementations into the constructor.
 
 This requires the use of classes.
 
-The mechanics are very similar to [closures](./02-closures)
+The mechanics are very similar to [closures](./closures)
 
 ## Example
 
