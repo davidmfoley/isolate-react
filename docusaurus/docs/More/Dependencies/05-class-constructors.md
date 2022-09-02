@@ -74,4 +74,4 @@ describe("getWidgetName", () => {
 
 ## Cons
 
-On many projects, classes are not commonly used. If that is the case, consider using [closures](./02-closures).
+On many projects, classes are not commonly used. If that is the case, consider using [closures](./closures).
