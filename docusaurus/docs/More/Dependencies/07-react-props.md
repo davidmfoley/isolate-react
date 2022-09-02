@@ -16,59 +16,52 @@ This is a react-specific technique.
 
 ## Example
 
-**api.ts**
+**api.js**
 
-```js
+```javascript
 // production api implementation
 export const api = {
   getWidget: (id) => { ... }
 }
 ```
 
-**WidgetName.ts**
-```js
+**WidgetName.jsx**
+```javascript
 import { api } from './api'
 import React, { useEffect, useState } from 'react'
 
 const WidgetName = ({
-  widgetApi=api,
+  widgetApi=api, // default value is the "real" api
   id
 }) => {
   const [name, setName] = useState('')
-  useEffect(() => {
-    
-  }, [id])
-}
 
-export const widgets = {
-  getWidgetName: async (widgetId, widgetApi = api) => {
-    const widget = await widgetApi.getWidget(widgetId);
-    if (!widget) return "Unknown Widget"
-    return widget.name
-  }
+  useEffect(() => {
+    widgetApi.getWidget(id).then(widget => setName(widget.name))
+  }, [id])
+
+  return <span>{name}</span>
 }
 
 ```
 
-**widgets.test.ts**
-```js
+**WidgetName.test.jsx**
+
+```javascript
 import { widgets } from './widgets'
 
-describe("getWidgetName", () => {
+describe("WidgetName", () => {
   test("unknown widget returns 'Unknown Widget'", () => {
     const fakeApi = {
       getWidget: async () => undefined
     }
 
-    // pass in the test implementation
-    expect(getWidgetName(42, fakeApi)).toEqual('Unknown Widget')
+    const widgetComponent = isolateComponent(<WidgetName widgetApi={fakeApi} widgetId={42} />)
+
+    await Promise.resolve()
+
+    expect(widgetComponent.findOne('span').content()).toEqual('Unknown Widget')
   })
 })
 ```
-
-## Pros
-
-
-
-## Cons
 

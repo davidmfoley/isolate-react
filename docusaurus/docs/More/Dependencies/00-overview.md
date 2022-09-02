@@ -1,8 +1,8 @@
+---
+title: Those Pesky Dependencies
+---
+
 ## This section is a work-in-progress
-
-## Dependency Inversion
-
-### What is it?
 
 Often in our programs, when module A needs to collaborate with module B, it imports that module and uses its exports directly:
 
