@@ -19,6 +19,7 @@ slug: /
 ```typescript
 // the component we want to test
 import React, { useState } from 'react'
+import { isolateComponent } from 'isolate-react'
 
 const CounterButton = () => {
   const [count, setCount] = useState(0)
@@ -48,6 +49,9 @@ test('increments upon click', () => {
 ### Test a hook
 
 ```typescript
+import { isolateHook } from 'isolate-react'
+
+import React, { useState, useEffect } from 'react'
 
 const useRememberNames = (name: string) => {
   const [names, setNames] = useState([name])
