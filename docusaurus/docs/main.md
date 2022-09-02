@@ -1,19 +1,20 @@
 ---
 id: main
-title: Overview
+title: isolate-react
+slug: /
 ---
 
-## Test-drive react components and hooks
+## The missing tool for test-driving react hooks and components
 
-isolate-react is the missing tool for test-driving your react components.
-
-* zero dependencies 
-* no DOM emulator required
-* supports any test runner
+* No DOM emulator required
+* Supports any test runner
+* Zero dependencies
+* Simple-to-use
+* Guaranteed faster than other react testing tools, or your money back
 
 ## Examples/TLDR
 
-### Testing a component with isolateComponent:
+### Test a component:
 
 ```typescript
 // the component we want to test
@@ -43,6 +44,47 @@ test('increments upon click', () => {
   expect(counterButton.findOne('span.count').content()).toEqual('1')
 })
 ```
+
+### Test a hook
+
+```typescript
+
+const useRememberNames = (name: string) => {
+  const [names, setNames] = useState([name])
+
+  // when name changes,
+  // add it to our list of names,
+  // if we haven't seen it yet
+  useEffect(() => {
+    if (!names.includes(name)) {
+      names.push(name)
+    }
+  }, [name])
+
+  return names
+}
+
+test('remembers the initial name', () => {
+  const useTestRememberNames = isolateHook(useRememberNames)
+  expect(useTestRememberNames('Arthur')).toEqual(['Arthur'])
+})
+
+test('remembers two names', () => {
+  const useTestRememberNames = isolateHook(useRememberNames)
+  useTestRememberNames('Arthur')
+  expect(useTestRememberNames('Trillian')).toEqual(['Arthur', 'Trillian'])
+})
+
+test('does not remember duplicate names', () => {
+  const useTestRememberNames = isolateHook(useRememberNames)
+  useTestRememberNames('Ford')
+  useTestRememberNames('Arthur')
+  useTestRememberNames('Ford')
+
+  expect(useTestRememberNames('Arthur')).toEqual(['Ford', 'Arthur'])
+})
+```
+
 
 ## Why use isolate-react?
 
