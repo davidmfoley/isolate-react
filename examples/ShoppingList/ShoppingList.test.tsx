@@ -1,8 +1,8 @@
-import { isolateComponent } from 'isolate-react'
+import { isolateComponent, isolateComponentTree } from 'isolate-react'
 import React from 'react'
 import { AddItem, ShoppingList, ShoppingListItem } from './ShoppingList'
 
-describe('ShoppingList -- without inline', () => {
+describe('ShoppingList -- with isolateComponent', () => {
   test('starts empty', () => {
     const isolated = isolateComponent(<ShoppingList />)
     expect(isolated.exists(ShoppingListItem)).toEqual(false)
@@ -18,23 +18,18 @@ describe('ShoppingList -- without inline', () => {
   })
 })
 
-describe('ShoppingList -- with inline', () => {
+describe('ShoppingList -- with isolateComponentTree', () => {
   test('add a shopping list item', () => {
-    const isolated = isolateComponent(<ShoppingList />)
+    const component = isolateComponentTree(<ShoppingList />)
 
-    // Using '*' will inline all components:
-    // isolated.inline('*')
-    isolated.inline(ShoppingListItem)
-    isolated.inline(AddItem)
-
-    isolated
+    component
       .findOne('input[name=description]')
       .props.onChange({ target: { value: 'Avocado' } })
 
-    isolated.findOne('button.add-item').props.onClick()
+    component.findOne('button.add-item').props.onClick()
 
-    expect(isolated.findAll('li').length).toEqual(2)
-    expect(isolated.findOne('span.item-description').content()).toEqual(
+    expect(component.findAll('li').length).toEqual(2)
+    expect(component.findOne('span.item-description').content()).toEqual(
       'Avocado'
     )
   })

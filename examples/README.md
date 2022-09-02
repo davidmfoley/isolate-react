@@ -19,3 +19,19 @@ Watch the examples and run them on change:
 ## Examples
 
 ### [CounterButton]('./CounterButton')
+
+Demonstrates testing a simple component.
+
+### [ShoppingList]('./ShoppingList')
+
+Demonstrates testing a react component with two approaches:
+1. "Shallow" testing, using `isolateComponent`
+2. "Deep" testing using `isolateComponentTree`
+
+### [useRememberNames]('./useRememberNames')
+
+Demonstrates testing a hook that uses `useEffect` and `useState`.
+
+### [useTodos]('./useTodos')
+
+Demonstrates testing a hook with slightly more complex state.
