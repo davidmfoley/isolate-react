@@ -1,13 +1,13 @@
 ---
-title: isolateComponent
-sidebar_label: isolateComponent - Test a single component
+title: Anatomy of a component test
 ---
 
-## Test a single component
+Whether using `isolateComponent`, or `isolateComponentTree`, most component tests follow a similar pattern:
 
-The simplest use of `isolateComponent` is to test a single component in isolation.
-
-In this style of testing we render only the component we are testing, and test its logic.
+1. Isolate the component using `isolateComponent` or `isolateComponentTree`
+2. Find children (components or dom elements) rendered by the isolated component.
+3. Simulate some activity using the props of the children, or by updating the props of the isolated component.
+4. Verify behavior by checking the content, using the same methods as in step 2.
 
 Let's say we want to create a button that counts how many times it's been clicked and displays that count:
 
@@ -26,13 +26,13 @@ export const CounterButton = () => {
 }
 ```
 
-We can test this by:
-1. Isolating the component using `isolateComponent`
-2. Looking at the content rendered by the isolated component to see that it is 0.
-3. Simulating clicks on the button
-4. Checking the content again, as in step 2.
+Our plan is to:
+1. Isolate the component using `isolateComponent`
+2. Look at the content rendered by the isolated component to see that it is 0.
+3. Simulate clicks on the button
+4. Check the content to see that it is updated.
 
-Here's how that would look, using jest as the test runner:
+Here's how that looks, using jest as the test runner:
 
 ```javascript
 import { isolateComponent } from 'isolate-react'
@@ -54,7 +54,6 @@ test('starts at zero, then increments when clicked', () => {
   expect(button.content()).toContain('3')
 })
 ```
-
 
 ## Step by step:
 
@@ -109,3 +108,4 @@ Again, there are a few different ways to do this:
 
   expect(button.findOne('span.count').content()).toEqual('3')
 ```
+
