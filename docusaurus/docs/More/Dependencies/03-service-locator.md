@@ -10,12 +10,6 @@ In production code, configure the locator to return the production implementatio
 
 In tests, set up the locator to return a different implementation as needed.
 
-## Notes
-
-This is a general technique that can be used anywhere, not only in react.
-
-Sometimes many services are grouped together in a single object. This is sometimes called a "Service Registry".
-
 ## Example
 
 **api.ts**
@@ -64,9 +58,11 @@ describe("getWidgetName", () => {
 })
 ```
 
-## Pros
+## Notes
 
-## Cons
+This is a general technique that can be used anywhere, not only in react.
+
+Sometimes many services are grouped together in a single object. This is sometimes called a "Service Registry".
 
 When we use Service Locator, we add an additional dependency on the locator to each place that uses the service. This complicates the code.
 

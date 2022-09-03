@@ -34,7 +34,7 @@ const WidgetName = ({
   const [name, setName] = useState('')
 
   useEffect(() => {
-    widgetApi.getWidget(id).then(widget => setName(widget.name))
+    widgetApi.getWidget(id).then(widget => setName(widget ? widget.name: 'Unknown Widget'))
   }, [id])
 
   return <span>{name}</span>
@@ -45,17 +45,19 @@ const WidgetName = ({
 **WidgetName.test.jsx**
 
 ```javascript
+import { isolateComponent } from 'isolate-react'
 import { widgets } from './widgets'
 
 describe("WidgetName", () => {
-  test("unknown widget returns 'Unknown Widget'", () => {
+  test("unknown widget returns 'Unknown Widget'", async () => {
     const fakeApi = {
       getWidget: async () => undefined
     }
 
     const widgetComponent = isolateComponent(<WidgetName widgetApi={fakeApi} widgetId={42} />)
 
-    await Promise.resolve()
+    // Wait for the api promise to resolve and update the component
+    await widgetComponent.waitForRender()
 
     expect(widgetComponent.findOne('span').content()).toEqual('Unknown Widget')
   })
