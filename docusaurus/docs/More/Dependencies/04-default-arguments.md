@@ -10,9 +10,6 @@ In production, use default argument values to bring in the production implementa
 
 In tests, pass in test implementations.
 
-## Notes
-
-This is a general technique that can be used anywhere, not only in react-aware code.
 
 ## Example
 
@@ -55,9 +52,6 @@ describe("getWidgetName", () => {
 })
 ```
 
-## Pros
+## Notes
 
-
-
-## Cons
-
+This is a general technique that can be used anywhere, not only in react-aware code.

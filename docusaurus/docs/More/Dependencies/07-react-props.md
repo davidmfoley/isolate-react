@@ -10,9 +10,6 @@ In production, use default prop value to bring in the production implementation.
 
 In tests, pass in a test implementation as a prop.
 
-## Notes
-
-This is a react-specific technique.
 
 ## Example
 
@@ -65,3 +62,8 @@ describe("WidgetName", () => {
 })
 ```
 
+## Notes
+
+This is a react-specific technique.
+
+This is very similar to [default arguments](./default-arguments)

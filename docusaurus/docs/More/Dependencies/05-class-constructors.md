@@ -10,11 +10,6 @@ In production, we can either default the values of these variables or expose an 
 
 In tests, pass test implementations into the constructor.
 
-## Notes
-
-This requires the use of classes.
-
-The mechanics are very similar to [closures](./closures)
 
 ## Example
 
@@ -68,10 +63,11 @@ describe("getWidgetName", () => {
 })
 ```
 
-## Pros
 
+## Notes
 
+This requires the use of classes.
 
-## Cons
+The mechanics are very similar to [closures](./closures)
 
 On many projects, classes are not commonly used. If that is the case, consider using [closures](./closures).

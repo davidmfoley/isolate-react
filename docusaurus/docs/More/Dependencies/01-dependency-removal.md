@@ -1,5 +1,6 @@
 ---
-title: Avoid mocks/stubs by separating side-effects and logic
+title: The most powerful dependency is the one removed
+sidebar_label: But first
 ---
 
 Before we get into all of the techniques we can use to invert a dependency, let's look at the most powerful technique we have for dealing with unruly dependencies: get rid of them.

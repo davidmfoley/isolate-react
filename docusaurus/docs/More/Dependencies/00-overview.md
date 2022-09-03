@@ -1,10 +1,10 @@
 ---
-title: Those Pesky Dependencies
+title: Dependencies
 ---
 
-## This section is a work-in-progress
+## This section is a work-in-progress!
 
-Often in our programs, when module A needs to collaborate with module B, it imports that module and uses its exports directly:
+Often in our programs, when module A needs to collaborate with module B, it imports that module and uses its exports directly.
 
 For example, let's say we have a function that looks up a user from our database:
 
@@ -19,6 +19,8 @@ export const findUserByEmail = async (email) => {
   return result.rows[0] || null
 }
 ```
+
+... and we want to test another function that uses the database function:
 
 ```javascript
 // api.js

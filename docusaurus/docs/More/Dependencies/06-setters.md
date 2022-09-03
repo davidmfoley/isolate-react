@@ -14,10 +14,6 @@ In production, there are a few options:
 
 In tests, invoke the setter with a test implementation, often a fake or a stub.
 
-## Notes
-
-This is a general technique that can be used anywhere, not only in react-aware code.
-
 ## Example
 
 **api.js**
@@ -64,6 +60,10 @@ describe("getWidgetName", () => {
   })
 })
 ```
+
+## Notes
+
+This is a general technique that can be used anywhere, not only in react-aware code.
 
 ## Pros
 

@@ -12,12 +12,6 @@ In production code, use the real services to construct the module, by either:
 
 In tests, configure the dependencies for testing by calling the factory function with test-friendly values.
 
-## Notes
-
-This is a general technique that can be used anywhere, not only in react-aware code.
-
-This is very similar to using class constructors.
-
 ## Example
 
 **api.ts**
@@ -70,9 +64,9 @@ describe("getWidgetName", () => {
 })
 ```
 
-## Pros
+## Notes
 
+This is a general technique that can be used anywhere, not only in react-aware code.
 
-
-## Cons
+This is very similar to using classes that take dependencies as constructor objects.
 
