@@ -5,9 +5,9 @@ title: API
 
 # isolateComponent API
 
-## isolateComponent()
+## isolateComponent() and isolateComponentTree()
 
-`isolateComponent` accepts React elements, usually rendered with JSX, and returns an [IsolatedComponent](#isolatedcomponent)
+`isolateComponent` and `isolateComponentTree` each accept React elements, usually rendered with JSX, and return an [IsolatedComponent](#isolatedcomponent)
 
 
 Import isolateComponent:

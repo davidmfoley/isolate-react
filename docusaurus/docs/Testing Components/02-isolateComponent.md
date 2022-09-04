@@ -5,7 +5,9 @@ sidebar_label: isolateComponent - Test a single component
 
 ## Test a single component
 
-The simplest use of `isolateComponent` is to test a single component in isolation.
+`isolateComponent` allows you to test a single component in isolation.
+
+The JSX elements returned by the component will not be rendered, similar to enzyme's `shallow()`.
 
 In this style of testing we render only the component we are testing, and test its logic.
 
