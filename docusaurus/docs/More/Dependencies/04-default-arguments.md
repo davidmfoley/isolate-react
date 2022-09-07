@@ -15,7 +15,7 @@ In tests, pass in test implementations.
 
 **api.ts**
 
-```js
+```javascript
 // production api implementation
 export const api = {
   getWidget: (id) => { ... }
@@ -23,7 +23,7 @@ export const api = {
 ```
 
 **widgets.ts**
-```js
+```javascript
 import { api } from './api'
 
 export const widgets = {
@@ -37,7 +37,7 @@ export const widgets = {
 ```
 
 **widgets.test.ts**
-```js
+```javascript
 import { widgets } from './widgets'
 
 describe("getWidgetName", () => {
@@ -52,6 +52,42 @@ describe("getWidgetName", () => {
 })
 ```
 
+## A common usage: getting the current time
+
+Testing time can be annoying. For example, we might have a function that returns a natural language description of the age of some entity in our system. Let's say, for example a comment on a blog post:
+
+```javascript
+const describeAge = (comment) => {
+  
+  const ageInMilliseconds = Date.now() - comment.createdAt
+  if (ageInMilliseconds < 60 * 1000) {
+    return "Just now"
+  }
+
+  ... a bunch more logic here to diplay minutes, hours, days, weeks, etc. ....
+
+}
+```
+
+Testing this requires generating different comment objects based on the current computer date. Since the computer date is changing as the tests run, it also makes it difficult to test boundary conditions. A simple solution is to add an additional argument with a default value:
+
+```javascript
+const describeAge = (comment, now = Date.now()) => {
+  
+  const ageInMilliseconds = now - comment.createdAt
+  if (ageInMilliseconds < 60 * 1000) {
+    return "Just now"
+  }
+
+  ... a bunch more logic here to diplay minutes, hours, days, weeks, etc. ....
+
+}
+```
+
+Now it is simple to pass in a date for testing, and at runtime the current date will use used at all times.
+
+
 ## Notes
 
 This is a general technique that can be used anywhere, not only in react-aware code.
+

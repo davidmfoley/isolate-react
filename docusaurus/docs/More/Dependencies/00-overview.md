@@ -5,15 +5,14 @@ sidebar_label: Dependencies
 
 A guide to building software without losing your mind.
 
-## Important note
-### This section is a work-in-progress!
+### This guide is a work-in-progress!
 
 
 ## What is a dependency?
 
-Often in our programs, when module A needs to collaborate with module B, it imports that module and uses its exports directly.
+Often in javascript programs, when module A needs to collaborate with module B, it imports that module and uses its exports directly.
 
-For example, let's say we have a function that looks up a user from our database:
+For example, let's say we have a function that looks up a user from a database:
 
 ```javascript
 // database.js
@@ -35,7 +34,10 @@ export const findUserByEmail = async (email) => {
 import { findUserByEmail } from './database'
 
 export const getUserName = async (email) => {
+  // get the user record from the database
   const user = await findUserByEmail(email)
+
+  // logic we would like to test
   if (!user) return "User Not Found"
   if (!user.name) return "No Name Provided"
   if (user.title) return `${user.title}. ${user.name}`
@@ -46,7 +48,7 @@ export const getUserName = async (email) => {
 
 We can say that the function `getUserName` *depends on* the function `findUserByEmail`.
 
-We can further say that this is a "hard" or "static" dependency -- one that is "hard-wired" and not easily replaced.
+We can further say that this is a "hard" or "static" dependency -- one that is "hard-wired" and not easily replaced. (Javascript as executed in node *does* provide the ability to override the import. However, it's usually an option of last resort and you should almost never need to do that)
 
 ## How does this affect us?
 
@@ -54,7 +56,7 @@ We can further say that this is a "hard" or "static" dependency -- one that is "
 
 The above example is simple: a function that depends on a single other function. In many applications, the dependencies are much more complex. At runtime, a single request will be serviced by many objects, and each of those objects can have many exposed methods, with only a few of them used. 
 
-This leads to unnecessary coupling between objects.
+This leads to increased *coupling* between objects.
 
 The techniques used to make our hard dependencies "softer" also tend to have the effect of making their interactions more *explicit*. 
 
@@ -71,4 +73,7 @@ However, most of the time no additional tools are necessary -- we just need to m
 
 The following pages explain many of the common techniques  we can use to invert dependencies in javascript and typescript. Some of the techniques are specific to react, and some are generally applicable to all javascript code.
 
+### Notes
+
+This guide is written with javascript and typescript in mind, in node and the browser. Some of the techniques in here are specific to react and are noted as such.
 
