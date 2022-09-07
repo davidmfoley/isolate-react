@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
 import React from 'react'
 import { isolateComponent } from '../../src/isolateComponent'
-import { expect } from 'chai'
+import assert from 'node:assert'
 
 describe('updating props', () => {
   const Name = (props: { first: string; last: string }) => (
@@ -13,18 +13,18 @@ describe('updating props', () => {
   it('updates and re-renders upon mergeProps', () => {
     const component = isolateComponent(<Name first="eddard" last="stark" />)
 
-    expect(component.findOne('span').content()).to.eq('eddard stark')
+    assert.strictEqual(component.findOne('span').content(), 'eddard stark')
 
     component.mergeProps({ first: 'ned' })
-    expect(component.findOne('span').content()).to.eq('ned stark')
+    assert.strictEqual(component.findOne('span').content(), 'ned stark')
   })
 
   it('updates and re-renders upon setProps', () => {
     const component = isolateComponent(<Name first="eddard" last="stark" />)
 
-    expect(component.findOne('span').content()).to.eq('eddard stark')
+    assert.strictEqual(component.findOne('span').content(), 'eddard stark')
 
     component.setProps({ first: 'catelyn', last: 'tully' })
-    expect(component.findOne('span').content()).to.eq('catelyn tully')
+    assert.strictEqual(component.findOne('span').content(), 'catelyn tully')
   })
 })

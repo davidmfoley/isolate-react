@@ -1,6 +1,5 @@
 import { describe, it } from 'mocha'
-import { expect } from 'chai'
-
+import assert from 'node:assert'
 import { isolateHook } from '../../src/isolateHook'
 import { useEffect, useRef } from 'react'
 
@@ -11,7 +10,10 @@ describe('useRef', () => {
   }
 
   it('starts out as the inital value', () => {
-    expect(isolateHook(() => useRefExample('trillian'))()).to.eq('trillian')
+    assert.strictEqual(
+      isolateHook(() => useRefExample('trillian'))(),
+      'trillian'
+    )
   })
 
   it('can be set', () => {
@@ -20,7 +22,7 @@ describe('useRef', () => {
     isolated.setRef(0, 'ford')
     isolated.invoke()
 
-    expect(isolated.currentValue()).to.eq('ford')
+    assert.strictEqual(isolated.currentValue(), 'ford')
   })
 
   it('maintains same reference each invocation', () => {
@@ -37,6 +39,6 @@ describe('useRef', () => {
     }
 
     const isolated = isolateHook(useMounted)
-    expect(isolated()).to.eq(isolated())
+    assert.strictEqual(isolated(), isolated())
   })
 })

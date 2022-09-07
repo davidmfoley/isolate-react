@@ -1,6 +1,5 @@
 import { describe, it, beforeEach } from 'mocha'
-import { expect } from 'chai'
-
+import assert from 'node:assert'
 import { isolateHook } from '../../src/isolateHook'
 import { useEffect, useInsertionEffect, useLayoutEffect, useState } from 'react'
 
@@ -20,7 +19,7 @@ describe('effects', () => {
       }
 
       isolateHook(useEffectExample)()
-      expect(invocations).to.eql(['effect'])
+      assert.deepEqual(invocations, ['effect'])
     })
 
     it('invokes effect after hook completes', () => {
@@ -32,7 +31,7 @@ describe('effects', () => {
       }
 
       isolateHook(useEffectExample)()
-      expect(invocations).to.eql(['render', 'effect'])
+      assert.deepEqual(invocations, ['render', 'effect'])
     })
 
     it('invokes effect if deps change', () => {
@@ -50,7 +49,7 @@ describe('effects', () => {
       isolateHook(useEffectExample)()
       setName('ford')
 
-      expect(invocations).to.eql(['hello arthur', 'hello ford'])
+      assert.deepEqual(invocations, ['hello arthur', 'hello ford'])
     })
 
     it('can set state in mount effect', () => {
@@ -64,7 +63,7 @@ describe('effects', () => {
 
       const isolated = isolateHook(useEffectExample)
 
-      expect(isolated()).to.eq('trillian')
+      assert.strictEqual(isolated(), 'trillian')
     })
 
     it('does not invoke effect if deps do not change', () => {
@@ -82,7 +81,7 @@ describe('effects', () => {
       isolateHook(useEffectExample)()
       setName('arthur')
 
-      expect(invocations).to.eql(['hello arthur'])
+      assert.deepEqual(invocations, ['hello arthur'])
     })
 
     it('cleans up effect upon dep change and unmount', () => {
@@ -105,7 +104,7 @@ describe('effects', () => {
       setName('ford')
       isolated.cleanup()
 
-      expect(invocations).to.eql([
+      assert.deepEqual(invocations, [
         'hello arthur',
         'goodbye arthur',
         'hello ford',
@@ -143,7 +142,7 @@ describe('effects', () => {
       const isolated = isolateHook(useEffectOrderExample)
       isolated()
       isolated.cleanup()
-      expect(invocations).to.eql([
+      assert.deepEqual(invocations, [
         'useInsertionEffect',
         'useLayoutEffect',
         'useEffect',

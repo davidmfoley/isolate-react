@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
 import React, { useContext } from 'react'
-import { expect } from 'chai'
 import { isolateComponent } from '../../src/isolateComponent'
+import assert from 'node:assert'
 
 describe('inline context', () => {
   const NameContext = React.createContext<string>('Arthur')
@@ -40,7 +40,7 @@ describe('inline context', () => {
       )
 
       isolated.inline('*')
-      expect(isolated.findOne('div').content()).to.eq('Ford')
+      assert.strictEqual(isolated.findOne('div').content(), 'Ford')
     })
 
     it('can get provided context in consumer', () => {
@@ -51,7 +51,7 @@ describe('inline context', () => {
       )
 
       isolated.inline('*')
-      expect(isolated.findOne('div').content()).to.eq('Ford')
+      assert.strictEqual(isolated.findOne('div').content(), 'Ford')
     })
 
     it('can change value of context provider with props', () => {
@@ -63,7 +63,7 @@ describe('inline context', () => {
 
       isolated.inline('*')
       isolated.mergeProps({ value: 'Zaphod' })
-      expect(isolated.findOne('div').content()).to.eq('Zaphod')
+      assert.strictEqual(isolated.findOne('div').content(), 'Zaphod')
     })
 
     it('can render nested context providers', () => {
@@ -76,7 +76,7 @@ describe('inline context', () => {
       )
 
       isolated.inline('*')
-      expect(isolated.findOne('div').content()).to.eq('Trillian')
+      assert.strictEqual(isolated.findOne('div').content(), 'Trillian')
     })
   })
 
@@ -88,7 +88,7 @@ describe('inline context', () => {
     )
 
     isolated.inline('*')
-    expect(isolated.findOne('div').content()).to.eq('Arthur')
+    assert.strictEqual(isolated.findOne('div').content(), 'Arthur')
   })
 
   it('passes down withContext values', () => {
@@ -101,7 +101,7 @@ describe('inline context', () => {
       </TestComponent>
     )
     isolated.inline('*')
-    expect(isolated.findOne('div').content()).to.eq('Zaphod')
+    assert.strictEqual(isolated.findOne('div').content(), 'Zaphod')
   })
 
   describe('updating context values', () => {
@@ -114,7 +114,7 @@ describe('inline context', () => {
 
       isolated.setContext(NameContext, 'Zaphod')
       isolated.inline('*')
-      expect(isolated.findOne('div').content()).to.eq('Zaphod')
+      assert.strictEqual(isolated.findOne('div').content(), 'Zaphod')
     })
 
     it('can setContext after inline', () => {
@@ -126,7 +126,7 @@ describe('inline context', () => {
 
       isolated.inline('*')
       isolated.setContext(NameContext, 'Zaphod')
-      expect(isolated.findOne('div').content()).to.eq('Zaphod')
+      assert.strictEqual(isolated.findOne('div').content(), 'Zaphod')
     })
 
     it('overrides outer context with provider context', () => {
@@ -140,7 +140,7 @@ describe('inline context', () => {
 
       isolated.inline('*')
       isolated.setContext(NameContext, 'Zaphod')
-      expect(isolated.findOne('div').content()).to.eq('Trillian')
+      assert.strictEqual(isolated.findOne('div').content(), 'Trillian')
     })
   })
 
@@ -155,7 +155,7 @@ describe('inline context', () => {
 
     isolated.inline('*')
 
-    expect(isolated.findOne('div').content()).to.eq('Trillian')
+    assert.strictEqual(isolated.findOne('div').content(), 'Trillian')
   })
 
   describe('context provider at top level', () => {
@@ -167,9 +167,9 @@ describe('inline context', () => {
       )
 
       isolated.inline('*')
-      expect(isolated.findOne('div').content()).to.eq('Arthur')
-      expect(isolated.content()).to.eq('<div>Arthur</div>')
-      expect(isolated.toString()).to.eq('<div>Arthur</div>')
+      assert.strictEqual(isolated.findOne('div').content(), 'Arthur')
+      assert.strictEqual(isolated.content(), '<div>Arthur</div>')
+      assert.strictEqual(isolated.toString(), '<div>Arthur</div>')
     })
 
     it('handles context provider with changing value', () => {
@@ -182,9 +182,9 @@ describe('inline context', () => {
       isolated.inline('*')
       isolated.mergeProps({ name: 'Trillian' })
 
-      expect(isolated.content()).to.eq('<div>Trillian</div>')
-      expect(isolated.toString()).to.eq('<div>Trillian</div>')
-      expect(isolated.findOne('div').content()).to.eq('Trillian')
+      assert.strictEqual(isolated.content(), '<div>Trillian</div>')
+      assert.strictEqual(isolated.toString(), '<div>Trillian</div>')
+      assert.strictEqual(isolated.findOne('div').content(), 'Trillian')
     })
 
     it('renders context value when inline then update', () => {
@@ -196,9 +196,9 @@ describe('inline context', () => {
       isolated.inline('*')
       isolated.mergeProps({ value: 'Trillian' })
 
-      expect(isolated.content()).to.eq('<div>Trillian</div>')
-      expect(isolated.toString()).to.eq('<div>Trillian</div>')
-      expect(isolated.findOne('div').content()).to.eq('Trillian')
+      assert.strictEqual(isolated.content(), '<div>Trillian</div>')
+      assert.strictEqual(isolated.toString(), '<div>Trillian</div>')
+      assert.strictEqual(isolated.findOne('div').content(), 'Trillian')
     })
 
     it('renders context value when update props then inline', () => {
@@ -210,9 +210,9 @@ describe('inline context', () => {
       isolated.mergeProps({ value: 'Trillian' })
       isolated.inline('*')
 
-      expect(isolated.content()).to.eq('<div>Trillian</div>')
-      expect(isolated.toString()).to.eq('<div>Trillian</div>')
-      expect(isolated.findOne('div').content()).to.eq('Trillian')
+      assert.strictEqual(isolated.content(), '<div>Trillian</div>')
+      assert.strictEqual(isolated.toString(), '<div>Trillian</div>')
+      assert.strictEqual(isolated.findOne('div').content(), 'Trillian')
     })
   })
 
@@ -229,6 +229,6 @@ describe('inline context', () => {
     isolated.inline('*')
 
     const names = isolated.findAll('div').map((d) => d.content())
-    expect(names).to.eql(['Trillian', 'Arthur'])
+    assert.deepEqual(names, ['Trillian', 'Arthur'])
   })
 })

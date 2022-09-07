@@ -1,9 +1,9 @@
 import { describe, it } from 'mocha'
 import React from 'react'
 import { nodeTree } from '../nodeTree'
-import { expect } from 'chai'
 import { IsolatedRenderer } from '../isolatedRenderer'
 import { disableReactWarnings } from '../../../test/isolateComponent/disableReactWarnings'
+import assert from 'node:assert'
 
 const nullRenderer: IsolatedRenderer = {
   render: () => ({} as any),
@@ -20,9 +20,9 @@ describe('nodeTree ', () => {
     const tree = nodeTree(<div />, getNullRenderer, nullShouldInline)
     const root = tree.root()
 
-    expect(root.nodeType).to.eq('html')
-    expect(root.type).to.eq('div')
-    expect(root.children).to.eql([])
+    assert.strictEqual(root.nodeType, 'html')
+    assert.strictEqual(root.type, 'div')
+    assert.deepStrictEqual(root.children, [])
   })
 
   it('can parse a single component', () => {
@@ -30,9 +30,9 @@ describe('nodeTree ', () => {
     const tree = nodeTree(<Example />, getNullRenderer, nullShouldInline)
     const root = tree.root()
 
-    expect(root.nodeType).to.eq('react')
-    expect(root.type).to.eq(Example)
-    expect(root.children).to.eql([])
+    assert.strictEqual(root.nodeType, 'react')
+    assert.strictEqual(root.type, Example)
+    assert.deepEqual(root.children, [])
   })
 
   it('can parse an invalid null react element', () => {
@@ -46,14 +46,14 @@ describe('nodeTree ', () => {
     )
     const root = tree.root()
 
-    expect(root.nodeType).to.eq('html')
-    expect(root.type).to.eq('div')
-    expect(root.children.length).to.eql(1)
+    assert.strictEqual(root.nodeType, 'html')
+    assert.strictEqual(root.type, 'div')
+    assert.strictEqual(root.children.length, 1)
 
     const [nullNode] = root.children
-    expect(nullNode.nodeType).to.eq('invalid')
+    assert.strictEqual(nullNode.nodeType, 'invalid')
 
-    expect(tree.invalidNodePaths()).to.eql([['div', 'null']])
+    assert.deepEqual(tree.invalidNodePaths(), [['div', 'null']])
   })
 
   it('can parse context provider', () => {
@@ -69,10 +69,10 @@ describe('nodeTree ', () => {
     )
     const root = tree.root()
 
-    expect(root.nodeType).to.eq('react')
-    expect(root.type).to.eq(ExampleContext.Provider)
-    expect(root.children.length).to.eql(1)
-    expect(root.children[0].type).to.eql(ExampleContext.Consumer)
+    assert.strictEqual(root.nodeType, 'react')
+    assert.strictEqual(root.type, ExampleContext.Provider)
+    assert.strictEqual(root.children.length, 1)
+    assert.strictEqual(root.children[0].type, ExampleContext.Consumer)
   })
 
   it('can parse children', () => {
@@ -87,10 +87,10 @@ describe('nodeTree ', () => {
     )
     const root = tree.root()
 
-    expect(root.nodeType).to.eq('react')
-    expect(root.type).to.eq(Parent)
-    expect(root.children.length).to.eql(1)
-    expect(root.children[0].type).to.eql(Child)
+    assert.strictEqual(root.nodeType, 'react')
+    assert.strictEqual(root.type, Parent)
+    assert.strictEqual(root.children.length, 1)
+    assert.strictEqual(root.children[0].type, Child)
   })
 
   it('can parse children that are functions', () => {
@@ -102,14 +102,14 @@ describe('nodeTree ', () => {
     )
     const root = tree.root()
 
-    expect(root.nodeType).to.eq('react')
-    expect(root.type).to.eq(Parent)
-    expect(root.children.length).to.eql(1)
+    assert.strictEqual(root.nodeType, 'react')
+    assert.strictEqual(root.type, Parent)
+    assert.strictEqual(root.children.length, 1)
 
     const fn = root.children[0].type as any as Function
 
-    expect(typeof fn).to.eq('function')
-    expect(fn()).to.eql('hi')
+    assert.strictEqual(typeof fn, 'function')
+    assert.strictEqual(fn(), 'hi')
   })
 
   it('throws non-ridiculous errors with child functions', () => {
@@ -120,7 +120,7 @@ describe('nodeTree ', () => {
       nullShouldInline
     )
     // don't include the function body in the error message
-    expect(() => tree.findOne('li')).to.throw(/<Parent>\[Function\]/)
+    assert.throws(() => tree.findOne('li'), /<Parent>\[Function\]/)
   })
 
   it('can find children', () => {
@@ -139,21 +139,21 @@ describe('nodeTree ', () => {
 
     const section = tree.findOne('section')
 
-    expect(section.exists('ul')).to.eq(true)
-    expect(section.exists('div')).to.eq(false)
+    assert.strictEqual(section.exists('ul'), true)
+    assert.strictEqual(section.exists('div'), false)
 
-    expect(section.findAll('li').length).to.eq(2)
+    assert.strictEqual(section.findAll('li').length, 2)
     section.findOne('ul')
 
-    expect(() => section.findOne('div')).to.throw()
-    expect(() => section.findOne('li')).to.throw()
+    assert.throws(() => section.findOne('div'))
+    assert.throws(() => section.findOne('li'))
 
     section.findOne('ul').findAll('li')[1].findOne('span')
   })
 
   it('handles stringifying numbers in content', () => {
     const tree = nodeTree(<span>{3}</span>, getNullRenderer, nullShouldInline)
-    expect(tree.root().content()).to.eq('3')
+    assert.strictEqual(tree.root().content(), '3')
   })
 
   it('handles stringifying numbers in props', () => {
@@ -164,7 +164,7 @@ describe('nodeTree ', () => {
       nullShouldInline
     )
 
-    expect(tree.root().toString()).to.eq(`<MagicNumber value={3} />`)
+    assert.strictEqual(tree.root().toString(), `<MagicNumber value={3} />`)
   })
 
   it('handles stringifying functions in content', () => {
@@ -173,33 +173,33 @@ describe('nodeTree ', () => {
       getNullRenderer,
       nullShouldInline
     )
-    expect(tree.root().content()).to.eq('[Function]')
-    expect(tree.root().toString()).to.eq('<span>[Function]</span>')
+    assert.strictEqual(tree.root().content(), '[Function]')
+    assert.strictEqual(tree.root().toString(), '<span>[Function]</span>')
   })
 
   it('handles an empty fragment', () => {
     const parsed = nodeTree(<></>, getNullRenderer, nullShouldInline)
-    expect(parsed.root().toString()).to.eq('')
+    assert.strictEqual(parsed.root().toString(), '')
   })
 
   it('handles a fragment with a false boolean value', () => {
     const parsed = nodeTree(<>{false}</>, getNullRenderer, nullShouldInline)
-    expect(parsed.root().toString()).to.eq('')
+    assert.strictEqual(parsed.root().toString(), '')
   })
 
   it('handles false', () => {
     const parsed = nodeTree(false, getNullRenderer, nullShouldInline)
-    expect(parsed.root().toString()).to.eq('')
+    assert.strictEqual(parsed.root().toString(), '')
   })
 
   it('handles true', () => {
     const parsed = nodeTree(true, getNullRenderer, nullShouldInline)
-    expect(parsed.root().toString()).to.eq('')
+    assert.strictEqual(parsed.root().toString(), '')
   })
 
   it('handles undefined', () => {
     const parsed = nodeTree(undefined, getNullRenderer, nullShouldInline)
-    expect(parsed.root().toString()).to.eq('')
+    assert.strictEqual(parsed.root().toString(), '')
   })
 
   it('exposes content via content() and toString()', () => {
@@ -216,11 +216,13 @@ describe('nodeTree ', () => {
     )
     const root = tree.root()
 
-    expect(root.content()).to.eq(
+    assert.strictEqual(
+      root.content(),
       '<ListItem>Arthur</ListItem><ListItem>Trillian</ListItem>'
     )
 
-    expect(root.toString()).to.eq(
+    assert.strictEqual(
+      root.toString(),
       '<List className="listy-list"><ListItem>Arthur</ListItem><ListItem>Trillian</ListItem></List>'
     )
   })

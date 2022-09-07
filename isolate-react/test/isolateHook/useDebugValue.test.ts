@@ -1,6 +1,5 @@
 import { describe, it } from 'mocha'
-import { expect } from 'chai'
-
+import assert from 'node:assert'
 import { isolateHook } from '../../src/isolateHook'
 import { useDebugValue } from 'react'
 
@@ -13,6 +12,6 @@ describe('useDebugValue', () => {
     }
 
     const isolated = isolateHook(useDebugValueExample)
-    expect(isolated()).to.eq(42)
+    assert.strictEqual(isolated(), 42)
   })
 })

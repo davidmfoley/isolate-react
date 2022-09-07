@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
 import React from 'react'
 import { isolateComponent } from '../../src/isolateComponent'
-import { expect } from 'chai'
+import assert from 'node:assert'
 
 describe('getting component content', () => {
   const Answer = ({ answer }: { answer: number }) => (
@@ -10,26 +10,26 @@ describe('getting component content', () => {
 
   it('content() returns inner content', () => {
     const answer = isolateComponent(<Answer answer={42} />)
-    expect(answer.content()).to.eq('The answer is 42')
+    assert.strictEqual(answer.content(), 'The answer is 42')
   })
 
   it('toString() returns outer content', () => {
     const answer = isolateComponent(<Answer answer={42} />)
-    expect(answer.toString()).to.eq('<span>The answer is 42</span>')
+    assert.strictEqual(answer.toString(), '<span>The answer is 42</span>')
   })
 
   it('handles child text', () => {
     const Parent = (props: { children: React.ReactNode }) => (
       <div>{props.children}</div>
     )
-    const Child = (props: { children: React.ReactNode }) => undefined
+    const Child = (_: { children: React.ReactNode }) => undefined
     const isolated = isolateComponent(
       <Parent>
         <Child>a b c</Child>
       </Parent>
     )
-    expect(isolated.content()).to.eq('<Child>a b c</Child>')
-    expect(isolated.toString()).to.eq('<div><Child>a b c</Child></div>')
+    assert.strictEqual(isolated.content(), '<Child>a b c</Child>')
+    assert.strictEqual(isolated.toString(), '<div><Child>a b c</Child></div>')
   })
 
   it('handles fragments', () => {
@@ -41,15 +41,15 @@ describe('getting component content', () => {
     )
 
     const isolated = isolateComponent(<FragmentExample />)
-    expect(isolated.content()).to.eq('<div>A</div><div>B</div>')
+    assert.strictEqual(isolated.content(), '<div>A</div><div>B</div>')
   })
 
   it('handles child function', () => {
     const FunctionExample = () => <div>{(() => '42') as any}</div>
 
     const isolated = isolateComponent(<FunctionExample />)
-    expect(isolated.content()).to.eq('[Function]')
-    expect(isolated.toString()).to.eq('<div>[Function]</div>')
+    assert.strictEqual(isolated.content(), '[Function]')
+    assert.strictEqual(isolated.toString(), '<div>[Function]</div>')
   })
 
   it('handles deep fragments', () => {
@@ -63,8 +63,9 @@ describe('getting component content', () => {
     )
 
     const isolated = isolateComponent(<FragmentExample />)
-    expect(isolated.content()).to.eq('<div>A</div><div>B</div>')
-    expect(isolated.toString()).to.eq(
+    assert.strictEqual(isolated.content(), '<div>A</div><div>B</div>')
+    assert.strictEqual(
+      isolated.toString(),
       '<section><div>A</div><div>B</div></section>'
     )
   })
@@ -74,7 +75,7 @@ describe('getting component content', () => {
     const ArrayExample: any = () => [<div key="0">A</div>, <div key="1">B</div>]
 
     const isolated = isolateComponent(<ArrayExample />)
-    expect(isolated.content()).to.eq('<div>A</div><div>B</div>')
+    assert.strictEqual(isolated.content(), '<div>A</div><div>B</div>')
   })
 
   it('handles updating inlined components', () => {
@@ -94,9 +95,9 @@ describe('getting component content', () => {
 
     isolated.inline('*')
 
-    expect(isolated.content()).to.eq('<div>A</div>')
+    assert.strictEqual(isolated.content(), '<div>A</div>')
 
     isolated.setProps({ items: ['A', 'B'] })
-    expect(isolated.content()).to.eq('<div>A</div><div>B</div>')
+    assert.strictEqual(isolated.content(), '<div>A</div><div>B</div>')
   })
 })

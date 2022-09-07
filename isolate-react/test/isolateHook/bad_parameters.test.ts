@@ -1,23 +1,26 @@
 import { describe, it } from 'mocha'
-import { expect } from 'chai'
+import assert from 'node:assert'
 
 import { isolateHook } from '../../src/isolateHook'
 
 describe('handling common errors', () => {
   it('handles a null hook', () => {
-    expect(() => isolateHook(null)).to.throw(
+    assert.throws(
+      () => isolateHook(null),
       /Expected a hook function but got null/
     )
   })
 
   it('handles undefined hook', () => {
-    expect(() => isolateHook(undefined)).to.throw(
+    assert.throws(
+      () => isolateHook(undefined),
       /Expected a hook function but got undefined/
     )
   })
 
   it('handles non-function hook', () => {
-    expect(() => isolateHook(42 as any)).to.throw(
+    assert.throws(
+      () => isolateHook(42 as any),
       /Expected a hook function but got number \(42\)/
     )
   })

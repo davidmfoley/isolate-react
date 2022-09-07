@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
 import React from 'react'
-import { expect } from 'chai'
 import { isolateComponentTree } from '../../src/isolateComponent'
+import assert from 'node:assert'
 
 const Child = () => <div className="child"></div>
 const Parent = () => (
@@ -14,6 +14,6 @@ describe('isolateComponentTree ', () => {
   it('inlines all children', () => {
     const isolated = isolateComponentTree(<Parent />)
 
-    expect(isolated.exists('div.child')).to.eq(true)
+    assert.ok(isolated.exists('div.child'))
   })
 })

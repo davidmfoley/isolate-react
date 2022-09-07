@@ -1,10 +1,10 @@
 import { describe, it } from 'mocha'
 import React, { useEffect, useMemo, useState } from 'react'
-import { expect } from 'chai'
 import {
   isolateComponent,
   isolateComponentTree,
 } from '../../src/isolateComponent'
+import assert from 'node:assert'
 
 describe('inlining ', () => {
   const ListItem = (props: { children: React.ReactNode }) => (
@@ -21,7 +21,7 @@ describe('inlining ', () => {
     const isolated = isolateComponent(<List />)
     isolated.inline(ListItem)
 
-    expect(isolated.findOne('li').content()).to.eq('list item content')
+    assert.strictEqual(isolated.findOne('li').content(), 'list item content')
   })
 
   it('can update an inlined component', () => {
@@ -35,7 +35,7 @@ describe('inlining ', () => {
     isolated.inline(ListItem)
     isolated.setProps({ itemCaption: 'B' })
 
-    expect(isolated.findOne('li').content()).to.eq('B')
+    assert.strictEqual(isolated.findOne('li').content(), 'B')
   })
 
   it('isolates newly matching components', () => {
@@ -55,7 +55,7 @@ describe('inlining ', () => {
       items: ['b', 'a'],
     })
 
-    expect(isolated.findAll('li').length).to.eq(2)
+    assert.strictEqual(isolated.findAll('li').length, 2)
   })
 
   it('supports keys', () => {
@@ -80,7 +80,7 @@ describe('inlining ', () => {
     const isolated = isolateComponent(<KeyedStrings items={[['1', 'foo']]} />)
 
     isolated.inline(Appender)
-    expect(isolated.findOne('li').content()).to.eq('foo')
+    assert.strictEqual(isolated.findOne('li').content(), 'foo')
 
     isolated.setProps({
       items: [
@@ -90,9 +90,9 @@ describe('inlining ', () => {
     })
 
     const lis = isolated.findAll('li')
-    expect(lis.length).to.eq(2)
-    expect(lis[0].content()).to.eq('baz')
-    expect(lis[1].content()).to.eq('foobar')
+    assert.strictEqual(lis.length, 2)
+    assert.strictEqual(lis[0].content(), 'baz')
+    assert.strictEqual(lis[1].content(), 'foobar')
   })
 
   describe('with a recursive hierarchy', () => {
@@ -119,7 +119,7 @@ describe('inlining ', () => {
 
       isolated.inline(Section)
 
-      expect(isolated.findAll('section').length).to.eq(3)
+      assert.strictEqual(isolated.findAll('section').length, 3)
     })
 
     it('supports content() and toString()', () => {
@@ -127,20 +127,20 @@ describe('inlining ', () => {
 
       isolated.inline(Section)
       const expected = `<section><h2>A</h2><section><h2>B</h2><section><h2>C</h2></section></section></section>`
-      expect(isolated.content()).to.eq(expected)
-      expect(isolated.toString()).to.eq(expected)
+      assert.strictEqual(isolated.content(), expected)
+      assert.strictEqual(isolated.toString(), expected)
     })
 
     it('can inline all components with a star selector', () => {
       const isolated = isolateComponent(<Sections />)
       isolated.inline('*')
-      expect(isolated.findAll('section').length).to.eq(3)
+      assert.strictEqual(isolated.findAll('section').length, 3)
     })
 
     it('can inline components by name', () => {
       const isolated = isolateComponent(<Sections />)
       isolated.inline('Section')
-      expect(isolated.findAll('section').length).to.eq(3)
+      assert.strictEqual(isolated.findAll('section').length, 3)
     })
   })
 
@@ -153,8 +153,8 @@ describe('inlining ', () => {
     )
     isolated.inline('*')
 
-    expect(isolated.content()).to.eq('<div>Yo</div>')
-    expect(isolated.toString()).to.eq('<div><div>Yo</div></div>')
+    assert.strictEqual(isolated.content(), '<div>Yo</div>')
+    assert.strictEqual(isolated.toString(), '<div><div>Yo</div></div>')
   })
 
   it('can handle state updates in inlined components', () => {
@@ -180,7 +180,7 @@ describe('inlining ', () => {
     const isolated = isolateComponent(<Settings />)
     isolated.inline(ToggleButton)
     isolated.findOne('button').props.onClick()
-    expect(isolated.findOne('button').props.className).to.eq('toggled')
+    assert.strictEqual(isolated.findOne('button').props.className, 'toggled')
   })
 
   it('handles inlining with useMemo', () => {
@@ -191,7 +191,7 @@ describe('inlining ', () => {
 
     const isolated = isolateComponent(<Outer name="Arthur" />)
     isolated.inline('*')
-    expect(isolated.toString()).to.eq('<span>Hello Arthur</span>')
+    assert.strictEqual(isolated.toString(), '<span>Hello Arthur</span>')
   })
 
   describe('Inner component setting state in effect', () => {
@@ -217,13 +217,13 @@ describe('inlining ', () => {
 
     it('with isolateComponentTree', () => {
       const isolated = isolateComponentTree(<Wrapper />)
-      expect(isolated.toString()).to.eq('<div>Arthur</div>')
+      assert.strictEqual(isolated.toString(), '<div>Arthur</div>')
     })
 
     it('inlined after render', () => {
       const isolated = isolateComponent(<Wrapper />)
       isolated.inline(SetNameUponMount)
-      expect(isolated.toString()).to.eq('<div>Arthur</div>')
+      assert.strictEqual(isolated.toString(), '<div>Arthur</div>')
     })
   })
 })

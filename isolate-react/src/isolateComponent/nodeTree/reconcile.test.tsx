@@ -1,9 +1,9 @@
 import React from 'react'
 import { describe, test } from 'mocha'
-import { expect } from 'chai'
 import { nodeTree } from '.'
 import { isolatedRenderer } from '../isolatedRenderer'
 import { RenderContext } from '../isolatedRenderer/renderContext'
+import assert from 'node:assert'
 
 const fakeRenderContext = (): RenderContext => ({
   contexts: [],
@@ -37,7 +37,7 @@ describe('reconcile', () => {
     tree.update(Parent())
 
     const after = tree.content()
-    expect(after).to.eq(before)
+    assert.strictEqual(after, before)
   })
 
   test('handles fragment reconciliaion', () => {
@@ -49,9 +49,9 @@ describe('reconcile', () => {
     )
 
     const tree = testNodeTree(Parent(), true)
-    expect(tree.content()).to.eq('<div>child</div>')
+    assert.strictEqual(tree.content(), '<div>child</div>')
     tree.update(Parent())
-    expect(tree.content()).to.eq('<div>child</div>')
+    assert.strictEqual(tree.content(), '<div>child</div>')
   })
 
   test('handles react reconciliaion', () => {
@@ -66,7 +66,7 @@ describe('reconcile', () => {
       </Parent>,
       false
     )
-    expect(tree.toString()).to.eq('<Parent><Child /></Parent>')
+    assert.strictEqual(tree.toString(), '<Parent><Child /></Parent>')
 
     tree.update(
       <Parent>
@@ -75,6 +75,6 @@ describe('reconcile', () => {
       </Parent>
     )
 
-    expect(tree.toString()).to.eq('<Parent><Child /><Child /></Parent>')
+    assert.strictEqual(tree.toString(), '<Parent><Child /><Child /></Parent>')
   })
 })

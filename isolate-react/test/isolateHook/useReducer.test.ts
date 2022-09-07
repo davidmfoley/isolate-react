@@ -1,6 +1,5 @@
 import { describe, it } from 'mocha'
-import { expect } from 'chai'
-
+import assert from 'node:assert'
 import { isolateHook } from '../../src/isolateHook'
 import { useReducer } from 'react'
 
@@ -14,7 +13,7 @@ describe('useReducer', () => {
   it('has initial value', () => {
     const isolated = isolateHook(() => useReducer(counter, 0))
     const [count] = isolated()
-    expect(count).to.eq(0)
+    assert.strictEqual(count, 0)
   })
 
   it('handles dispatch', () => {
@@ -27,13 +26,13 @@ describe('useReducer', () => {
     dispatch('++')
 
     const [count] = isolated()
-    expect(count).to.eq(3)
+    assert.strictEqual(count, 3)
   })
 
   it('returns a stable dispatch', () => {
     const isolated = isolateHook(() => useReducer(counter, 0))
     const [, dispatch1] = isolated()
     const [, dispatch2] = isolated()
-    expect(dispatch1).to.eq(dispatch2)
+    assert.strictEqual(dispatch1, dispatch2)
   })
 })

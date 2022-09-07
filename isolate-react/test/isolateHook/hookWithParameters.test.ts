@@ -1,6 +1,5 @@
 import { describe, it } from 'mocha'
-import { expect } from 'chai'
-
+import assert from 'node:assert'
 import { isolateHook } from '../../src/isolateHook'
 import { useState } from 'react'
 
@@ -9,7 +8,7 @@ describe('invoking a hook with parameters', () => {
     const usePassedValue = (value: number) => useState(value)
     const isolated = isolateHook(usePassedValue)
     const [result] = isolated(2)
-    expect(result).to.eq(2)
+    assert.strictEqual(result, 2)
   })
 
   it('invokes the hook upon each call', () => {
@@ -20,11 +19,11 @@ describe('invoking a hook with parameters', () => {
     }
 
     const isolated = isolateHook(useCounter)
-    expect(count).to.eq(0)
+    assert.strictEqual(count, 0)
     isolated()
-    expect(count).to.eq(1)
+    assert.strictEqual(count, 1)
     isolated()
-    expect(count).to.eq(2)
+    assert.strictEqual(count, 2)
   })
 
   it('maintains parameter values on subsequent invocations', () => {
@@ -39,6 +38,6 @@ describe('invoking a hook with parameters', () => {
     }
     isolateHook(usePassedValue)(2)
     setter(42)
-    expect(lastValue).to.eq(2)
+    assert.strictEqual(lastValue, 2)
   })
 })

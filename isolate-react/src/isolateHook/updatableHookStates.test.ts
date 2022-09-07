@@ -1,6 +1,6 @@
-import { expect } from 'chai'
 import { describe, test } from 'mocha'
 import { createUpdatableHookStates } from './updatableHookStates'
+import assert from 'node:assert'
 
 describe('updatableHookStates', () => {
   test('nextHookState constructs initial state', () => {
@@ -9,7 +9,7 @@ describe('updatableHookStates', () => {
       type: 'useState',
       create: () => 42,
     })
-    expect(value).to.eq(42)
+    assert.strictEqual(value, 42)
   })
 
   test('update function is sable', () => {
@@ -25,6 +25,6 @@ describe('updatableHookStates', () => {
       create: () => 42,
     })
 
-    expect(first).to.eq(second)
+    assert.strictEqual(first, second)
   })
 })

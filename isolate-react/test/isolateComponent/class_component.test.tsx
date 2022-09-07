@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
 import React, { ChangeEvent } from 'react'
 import { isolateComponent, IsolatedComponent } from '../../src/isolateComponent'
-import { expect } from 'chai'
+import assert from 'node:assert/strict'
 
 describe('React class components', () => {
   describe('component with props only', () => {
@@ -18,12 +18,12 @@ describe('React class components', () => {
     })
 
     it('can render', () => {
-      expect(isolated.toString()).to.eq('<div>Hello Trillian</div>')
+      assert.strictEqual(isolated.toString(), '<div>Hello Trillian</div>')
     })
 
     it('can update props', () => {
       isolated.setProps({ name: 'Ford' })
-      expect(isolated.toString()).to.eq('<div>Hello Ford</div>')
+      assert.strictEqual(isolated.toString(), '<div>Hello Ford</div>')
     })
   })
 
@@ -52,7 +52,7 @@ describe('React class components', () => {
     })
 
     it('populates state', () => {
-      expect(isolated.findOne('input').props.value).to.eq('Arthur')
+      assert.strictEqual(isolated.findOne('input').props.value, 'Arthur')
     })
 
     it('can update state', () => {
@@ -60,7 +60,7 @@ describe('React class components', () => {
         .findOne('input')
         .props.onChange({ target: { value: 'Trillian' } })
 
-      expect(isolated.findOne('input').props.value).to.eq('Trillian')
+      assert.strictEqual(isolated.findOne('input').props.value, 'Trillian')
     })
   })
 
@@ -89,7 +89,7 @@ describe('React class components', () => {
     })
 
     it('populates state', () => {
-      expect(isolated.findOne('input').props.value).to.eq('Arthur')
+      assert.strictEqual(isolated.findOne('input').props.value, 'Arthur')
     })
 
     it('can update state', () => {
@@ -97,7 +97,7 @@ describe('React class components', () => {
         .findOne('input')
         .props.onChange({ target: { value: 'Trillian' } })
 
-      expect(isolated.findOne('input').props.value).to.eq('Trillian')
+      assert.strictEqual(isolated.findOne('input').props.value, 'Trillian')
     })
   })
 
@@ -139,7 +139,7 @@ describe('React class components', () => {
         .findOne('input')
         .props.onChange({ target: { value: 'Trillian' } })
 
-      expect(invocations).to.eql([
+      assert.deepEqual(invocations, [
         'render',
         'onChange',
         'render',
@@ -175,11 +175,11 @@ describe('React class components', () => {
     })
 
     it('is invoked after first render', () => {
-      expect(invocations).to.eql(['render', 'componentDidMount', 'render'])
+      assert.deepEqual(invocations, ['render', 'componentDidMount', 'render'])
     })
 
     it('is synchronously re-rendered', () => {
-      expect(isolated.toString()).to.eq('<div>Zaphod</div>')
+      assert.strictEqual(isolated.toString(), '<div>Zaphod</div>')
     })
   })
 
@@ -204,12 +204,12 @@ describe('React class components', () => {
     })
 
     it('is not invoked until cleanup', () => {
-      expect(invocations).to.eql([])
+      assert.deepStrictEqual(invocations, [])
     })
 
     it('is invoked upon cleanup', () => {
       isolated.cleanup()
-      expect(invocations).to.eql(['componentWillUnmount'])
+      assert.deepEqual(invocations, ['componentWillUnmount'])
     })
   })
 
@@ -235,12 +235,12 @@ describe('React class components', () => {
     })
 
     it('is not invoked on first render', () => {
-      expect(invocations).to.eql(['render:Arthur'])
+      assert.deepEqual(invocations, ['render:Arthur'])
     })
 
     it('is invoked upon re-render', () => {
       isolated.setProps({ name: 'Trillian' })
-      expect(invocations).to.eql([
+      assert.deepEqual(invocations, [
         'render:Arthur',
         'render:Trillian',
         'componentDidUpdate:Arthur',
@@ -274,7 +274,7 @@ describe('React class components', () => {
       const isolated = isolateComponent(<SnapshotExample name="Arthur" />)
 
       isolated.setProps({ name: 'Trillian' })
-      expect(invocations).to.eql([
+      assert.deepEqual(invocations, [
         'render:Arthur',
         'getSnapshotBeforeUpdate:Arthur',
         'render:Trillian',
@@ -306,17 +306,17 @@ describe('React class components', () => {
     })
 
     it('is not invoked on first render', () => {
-      expect(invocations).to.eql(['render:Arthur'])
+      assert.deepEqual(invocations, ['render:Arthur'])
     })
 
     it('prevents render', () => {
       isolated.setProps({ name: 'Arthur' })
-      expect(invocations).to.eql(['render:Arthur', 'shouldComponentUpdate'])
+      assert.deepEqual(invocations, ['render:Arthur', 'shouldComponentUpdate'])
     })
 
     it('does not prevent render if true returned', () => {
       isolated.setProps({ name: 'Trillian' })
-      expect(invocations).to.eql([
+      assert.deepEqual(invocations, [
         'render:Arthur',
         'shouldComponentUpdate',
         'render:Trillian',

@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha'
 import React from 'react'
-import { expect } from 'chai'
+import assert from 'node:assert'
 import { isolateComponent } from '../../src/isolateComponent'
 
 describe('children', () => {
@@ -18,7 +18,7 @@ describe('children', () => {
         <div id="yah" />
       </ToggleChildren>
     )
-    expect(isolated.exists('div')).to.eq(true)
+    assert.strictEqual(isolated.exists('div'), true)
   })
 
   it('handles untoggling children', () => {
@@ -27,9 +27,9 @@ describe('children', () => {
         <div id="yah" />
       </ToggleChildren>
     )
-    expect(isolated.exists('div')).to.eq(true)
+    assert.strictEqual(isolated.exists('div'), true)
     isolated.mergeProps({ show: false })
-    expect(isolated.exists('div')).to.eq(false)
+    assert.strictEqual(isolated.exists('div'), false)
   })
 
   it('handles toggling children', () => {
@@ -40,7 +40,7 @@ describe('children', () => {
     )
 
     isolated.mergeProps({ show: true })
-    expect(isolated.exists('div')).to.eq(true)
+    assert.strictEqual(isolated.exists('div'), true)
   })
 
   describe('inlined', () => {
@@ -55,7 +55,7 @@ describe('children', () => {
         </Wrapper>
       )
       isolated.inline(ToggleChildren)
-      expect(isolated.exists('div')).to.eq(true)
+      assert.strictEqual(isolated.exists('div'), true)
     })
 
     it('passes down children', () => {
@@ -65,7 +65,7 @@ describe('children', () => {
         </Wrapper>
       )
       const inner = isolated.findOne(ToggleChildren)
-      expect(inner.children.length).to.eq(1)
+      assert.strictEqual(inner.children.length, 1)
     })
 
     it('handles cascading props down to inlined component with children', () => {
@@ -75,11 +75,11 @@ describe('children', () => {
         </Wrapper>
       )
       isolated.inline(ToggleChildren)
-      expect(isolated.exists('div')).to.eq(false)
+      assert.strictEqual(isolated.exists('div'), false)
       isolated.mergeProps({ show: true })
-      expect(isolated.exists('div')).to.eq(true)
+      assert.strictEqual(isolated.exists('div'), true)
       isolated.mergeProps({ show: false })
-      expect(isolated.exists('div')).to.eq(false)
+      assert.strictEqual(isolated.exists('div'), false)
     })
   })
 })

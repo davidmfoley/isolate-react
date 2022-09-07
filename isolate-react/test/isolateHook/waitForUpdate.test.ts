@@ -1,4 +1,4 @@
-import { expect } from 'chai'
+import assert from 'node:assert'
 import { useEffect, useState } from 'react'
 import { isolateHook } from '../../src'
 
@@ -15,9 +15,9 @@ describe('waitForUpdate', () => {
 
   it('is called when an update occurs', async () => {
     const isolated = isolateHook(useUpdateImmediate)
-    expect(isolated()).to.eq(0)
+    assert.strictEqual(isolated(), 0)
     const updated = await isolated.waitForUpdate()
-    expect(updated).to.eq(1)
-    expect(isolated.currentValue()).to.eq(1)
+    assert.strictEqual(updated, 1)
+    assert.strictEqual(isolated.currentValue(), 1)
   })
 })

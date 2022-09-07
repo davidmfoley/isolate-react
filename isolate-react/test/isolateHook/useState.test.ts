@@ -1,6 +1,5 @@
 import { describe, it } from 'mocha'
-import { expect } from 'chai'
-
+import assert from 'node:assert'
 import { isolateHook } from '../../src/isolateHook'
 import { useState } from 'react'
 
@@ -14,7 +13,7 @@ describe('useState', () => {
     const isolated = isolateHook(useStateExample)
 
     const value = isolated()
-    expect(value).to.equal('initial')
+    assert.strictEqual(value, 'initial')
   })
 
   it('is updated when setState is called', () => {
@@ -31,7 +30,7 @@ describe('useState', () => {
     setValue('updated')
 
     const value = isolated()
-    expect(value).to.equal('updated')
+    assert.strictEqual(value, 'updated')
   })
 
   it('works with a function for initial value', () => {
@@ -43,7 +42,7 @@ describe('useState', () => {
     const isolated = isolateHook(useStateExample)
     const value = isolated()
 
-    expect(value).to.equal('initial')
+    assert.strictEqual(value, 'initial')
   })
 
   it('works with a function passed to setter', () => {
@@ -55,7 +54,7 @@ describe('useState', () => {
     const [, setValue] = isolated()
     setValue(() => 'updated')
 
-    expect(isolated()[0]).to.equal('updated')
+    assert.strictEqual(isolated()[0], 'updated')
   })
 
   it('state setter is stable across invocations', () => {
@@ -65,7 +64,7 @@ describe('useState', () => {
     }
 
     const isolated = isolateHook(useStability)
-    expect(isolated()).to.eq(isolated())
+    assert.strictEqual(isolated(), isolated())
   })
 
   describe('with two independent setStates', () => {
@@ -86,7 +85,7 @@ describe('useState', () => {
       const isolated = isolateHook(useStateExample)
 
       const value = isolated()
-      expect(value).to.equal('A42')
+      assert.strictEqual(value, 'A42')
     })
 
     it('can set values', () => {
@@ -96,7 +95,7 @@ describe('useState', () => {
       setNumber(3)
 
       const value = isolated()
-      expect(value).to.equal('B3')
+      assert.strictEqual(value, 'B3')
     })
 
     it('can set multiple values', () => {
@@ -109,7 +108,7 @@ describe('useState', () => {
       setNumber(8)
 
       const value = isolated()
-      expect(value).to.equal('C8')
+      assert.strictEqual(value, 'C8')
     })
   })
 })

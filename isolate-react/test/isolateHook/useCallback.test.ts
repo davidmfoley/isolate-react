@@ -1,6 +1,5 @@
 import { describe, it } from 'mocha'
-import { expect } from 'chai'
-
+import assert from 'node:assert'
 import { isolateHook } from '../../src/isolateHook'
 import { useCallback, useState } from 'react'
 
@@ -11,7 +10,7 @@ describe('useCallback', () => {
     const isolated = isolateHook(useCallbackExample)
     const first = isolated()
     isolated()
-    expect(first).to.eq(isolated())
+    assert.strictEqual(first, isolated())
   })
 
   it('is a new instance when deps change', () => {
@@ -26,9 +25,10 @@ describe('useCallback', () => {
     const isolated = isolateHook(useCallbackExample)
     const first = isolated()
     setValue(1)
-    expect(first).not.to.eq(isolated())
-    expect(first()).to.eq(0)
-    expect(isolated()()).to.eq(1)
+
+    assert.notStrictEqual(first, isolated())
+    assert.strictEqual(first(), 0)
+    assert.strictEqual(isolated()(), 1)
   })
 
   it('is the same instance when deps do not change', () => {
@@ -45,8 +45,8 @@ describe('useCallback', () => {
     setValue(1)
     const first = isolated()
     setValue(1)
-    expect(first()).to.eq(1)
-    expect(isolated()()).to.eq(1)
-    expect(first).to.eq(isolated())
+    assert.strictEqual(first(), 1)
+    assert.strictEqual(isolated()(), 1)
+    assert.strictEqual(first, isolated())
   })
 })

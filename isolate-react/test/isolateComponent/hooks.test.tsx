@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
 import React, { useState, useEffect } from 'react'
 import { isolateComponent, IsolatedComponent } from '../../src/isolateComponent'
-import { expect } from 'chai'
+import assert from 'node:assert'
 
 // Example of testing a component that makes an async
 // function call during an effect and uses the result
@@ -62,18 +62,22 @@ describe('hooks', () => {
     })
 
     it('invokes effect initially', () => {
-      expect(calls).to.eql(['hello arthur'])
+      assert.deepEqual(calls, ['hello arthur'])
     })
 
     it('cleans up upon change', () => {
       component.setProps({ name: 'trillian' })
-      expect(calls).to.eql(['hello arthur', 'goodbye arthur', 'hello trillian'])
+      assert.deepEqual(calls, [
+        'hello arthur',
+        'goodbye arthur',
+        'hello trillian',
+      ])
     })
 
     it('cleans up upon component cleanup', () => {
       component.setProps({ name: 'trillian' })
       component.cleanup()
-      expect(calls).to.eql([
+      assert.deepEqual(calls, [
         'hello arthur',
         'goodbye arthur',
         'hello trillian',
@@ -94,7 +98,7 @@ describe('hooks', () => {
       )
 
       // the fetchCurrentUser promise has not yet resolved
-      expect(!!component.findOne(LoadingIndicator)).to.eq(true)
+      assert.strictEqual(!!component.findOne(LoadingIndicator), true)
 
       // wait for the fetchCurrentUser promise
       // Promises are resolved in order, so awaiting this one ensures
@@ -102,7 +106,7 @@ describe('hooks', () => {
       await Promise.resolve()
 
       // check that the UserInfo component is rendered
-      expect(component.findOne(UserInfo).props.user).to.eq(user)
+      assert.strictEqual(component.findOne(UserInfo).props.user, user)
     })
   })
 })

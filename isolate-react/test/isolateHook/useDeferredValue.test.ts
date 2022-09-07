@@ -1,6 +1,5 @@
 import { describe, it } from 'mocha'
-
-import { expect } from 'chai'
+import assert from 'node:assert'
 
 import { isolateHook } from '../../src/isolateHook'
 import { useDeferredValue, useState } from 'react'
@@ -13,6 +12,6 @@ describe('useDeferredValue', () => {
 
   it('returns the value (for now)', () => {
     const hook = isolateHook(useDeferredValueExample)
-    expect(hook()).to.eq(42)
+    assert.equal(hook(), 42)
   })
 })

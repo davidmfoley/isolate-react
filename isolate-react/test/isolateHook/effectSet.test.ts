@@ -1,6 +1,6 @@
 import { describe, it, beforeEach } from 'mocha'
-import { expect } from 'chai'
 import { createEffectSet } from '../../src/isolateHook/effectSet'
+import assert from 'node:assert'
 
 describe('effectSet', () => {
   let effectSet: ReturnType<typeof createEffectSet>
@@ -15,7 +15,7 @@ describe('effectSet', () => {
       count++
     }, [])
     effectSet.flush()
-    expect(count).to.eq(1)
+    assert.strictEqual(count, 1)
   })
 
   it('does not execute the second time with empty array for deps', () => {
@@ -29,7 +29,7 @@ describe('effectSet', () => {
     effectSet.nextEffect(incrementer, [])
     effectSet.flush()
 
-    expect(count).to.eq(1)
+    assert.strictEqual(count, 1)
   })
 
   it('executes the second time if deps change', () => {
@@ -47,7 +47,7 @@ describe('effectSet', () => {
     effectSet.flush()
     effectSet.cleanup()
 
-    expect(invocations).to.eql([
+    assert.deepEqual(invocations, [
       'invoke 1',
       'cleanup 1',
       'invoke 2',

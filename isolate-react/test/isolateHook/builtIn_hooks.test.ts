@@ -1,6 +1,5 @@
 import { describe, it } from 'mocha'
-import { expect } from 'chai'
-
+import assert from 'node:assert'
 import { isolateHook } from '../../src/isolateHook'
 import { useEffect, useState } from 'react'
 
@@ -9,11 +8,11 @@ describe('built in hooks', () => {
   it('supports useState', () => {
     const isolatedUseState = isolateHook(useState)
     const [person, setPerson] = isolatedUseState('arthur')
-    expect(person).to.eq('arthur')
+    assert.strictEqual(person, 'arthur')
     setPerson('trillian')
 
     const [updated] = isolatedUseState('arthur')
-    expect(updated).to.eq('trillian')
+    assert.strictEqual(updated, 'trillian')
   })
 
   it('supports useEffect', () => {
@@ -27,10 +26,10 @@ describe('built in hooks', () => {
       }
     }, [])
 
-    expect(actions).to.eql(['effect'])
+    assert.deepEqual(actions, ['effect'])
 
     isolatedUseEffect.cleanup()
 
-    expect(actions).to.eql(['effect', 'cleanup'])
+    assert.deepEqual(actions, ['effect', 'cleanup'])
   })
 })

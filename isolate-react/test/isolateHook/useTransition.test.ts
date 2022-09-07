@@ -1,6 +1,5 @@
 import { describe, it } from 'mocha'
-
-import { expect } from 'chai'
+import assert from 'node:assert'
 
 import { isolateHook } from '../../src/isolateHook'
 import { useTransition } from 'react'
@@ -9,7 +8,7 @@ describe('useTransition', () => {
   const useTransitionExample = () => useTransition()
   it('is never pending (for now)', () => {
     const hook = isolateHook(useTransitionExample)
-    expect(hook()[0]).to.eq(false)
+    assert.strictEqual(hook()[0], false)
   })
 
   it('immediately transitions (for now)', () => {
@@ -19,6 +18,6 @@ describe('useTransition', () => {
     start(() => {
       invoked = true
     })
-    expect(invoked).to.eq(true)
+    assert.strictEqual(invoked, true)
   })
 })

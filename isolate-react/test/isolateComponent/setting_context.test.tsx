@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
 import React from 'react'
 import { isolateComponent } from '../../src/isolateComponent'
-import { expect } from 'chai'
+import assert from 'node:assert'
 
 describe('setting component context', () => {
   const QuestionContext = React.createContext('')
@@ -19,7 +19,7 @@ describe('setting component context', () => {
 
   it('has default context value if none specified', () => {
     const isolated = isolateComponent(<DisplayAnswer />)
-    expect(isolated.findOne('div').content()).to.eq('0')
+    assert.strictEqual(isolated.findOne('div').content(), '0')
   })
 
   it('can set the context value', () => {
@@ -27,7 +27,7 @@ describe('setting component context', () => {
       AnswerContext,
       42
     )(<DisplayAnswer />)
-    expect(isolated.findOne('div').content()).to.eq('42')
+    assert.strictEqual(isolated.findOne('div').content(), '42')
   })
 
   it('uses last context value if there are multiple defined', () => {
@@ -37,7 +37,7 @@ describe('setting component context', () => {
         AnswerContext,
         3
       )(<DisplayAnswer />)
-    expect(isolated.findOne('div').content()).to.eq('3')
+    assert.strictEqual(isolated.findOne('div').content(), '3')
   })
 
   it('can set multiple contexts', () => {
@@ -47,7 +47,10 @@ describe('setting component context', () => {
         AnswerContext,
         42
       )(<DisplayQuestionAndAnswer />)
-    expect(isolated.findOne('div').content()).to.eq('what is the answer? 42')
+    assert.strictEqual(
+      isolated.findOne('div').content(),
+      'what is the answer? 42'
+    )
   })
 
   it('rerenders when context is set', () => {
@@ -60,6 +63,9 @@ describe('setting component context', () => {
 
     isolated.setContext(AnswerContext, 77)
 
-    expect(isolated.findOne('div').content()).to.eq('what is the answer? 77')
+    assert.strictEqual(
+      isolated.findOne('div').content(),
+      'what is the answer? 77'
+    )
   })
 })

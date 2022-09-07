@@ -1,7 +1,6 @@
 import { describe, it } from 'mocha'
-import { expect } from 'chai'
+import assert from 'node:assert'
 import styled from 'styled-components'
-
 import { reactNode, htmlNode } from './nodeTree/nodes'
 
 import nodeMatcher from './nodeMatcher'
@@ -9,13 +8,13 @@ import { TreeNode } from './types/TreeNode'
 
 const shouldMatch = (selector: string, node: TreeNode) => {
   it(`${selector} should match ${node.toString()}`, () => {
-    expect(nodeMatcher(selector)(node)).to.be.true
+    assert.ok(nodeMatcher(selector)(node))
   })
 }
 
 const shouldNotMatch = (selector: string, node: TreeNode) => {
   it(`${selector} should match ${node.toString()}`, () => {
-    expect(nodeMatcher(selector)(node)).to.be.false
+    assert.strictEqual(nodeMatcher(selector)(node), false)
   })
 }
 

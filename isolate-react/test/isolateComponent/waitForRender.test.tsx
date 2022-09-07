@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { describe, it } from 'mocha'
-import { expect } from 'chai'
 import { isolateComponent } from '../../src/isolateComponent'
+import assert from 'node:assert'
 
 const DelayedUpdate = () => {
   const [count, setCount] = useState(0)
@@ -17,8 +17,8 @@ describe('waitForRender', () => {
   it('can render', async () => {
     const isolated = isolateComponent(<DelayedUpdate />)
 
-    expect(isolated.toString()).to.eq('<div>0</div>')
+    assert.strictEqual(isolated.toString(), '<div>0</div>')
     await isolated.waitForRender()
-    expect(isolated.toString()).to.eq('<div>1</div>')
+    assert.strictEqual(isolated.toString(), '<div>1</div>')
   })
 })

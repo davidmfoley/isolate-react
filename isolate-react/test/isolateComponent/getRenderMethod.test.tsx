@@ -1,6 +1,6 @@
 import React from 'react'
 import { describe, test } from 'mocha'
-import { expect } from 'chai'
+import assert from 'node:assert'
 import { categorizeComponent } from '../../src/isolateComponent/isolatedRenderer/renderMethod'
 
 const Fn = () => <div />
@@ -8,28 +8,30 @@ class ExampleClass extends React.Component {}
 
 describe('categorizing components', () => {
   test('functional component', () => {
-    expect(categorizeComponent(Fn)).to.eq('functional')
+    assert.strictEqual(categorizeComponent(Fn), 'functional')
   })
 
   const ExampleContext = React.createContext('yah')
 
   test('context provider', () => {
-    expect(categorizeComponent(ExampleContext.Provider)).to.eq(
+    assert.strictEqual(
+      categorizeComponent(ExampleContext.Provider),
       'contextProvider'
     )
   })
 
   test('context consumer', () => {
-    expect(categorizeComponent(ExampleContext.Consumer)).to.eq(
+    assert.strictEqual(
+      categorizeComponent(ExampleContext.Consumer),
       'contextConsumer'
     )
   })
 
   test('class component', () => {
-    expect(categorizeComponent(ExampleClass)).to.eq('classComponent')
+    assert.strictEqual(categorizeComponent(ExampleClass), 'classComponent')
   })
 
   test('memoed', () => {
-    expect(categorizeComponent(React.memo(Fn))).to.eq('memo')
+    assert.strictEqual(categorizeComponent(React.memo(Fn)), 'memo')
   })
 })

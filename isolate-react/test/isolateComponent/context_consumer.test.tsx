@@ -1,5 +1,5 @@
 import { describe, it } from 'mocha'
-import { expect } from 'chai'
+import assert from 'node:assert'
 import React, { useContext, useEffect, useState } from 'react'
 import {
   isolateComponent,
@@ -35,7 +35,7 @@ describe('context provider and consumer', () => {
 
     isolated.inline('*')
 
-    expect(isolated.content()).to.eq('<div>Hello Arthur</div>')
+    assert.strictEqual(isolated.content(), '<div>Hello Arthur</div>')
   })
 
   it('can consume a value from provider component', () => {
@@ -47,7 +47,7 @@ describe('context provider and consumer', () => {
 
     isolated.inline('*')
 
-    expect(isolated.content()).to.eq('<div>Hello Zaphod</div>')
+    assert.strictEqual(isolated.content(), '<div>Hello Zaphod</div>')
   })
 
   it('can consume an explicitly set value', () => {
@@ -60,7 +60,7 @@ describe('context provider and consumer', () => {
     isolated.inline('*')
     isolated.setContext(HelloContext, { name: 'Trillian', setName: () => {} })
 
-    expect(isolated.toString()).to.eq('<div>Hello Trillian</div>')
+    assert.strictEqual(isolated.toString(), '<div>Hello Trillian</div>')
   })
 
   it('can setContext', () => {
@@ -69,7 +69,7 @@ describe('context provider and consumer', () => {
     isolated.inline('*')
     isolated.setContext(HelloContext, { name: 'Trillian', setName: () => {} })
 
-    expect(isolated.toString()).to.eq('<div>Hello Trillian</div>')
+    assert.strictEqual(isolated.toString(), '<div>Hello Trillian</div>')
   })
 
   it('can update value from within consumer in an effect', () => {
@@ -114,6 +114,6 @@ describe('context provider and consumer', () => {
 
     isolated.setContext(HelloContext, { name: 'Booty', setName: () => {} })
 
-    expect(isolated.findOne('div').content()).to.eq('Hello Arthur')
+    assert.strictEqual(isolated.findOne('div').content(), 'Hello Arthur')
   })
 })

@@ -1,6 +1,5 @@
 import { describe, it } from 'mocha'
-
-import { expect } from 'chai'
+import assert from 'node:assert'
 
 import { isolateHook } from '../../src/isolateHook'
 import { useId } from 'react'
@@ -12,10 +11,10 @@ describe('useId', () => {
     const hook = isolateHook(useIdExample)
     const ids = hook()
 
-    expect(typeof ids[0]).to.eq('string')
-    expect(typeof ids[1]).to.eq('string')
+    assert.strictEqual(typeof ids[0], 'string')
+    assert.strictEqual(typeof ids[1], 'string')
 
-    expect(ids[0]).not.to.eq(ids[1])
+    assert.notStrictEqual(ids[0], ids[1])
   })
 
   it('returns ids that are stable between invocations', () => {
@@ -24,8 +23,8 @@ describe('useId', () => {
 
     const second = hook()
 
-    expect(first[0]).to.eq(second[0])
-    expect(first[1]).to.eq(second[1])
+    assert.strictEqual(first[0], second[0])
+    assert.strictEqual(first[1], second[1])
   })
 
   it('returns ids that are different on each invocation', () => {
@@ -38,6 +37,6 @@ describe('useId', () => {
     const ids = oneHook()
     const otherIds = anotherHook()
 
-    expect(new Set([...ids, ...otherIds])).to.have.lengthOf(4)
+    assert.equal(new Set([...ids, ...otherIds]).size, 4)
   })
 })

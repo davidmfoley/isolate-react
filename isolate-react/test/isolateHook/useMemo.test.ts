@@ -1,6 +1,5 @@
 import { describe, it } from 'mocha'
-import { expect } from 'chai'
-
+import assert from 'node:assert'
 import { isolateHook } from '../../src/isolateHook'
 import { useMemo } from 'react'
 
@@ -15,7 +14,7 @@ describe('useMemo', () => {
       }, [])
 
     const isolated = isolateHook(useMemoExample)
-    expect(isolated()).to.eq(1)
+    assert.strictEqual(isolated(), 1)
   })
 
   it('is not computed on next render if deps unchanged', () => {
@@ -28,7 +27,7 @@ describe('useMemo', () => {
       }, [])
 
     const isolated = isolateHook(useMemoExample)
-    expect(isolated()).to.eq(1)
+    assert.strictEqual(isolated(), 1)
   })
 
   it('is not computed on next render if deps unchanged', () => {
@@ -42,6 +41,6 @@ describe('useMemo', () => {
 
     const isolated = isolateHook(useMemoExample)
     isolated()
-    expect(isolated()).to.eq(2)
+    assert.strictEqual(isolated(), 2)
   })
 })

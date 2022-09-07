@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
-import { expect } from 'chai'
 import { isolateComponent } from '../../src/isolateComponent'
 import React from 'react'
+import assert from 'node:assert'
 import { Route, MemoryRouter, useParams } from 'react-router-dom'
 
 const HelloRoute = () => {
@@ -22,6 +22,6 @@ describe('react router', () => {
     isolated.inline('*')
     const name = isolated.findOne('#hello')
 
-    expect(name.content()).to.equal('Hello Trillian')
+    assert.equal(name.content(), 'Hello Trillian')
   })
 })

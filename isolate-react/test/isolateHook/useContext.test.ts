@@ -1,6 +1,5 @@
 import { describe, it } from 'mocha'
-import { expect } from 'chai'
-
+import assert from 'node:assert'
 import { isolateHook } from '../../src/isolateHook'
 import { useContext, createContext } from 'react'
 
@@ -12,7 +11,7 @@ describe('useContext', () => {
       return useContext(ExampleContext)
     })
 
-    expect(result()).to.eq('yah')
+    assert.strictEqual(result(), 'yah')
   })
 
   // deprecated way
@@ -31,7 +30,7 @@ describe('useContext', () => {
       }
     )
 
-    expect(result()).to.eq('nah')
+    assert.strictEqual(result(), 'nah')
   })
 
   // new way
@@ -42,7 +41,7 @@ describe('useContext', () => {
 
     isolated.setContext(ExampleContext, 'nah')
 
-    expect(isolated()).to.eq('nah')
+    assert.strictEqual(isolated(), 'nah')
   })
 
   it('rerenders on change', () => {
@@ -55,9 +54,9 @@ describe('useContext', () => {
     isolated()
 
     isolated.setContext(ExampleContext, 'nah')
-    expect(i).to.eq(2)
+    assert.strictEqual(i, 2)
 
-    expect(isolated.currentValue()).to.eq('nah2')
+    assert.strictEqual(isolated.currentValue(), 'nah2')
   })
 
   it('does not rerender with same reference', () => {
@@ -71,9 +70,9 @@ describe('useContext', () => {
 
     isolated.setContext(ExampleContext, 'nah')
     isolated.setContext(ExampleContext, 'nah')
-    expect(i).to.eq(2)
+    assert.strictEqual(i, 2)
 
-    expect(isolated.currentValue()).to.eq('nah2')
+    assert.strictEqual(isolated.currentValue(), 'nah2')
   })
 
   it('does not rerender on change of unused context', () => {
@@ -88,6 +87,6 @@ describe('useContext', () => {
 
     isolated.setContext(UnusedContext, 'nah')
     isolated.setContext(UnusedContext, 'nah')
-    expect(i).to.eq(1)
+    assert.strictEqual(i, 1)
   })
 })

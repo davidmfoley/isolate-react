@@ -1,6 +1,5 @@
 import { describe, it } from 'mocha'
-import { expect } from 'chai'
-
+import assert from 'node:assert'
 import { isolateHook } from '../../src/isolateHook'
 import { useImperativeHandle, useRef } from 'react'
 
@@ -13,6 +12,6 @@ describe('useImerativeHandle', () => {
       return 42
     }
 
-    expect(isolateHook(useImperativeHandleExample)()).to.eq(42)
+    assert.equal(isolateHook(useImperativeHandleExample)(), 42)
   })
 })

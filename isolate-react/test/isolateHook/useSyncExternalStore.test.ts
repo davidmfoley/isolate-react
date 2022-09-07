@@ -1,7 +1,5 @@
 import { describe, it } from 'mocha'
-
-import { expect } from 'chai'
-
+import assert from 'node:assert'
 import { isolateHook } from '../../src/isolateHook'
 import { useSyncExternalStore } from 'react'
 
@@ -38,7 +36,7 @@ describe('useSyncExternalStore', () => {
     const store = exampleExternalStore()
     store.setValue(42)
     const hook = isolateHook(useSyncExternalStoreExample)
-    expect(hook(store)).to.eq(42)
+    assert.strictEqual(hook(store), 42)
   })
 
   it('updates upon store notification', () => {
@@ -46,7 +44,7 @@ describe('useSyncExternalStore', () => {
     const hook = isolateHook(useSyncExternalStoreExample)
     hook(store)
     store.setValue(42)
-    expect(hook(store)).to.eq(42)
+    assert.strictEqual(hook(store), 42)
   })
 
   it('unsubscribes', () => {
@@ -54,6 +52,6 @@ describe('useSyncExternalStore', () => {
     const hook = isolateHook(useSyncExternalStoreExample)
     hook(store)
     hook.cleanup()
-    expect(store.callback()).to.eq(initialCallback)
+    assert.strictEqual(store.callback(), initialCallback)
   })
 })
