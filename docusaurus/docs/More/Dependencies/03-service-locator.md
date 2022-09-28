@@ -14,9 +14,9 @@ In tests, set up the locator to return a different implementation as needed.
 
 **api.ts**
 
-```js
+```javascript
 // current instance of the service
-const _api;
+let _api;
 
 // Set the service
 export const setApi = (api) => { _api = api };
@@ -26,7 +26,7 @@ export const getApi = () => _api;
 ```
 
 **widgets.ts**
-```js
+```javascript
 import { getApi } from './api'
 
 export const widgets = {
