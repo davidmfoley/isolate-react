@@ -30,12 +30,13 @@ export const nodeMatcher = (spec: Selector | null | undefined): NodeMatcher => {
     if (spec.includes('#')) {
       return idMatcher(spec)
     }
-    if (spec.includes('.')) {
-      return classOrExactMatcher(spec)
-    }
 
     if (/\[.+\]/.test(spec)) {
       return propMatcher(spec)
+    }
+
+    if (spec.includes('.')) {
+      return classOrExactMatcher(spec)
     }
   }
 

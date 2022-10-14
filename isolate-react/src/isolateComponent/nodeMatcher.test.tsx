@@ -121,5 +121,9 @@ describe('nodeMatcher', () => {
     shouldNotMatchReact('div[data-test-id=bar]', Example, {
       'data-test-id': 'foo',
     })
+
+    shouldMatchReact('[name=nested.field]', Example, {
+      name: 'nested.field',
+    })
   })
 })
