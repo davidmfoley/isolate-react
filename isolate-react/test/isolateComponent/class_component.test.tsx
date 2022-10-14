@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha'
 import React, { ChangeEvent } from 'react'
-import { isolateComponent, IsolatedComponent } from '../../src/isolateComponent'
+import { isolateComponent } from '../../src/isolateComponent'
 import assert from 'node:assert/strict'
 
 describe('React class components', () => {
@@ -11,18 +11,14 @@ describe('React class components', () => {
       }
     }
 
-    let isolated: IsolatedComponent<{ name: string }>
-
-    beforeEach(() => {
-      isolated = isolateComponent(<PropsOnlyComponent name="Trillian" />)
-    })
-
     it('can render', () => {
+      const isolated = isolateComponent(<PropsOnlyComponent name="Trillian" />)
       assert.strictEqual(isolated.toString(), '<div>Hello Trillian</div>')
     })
 
     it('can update props', () => {
-      isolated.setProps({ name: 'Ford' })
+      const isolated = isolateComponent(<PropsOnlyComponent name="Trillian" />)
+      isolated.mergeProps({ name: 'Ford' })
       assert.strictEqual(isolated.toString(), '<div>Hello Ford</div>')
     })
   })
@@ -45,21 +41,16 @@ describe('React class components', () => {
       }
     }
 
-    let isolated: IsolatedComponent<{ name: string }>
-
-    beforeEach(() => {
-      isolated = isolateComponent(<NameComponent />)
-    })
-
     it('populates state', () => {
+      const isolated = isolateComponent(<NameComponent />)
       assert.strictEqual(isolated.findOne('input').props.value, 'Arthur')
     })
 
     it('can update state', () => {
+      const isolated = isolateComponent(<NameComponent />)
       isolated
         .findOne('input')
         .props.onChange({ target: { value: 'Trillian' } })
-
       assert.strictEqual(isolated.findOne('input').props.value, 'Trillian')
     })
   })
@@ -82,17 +73,13 @@ describe('React class components', () => {
       }
     }
 
-    let isolated: IsolatedComponent<{ name: string }>
-
-    beforeEach(() => {
-      isolated = isolateComponent(<NameComponent />)
-    })
-
     it('populates state', () => {
+      const isolated = isolateComponent(<NameComponent />)
       assert.strictEqual(isolated.findOne('input').props.value, 'Arthur')
     })
 
     it('can update state', () => {
+      const isolated = isolateComponent(<NameComponent />)
       isolated
         .findOne('input')
         .props.onChange({ target: { value: 'Trillian' } })
@@ -102,22 +89,24 @@ describe('React class components', () => {
   })
 
   describe('setState with a callback', () => {
-    let invocations: string[]
-    class NameComponent extends React.Component<{}, { name: string }> {
+    class NameComponent extends React.Component<
+      { invocations: string[] },
+      { name: string }
+    > {
       state = {
         name: 'Arthur',
       }
       render() {
-        invocations.push('render')
+        this.props.invocations.push('render')
         return (
           <input
             type="text"
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              invocations.push('onChange')
+              this.props.invocations.push('onChange')
               this.setState(
                 (s) => ({ ...s, name: e.target.value }),
                 () => {
-                  invocations.push('setState callback')
+                  this.props.invocations.push('setState callback')
                 }
               )
             }}
@@ -127,14 +116,12 @@ describe('React class components', () => {
       }
     }
 
-    let isolated: IsolatedComponent<{ name: string }>
-
-    beforeEach(() => {
-      invocations = []
-      isolated = isolateComponent(<NameComponent />)
-    })
-
     it('can update state', () => {
+      const invocations: string[] = []
+      const isolated = isolateComponent(
+        <NameComponent invocations={invocations} />
+      )
+
       isolated
         .findOne('input')
         .props.onChange({ target: { value: 'Trillian' } })
@@ -149,46 +136,51 @@ describe('React class components', () => {
   })
 
   describe('componentDidMount', () => {
-    let invocations: string[]
-
-    class DidMountExample extends React.Component<{}, { name: string }> {
+    class DidMountExample extends React.Component<
+      {
+        invocations: string[]
+      },
+      { name: string }
+    > {
       state = {
         name: 'Arthur',
       }
 
       componentDidMount() {
-        invocations.push('componentDidMount')
+        this.props.invocations.push('componentDidMount')
         this.setState({ name: 'Zaphod' })
       }
 
       render() {
-        invocations.push('render')
+        this.props.invocations.push('render')
         return <div>{this.state.name}</div>
       }
     }
 
-    let isolated: IsolatedComponent<{ name: string }>
-
-    beforeEach(() => {
-      invocations = []
-      isolated = isolateComponent(<DidMountExample />)
-    })
-
     it('is invoked after first render', () => {
+      const invocations = [] as string[]
+      isolateComponent(<DidMountExample invocations={invocations} />)
       assert.deepEqual(invocations, ['render', 'componentDidMount', 'render'])
     })
 
     it('is synchronously re-rendered', () => {
+      const invocations = [] as string[]
+      const isolated = isolateComponent(
+        <DidMountExample invocations={invocations} />
+      )
       assert.strictEqual(isolated.toString(), '<div>Zaphod</div>')
     })
   })
 
   describe('componentWillUnmount', () => {
-    let invocations: string[]
-
-    class WillUnmountExample extends React.Component<{}, { name: string }> {
+    class WillUnmountExample extends React.Component<
+      {
+        invocations: string[]
+      },
+      { name: string }
+    > {
       componentWillUnmount() {
-        invocations.push('componentWillUnmount')
+        this.props.invocations.push('componentWillUnmount')
       }
 
       render() {
@@ -196,50 +188,51 @@ describe('React class components', () => {
       }
     }
 
-    let isolated: IsolatedComponent<{ name: string }>
-
-    beforeEach(() => {
-      invocations = []
-      isolated = isolateComponent(<WillUnmountExample />)
-    })
-
     it('is not invoked until cleanup', () => {
+      const invocations = [] as string[]
+      isolateComponent(<WillUnmountExample invocations={invocations} />)
       assert.deepStrictEqual(invocations, [])
     })
 
     it('is invoked upon cleanup', () => {
+      const invocations = [] as string[]
+      const isolated = isolateComponent(
+        <WillUnmountExample invocations={invocations} />
+      )
       isolated.cleanup()
       assert.deepEqual(invocations, ['componentWillUnmount'])
     })
   })
 
   describe('componentDidUpdate', () => {
-    let invocations: string[]
-
-    class DidUpdateExample extends React.Component<{ name: string }> {
+    class DidUpdateExample extends React.Component<{
+      name: string
+      invocations: string[]
+    }> {
       componentDidUpdate(prevProps: { name: string }) {
-        invocations.push(`componentDidUpdate:${prevProps.name}`)
+        this.props.invocations.push(`componentDidUpdate:${prevProps.name}`)
       }
 
       render() {
-        invocations.push(`render:${this.props.name}`)
+        this.props.invocations.push(`render:${this.props.name}`)
         return <div />
       }
     }
 
-    let isolated: IsolatedComponent<{ name: string }>
-
-    beforeEach(() => {
-      invocations = []
-      isolated = isolateComponent(<DidUpdateExample name="Arthur" />)
-    })
-
     it('is not invoked on first render', () => {
+      const invocations = []
+      isolateComponent(
+        <DidUpdateExample name="Arthur" invocations={invocations} />
+      )
       assert.deepEqual(invocations, ['render:Arthur'])
     })
 
     it('is invoked upon re-render', () => {
-      isolated.setProps({ name: 'Trillian' })
+      const invocations = []
+      const isolated = isolateComponent(
+        <DidUpdateExample name="Arthur" invocations={invocations} />
+      )
+      isolated.mergeProps({ name: 'Trillian' })
       assert.deepEqual(invocations, [
         'render:Arthur',
         'render:Trillian',
@@ -249,31 +242,36 @@ describe('React class components', () => {
   })
 
   describe('getSnapshotBeforeUpdate', () => {
-    let invocations: string[]
-    beforeEach(() => {
-      invocations = []
-    })
-
-    class SnapshotExample extends React.Component<{ name: string }> {
+    class SnapshotExample extends React.Component<{
+      name: string
+      invocations: string[]
+    }> {
       getSnapshotBeforeUpdate(prevProps: { name: string }) {
-        invocations.push(`getSnapshotBeforeUpdate:${prevProps.name}`)
+        this.props.invocations.push(`getSnapshotBeforeUpdate:${prevProps.name}`)
         return prevProps.name
       }
 
       componentDidUpdate(prevProps: { name: string }, _: any, snapshot: any) {
-        invocations.push(`componentDidUpdate:${prevProps.name}:${snapshot}`)
+        this.props.invocations.push(
+          `componentDidUpdate:${prevProps.name}:${snapshot}`
+        )
       }
 
       render() {
-        invocations.push(`render:${this.props.name}`)
+        this.props.invocations.push(`render:${this.props.name}`)
         return <div />
       }
     }
 
     it('is invoked upon re-render', () => {
-      const isolated = isolateComponent(<SnapshotExample name="Arthur" />)
+      const invocations: string[] = []
 
-      isolated.setProps({ name: 'Trillian' })
+      const isolated = isolateComponent(
+        <SnapshotExample name="Arthur" invocations={invocations} />
+      )
+
+      isolated.mergeProps({ name: 'Trillian' })
+
       assert.deepEqual(invocations, [
         'render:Arthur',
         'getSnapshotBeforeUpdate:Arthur',
@@ -284,38 +282,44 @@ describe('React class components', () => {
   })
 
   describe('shouldComponentUpdate', () => {
-    let invocations: string[]
-
-    class ShouldUpdateExample extends React.Component<{ name: string }, {}> {
+    class ShouldUpdateExample extends React.Component<{
+      name: string
+      invocations: string[]
+    }> {
       shouldComponentUpdate(nextProps: { name: string }) {
-        invocations.push('shouldComponentUpdate')
+        this.props.invocations.push('shouldComponentUpdate')
         return nextProps.name !== this.props.name
       }
 
       render() {
-        invocations.push(`render:${this.props.name}`)
+        this.props.invocations.push(`render:${this.props.name}`)
         return <div>{this.props.name}</div>
       }
     }
 
-    let isolated: IsolatedComponent<{ name: string }>
-
-    beforeEach(() => {
-      invocations = []
-      isolated = isolateComponent(<ShouldUpdateExample name="Arthur" />)
-    })
-
     it('is not invoked on first render', () => {
+      const invocations: string[] = []
+      isolateComponent(
+        <ShouldUpdateExample name="Arthur" invocations={invocations} />
+      )
       assert.deepEqual(invocations, ['render:Arthur'])
     })
 
     it('prevents render', () => {
-      isolated.setProps({ name: 'Arthur' })
+      const invocations: string[] = []
+      const isolated = isolateComponent(
+        <ShouldUpdateExample name="Arthur" invocations={invocations} />
+      )
+      isolated.mergeProps({ name: 'Arthur' })
       assert.deepEqual(invocations, ['render:Arthur', 'shouldComponentUpdate'])
     })
 
     it('does not prevent render if true returned', () => {
-      isolated.setProps({ name: 'Trillian' })
+      const invocations: string[] = []
+      const isolated = isolateComponent(
+        <ShouldUpdateExample name="Arthur" invocations={invocations} />
+      )
+      isolated.mergeProps({ name: 'Trillian' })
       assert.deepEqual(invocations, [
         'render:Arthur',
         'shouldComponentUpdate',
