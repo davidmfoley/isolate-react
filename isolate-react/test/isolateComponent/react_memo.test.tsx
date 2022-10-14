@@ -1,4 +1,4 @@
-import { describe, it } from 'mocha'
+import { describe, test } from 'mocha'
 import React from 'react'
 import assert from 'node:assert'
 import { isolateComponent } from '../../src/isolateComponent'
@@ -10,6 +10,15 @@ describe('Inlining with react.memo', () => {
     renderedNames = []
   })
 
+  test('anonymous memo-ed component', () => {
+    const MemoInPlace = React.memo(() => <div />)
+    const isolated = isolateComponent(<MemoInPlace />)
+    assert.strictEqual(isolated.toString(), '<div />')
+
+    isolated.inline('*')
+    assert.strictEqual(isolated.toString(), '<div />')
+  })
+
   describe('with default comparer', () => {
     const Memoed = React.memo(({ name }: { name: string }) => {
       renderedNames.push(name)
@@ -19,21 +28,22 @@ describe('Inlining with react.memo', () => {
     const DefaultMemo = ({ name }: { name: string }) => {
       return <Memoed name={name} />
     }
-    it('renders', () => {
+
+    test('render', () => {
       const isolated = isolateComponent(<DefaultMemo name="Arthur" />)
       isolated.inline('*')
       assert.strictEqual(isolated.toString(), '<span>Hello Arthur</span>')
       assert.deepEqual(renderedNames, ['Arthur'])
     })
 
-    it('updates upon change', () => {
+    test('updates upon change', () => {
       const isolated = isolateComponent(<DefaultMemo name="Arthur" />)
       isolated.inline('*')
       isolated.setProps({ name: 'Trillian' })
       assert.strictEqual(isolated.toString(), '<span>Hello Trillian</span>')
     })
 
-    it('does not rerender with no change', () => {
+    test('does not rerender with no change', () => {
       const isolated = isolateComponent(<DefaultMemo name="Arthur" />)
       isolated.inline('*')
       isolated.setProps({ name: 'Arthur' })
@@ -42,7 +52,7 @@ describe('Inlining with react.memo', () => {
     })
   })
 
-  describe('with custom comparer', () => {
+  describe('custom memo comparer', () => {
     const MemoedCaseInsensitive = React.memo(
       ({ name }: { name: string }) => {
         renderedNames.push(name)
@@ -55,21 +65,21 @@ describe('Inlining with react.memo', () => {
       return <MemoedCaseInsensitive name={name} />
     }
 
-    it('renders', () => {
+    test('renders', () => {
       const isolated = isolateComponent(<CaseInsensitiveMemo name="Arthur" />)
       isolated.inline('*')
       assert.strictEqual(isolated.toString(), '<span>HELLO ARTHUR</span>')
       assert.deepEqual(renderedNames, ['Arthur'])
     })
 
-    it('updates upon change', () => {
+    test('updates upon change', () => {
       const isolated = isolateComponent(<CaseInsensitiveMemo name="Arthur" />)
       isolated.inline('*')
       isolated.setProps({ name: 'Trillian' })
       assert.strictEqual(isolated.toString(), '<span>HELLO TRILLIAN</span>')
     })
 
-    it('does not rerender with no change', () => {
+    test('does not rerender with no change', () => {
       const isolated = isolateComponent(<CaseInsensitiveMemo name="Arthur" />)
       isolated.inline('*')
       isolated.setProps({ name: 'Arthur' })
