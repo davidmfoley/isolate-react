@@ -9,9 +9,11 @@ import {
   invalidNode,
   isolatedNode,
   nothingNode,
+  portalNode,
   reactNode,
   valueNode,
 } from './nodes'
+
 import nodeMatcher from '../nodeMatcher'
 import { ComponentInstance } from '../types/ComponentInstance'
 import { RenderableComponent } from '../types/RenderableComponent'
@@ -42,10 +44,14 @@ const parseRawNode = (node: InputNode): TreeNode => {
 
   if (typeof node === 'boolean') return nothingNode('' + node)
 
-  const { children } = (node.props || {}) as any
+  const { children } = (node.props || node || {}) as any
   const props = node.props || {}
 
   const parsedChildren = parseChildren(children)
+
+  if (node['$$typeof'].toString() === 'Symbol(react.portal)') {
+    return portalNode(parsedChildren)
+  }
 
   if (node.type === null) {
     return invalidNode('null')

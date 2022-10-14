@@ -7,15 +7,16 @@ export interface TreeNode<Props = any> extends NodeContent {
    * The type of node: a react component, html, string or null.
    */
   nodeType:
-    | 'react'
-    | 'html'
-    | 'string'
-    | 'number'
-    | 'nothing'
     | 'fragment'
-    | 'isolated'
     | 'function'
+    | 'html'
     | 'invalid'
+    | 'isolated'
+    | 'nothing'
+    | 'number'
+    | 'portal'
+    | 'react'
+    | 'string'
   /**
    * For html elements, the tag name
    * For a react FC, the display name
