@@ -1,6 +1,5 @@
 import { describe, it } from 'mocha'
 import assert from 'node:assert'
-import styled from 'styled-components'
 import { reactNode, htmlNode } from './nodeTree/nodes'
 
 import nodeMatcher from './nodeMatcher'
@@ -33,8 +32,6 @@ const shouldMatchReact = (selector: string, fc: any, props: any) => {
 const shouldNotMatchReact = (selector: string, fc: any, props: any) => {
   shouldNotMatch(selector, reactNode(fc, props, []))
 }
-
-const StyledButton = styled.button``
 
 const Example = () => null
 
@@ -79,10 +76,12 @@ describe('nodeMatcher', () => {
     shouldMatchReact('DisplayName', ExampleWithDisplayName, {})
   })
 
-  describe('styled components match on name', () => {
-    // Special case: handle exact match with a dot.
-    // Note this is the same syntax as `tag.class` matching.
-    shouldMatchReact('styled.button', StyledButton, {})
+  describe('finding react components by display name with period', () => {
+    // Some libs (styled-components for ex) set display name to
+    // a value that contains a dot
+    const ExampleWithDisplayName = () => null
+    ExampleWithDisplayName.displayName = 'example.component'
+    shouldMatchReact('example.component', ExampleWithDisplayName, {})
   })
 
   describe('matching by props', () => {
