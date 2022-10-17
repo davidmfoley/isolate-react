@@ -7,8 +7,7 @@ export type RenderMethod<P> = (props: P) => any
 
 type GetRenderMethod = <P>(
   t: any,
-  onContextChange: OnContextChange,
-  getRenderMethod: GetRenderMethod
+  onContextChange: OnContextChange
 ) => RenderMethod<P>
 
 type OnContextChange = (t: any, v: any) => void
