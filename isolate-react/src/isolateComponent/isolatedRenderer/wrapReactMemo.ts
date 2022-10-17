@@ -18,7 +18,8 @@ export const wrapReactMemo = (t: any) => {
     if (cachedResult && compare(props, lastProps)) return cachedResult
     lastProps = props
 
-    cachedResult = t.type(props)
+    const renderer = t.type?.render ?? t.type
+    cachedResult = renderer(props)
 
     return cachedResult
   }

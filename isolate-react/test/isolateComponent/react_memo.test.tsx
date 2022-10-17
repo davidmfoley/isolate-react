@@ -19,6 +19,14 @@ describe('Inlining with react.memo', () => {
     assert.strictEqual(isolated.toString(), '<div />')
   })
 
+  it('memoed forwardRef', () => {
+    const InnerButton = () => <button />
+    const RefButton = React.forwardRef(InnerButton)
+    const Memoed = React.memo(RefButton)
+    const isolated = isolateComponent(<Memoed />)
+    isolated.findOne('button')
+  })
+
   describe('with default comparer', () => {
     const Memoed = React.memo(({ name }: { name: string }) => {
       renderedNames.push(name)
