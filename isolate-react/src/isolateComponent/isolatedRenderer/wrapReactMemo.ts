@@ -9,17 +9,22 @@ const propsAreEqual = (p1 = {}, p2 = {}) => {
   return true
 }
 
-export const wrapReactMemo = (t: any) => {
+export const wrapReactMemo = (
+  t: any,
+  onContextChange: any,
+  getRenderMethod: any
+) => {
   let lastProps = null
   let cachedResult = null
   let compare = t.compare || propsAreEqual
+
+  const renderMethod = getRenderMethod(t.type, onContextChange)
 
   return (props: any) => {
     if (cachedResult && compare(props, lastProps)) return cachedResult
     lastProps = props
 
-    const renderer = t.type?.render ?? t.type
-    cachedResult = renderer(props)
+    cachedResult = renderMethod(props)
 
     return cachedResult
   }

@@ -5,6 +5,12 @@ import { wrapReactMemo } from './wrapReactMemo'
 
 export type RenderMethod<P> = (props: P) => any
 
+type GetRenderMethod = <P>(
+  t: any,
+  onContextChange: OnContextChange,
+  getRenderMethod: GetRenderMethod
+) => RenderMethod<P>
+
 type OnContextChange = (t: any, v: any) => void
 
 type ComponentRenderType =
@@ -17,7 +23,11 @@ type ComponentRenderType =
 
 const renderMethods: Record<
   ComponentRenderType,
-  (t: any, onContextChange: OnContextChange) => RenderMethod<any>
+  (
+    t: any,
+    onContextChange: OnContextChange,
+    grm: GetRenderMethod
+  ) => RenderMethod<any>
 > = {
   memo: wrapReactMemo,
   forwardRef: (t) => t.render,
@@ -45,11 +55,8 @@ export const categorizeComponent = (t: any): ComponentRenderType => {
   return 'functional'
 }
 
-export const getRenderMethod = <P>(
-  t: any,
-  onContextChange: OnContextChange
-): RenderMethod<P> => {
+export const getRenderMethod: GetRenderMethod = (t, onContextChange) => {
   const type = categorizeComponent(t)
   const method = renderMethods[type]
-  return method(t, onContextChange)
+  return method(t, onContextChange, getRenderMethod)
 }

@@ -27,6 +27,18 @@ describe('Inlining with react.memo', () => {
     isolated.findOne('button')
   })
 
+  it('memoed class component', () => {
+    class ExampleClass extends React.Component<{ name: string }> {
+      render() {
+        return <div>Hello {this.props.name}</div>
+      }
+    }
+
+    const Memoed = React.memo(ExampleClass)
+    const isolated = isolateComponent(<Memoed name="Arthur" />)
+    assert.strictEqual(isolated.toString(), '<div>Hello Arthur</div>')
+  })
+
   describe('with default comparer', () => {
     const Memoed = React.memo(({ name }: { name: string }) => {
       renderedNames.push(name)
