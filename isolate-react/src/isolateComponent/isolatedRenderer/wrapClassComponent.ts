@@ -81,13 +81,13 @@ export const wrapClassComponent = <P>(t: {
       )
         return { handled: false }
 
-      if (instance.componentDidCatch) {
-        instance.componentDidCatch(error, {} as any)
-      }
-
       if (t.getDerivedStateFromError) {
         const derived = t.getDerivedStateFromError(error)
         updateComponentState(derived)
+      }
+
+      if (instance.componentDidCatch) {
+        instance.componentDidCatch(error, {} as any)
       }
 
       return { handled: true, result: lastResult }

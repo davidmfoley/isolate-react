@@ -6,7 +6,7 @@ import { isolateComponentTree } from '../../src/isolateComponent'
 
 type ErrorBoundaryProps = { children: any; onError?: (e: any) => void }
 
-class ErrorBoundary extends React.Component<
+class BaseErrorBoundary extends React.Component<
   ErrorBoundaryProps,
   { errorMessage: string }
 > {
@@ -14,15 +14,6 @@ class ErrorBoundary extends React.Component<
     super(props)
     this.state = { errorMessage: '' }
   }
-
-  static getDerivedStateFromError(error: any) {
-    return { errorMessage: error.message }
-  }
-
-  componentDidCatch(_error: any, _errorInfo: React.ErrorInfo) {
-    // this.props.onError(error, errorInfo)
-  }
-
   render() {
     return this.state.errorMessage ? (
       <h1>Error: {this.state.errorMessage}</h1>
@@ -41,7 +32,7 @@ const ThrowIfOdd = ({ value }: { value: number }) => {
   return <div>{value}</div>
 }
 
-describe('error boundary', () => {
+const standardErrorBoundaryTests = (ErrorBoundary: any) => {
   test('render with no error', () => {
     const isolated = isolateComponentTree(
       <ErrorBoundary>
@@ -83,5 +74,61 @@ describe('error boundary', () => {
     const isolated = isolateComponentTree(<NestedThrowIfOdd value={2} />)
     isolated.mergeProps({ value: 3 })
     assert.strictEqual(isolated.toString(), '<h1>Error: Odd!</h1>')
+  })
+}
+
+describe('error boundaries', () => {
+  describe('getDerivedStateFromError', () => {
+    class DerivedStateErrorBoundary extends BaseErrorBoundary {
+      static getDerivedStateFromError(error: any) {
+        return { errorMessage: error.message }
+      }
+    }
+
+    standardErrorBoundaryTests(DerivedStateErrorBoundary)
+  })
+
+  describe('componentDidCatch', () => {
+    class DidCatchErrorBoundary extends BaseErrorBoundary {
+      invocations = [] as string[]
+      componentDidCatch(error: any) {
+        this.setState({ errorMessage: error.message })
+      }
+    }
+
+    standardErrorBoundaryTests(DidCatchErrorBoundary)
+  })
+
+  describe('componentDidCatch and getDerivedStateFromError', () => {
+    let invocations = [] as string[]
+
+    class BothErrorBoundary extends BaseErrorBoundary {
+      componentDidCatch(error: any) {
+        invocations.push('componentDidCatch')
+        this.setState({ errorMessage: error.message })
+      }
+
+      static getDerivedStateFromError(error: any) {
+        invocations.push('getDerivedStateFromError')
+        return { errorMessage: error.message }
+      }
+    }
+
+    standardErrorBoundaryTests(BothErrorBoundary)
+
+    beforeEach(() => {
+      invocations = []
+    })
+
+    test('invokes in expected order', () => {
+      isolateComponentTree(
+        <BothErrorBoundary>
+          <ThrowAnError />
+        </BothErrorBoundary>
+      )
+      assert.strictEqual(invocations.length, 2)
+      assert.strictEqual(invocations[0], 'getDerivedStateFromError')
+      assert.strictEqual(invocations[1], 'componentDidCatch')
+    })
   })
 })
