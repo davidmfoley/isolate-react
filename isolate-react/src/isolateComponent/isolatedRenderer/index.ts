@@ -9,6 +9,18 @@ import { applyProviderContext } from './applyProviderContext'
 import { componentIsContextProviderForType } from './componentIsContextProviderForType'
 export { Contexts } from './renderContext'
 
+class IsolatedRendererError extends Error {
+  constructor(
+    message: string,
+    originalError: Error & { originalError?: Error }
+  ) {
+    super(message)
+    this.originalError = originalError.originalError || originalError
+  }
+
+  originalError: Error
+}
+
 export type IsolatedRenderer = {
   render: <P>(
     component: React.ComponentClass<P, any> | React.FC<P>,
@@ -39,41 +51,65 @@ export const isolatedRenderer = (
 
     const renderMethod = getRenderMethod(component, setContext)
 
-    hookRenderer = isolateHook(() => {
-      let result: any
-
+    const renderComponent = () => {
       try {
-        result = renderMethod(props)
+        return renderMethod.render(props)
       } catch (e) {
-        throw new Error(`Failed to render <${componentName}>: ${e.message}`)
+        throw new IsolatedRendererError(
+          `Failed to render <${componentName}>: ${e.message}`,
+          e
+        )
       }
+    }
 
-      try {
-        if (tree) {
-          tree.update(result)
-        } else {
-          tree = nodeTree(
-            result,
-            () => isolatedRenderer(renderContext.copy()),
-            renderContext.shouldInline
-          )
-        }
-      } catch (e) {
-        throw new Error(
-          `Failed to parse elements rendered by <${componentName}>: ${e.message}`
+    const applyToNodeTree = (tree: NodeTree, result: any): NodeTree => {
+      if (tree) {
+        tree.update(result)
+      } else {
+        tree = nodeTree(
+          result,
+          () => isolatedRenderer(renderContext.copy()),
+          renderContext.shouldInline
         )
       }
 
+      return tree
+    }
+
+    const assertNoInvalidPaths = (tree: NodeTree) => {
       const invalidPaths = tree.invalidNodePaths()
-      if (invalidPaths.length)
-        throw new Error(
-          `Invalid element${
-            invalidPaths.length > 1 ? 's' : ''
-          } rendered by ${componentName}\nat:\n${invalidPaths
-            .map((p) => p.join(' > '))
-            .join('\n')}`
-        )
+      if (!invalidPaths.length) return
+
+      throw new Error(
+        `Invalid element${
+          invalidPaths.length > 1 ? 's' : ''
+        } rendered by ${componentName}\nat:\n${invalidPaths
+          .map((p) => p.join(' > '))
+          .join('\n')}`
+      )
+    }
+
+    hookRenderer = isolateHook(() => {
+      const result = renderComponent()
+
+      tree = applyToNodeTree(tree, result)
+
+      assertNoInvalidPaths(tree)
     })
+
+    const doRender = () => {
+      try {
+        hookRenderer()
+      } catch (e) {
+        const handleErrorResult = renderMethod.tryToHandleError(
+          e.originalError || e
+        )
+
+        if (!handleErrorResult.handled) throw e
+
+        hookRenderer()
+      }
+    }
 
     renderContext.contexts.forEach(({ contextType, contextValue }) => {
       hookRenderer.setContext(contextType, contextValue)
@@ -81,17 +117,17 @@ export const isolatedRenderer = (
 
     const setProps = (nextProps: P) => {
       props = nextProps
-      hookRenderer()
+      doRender()
     }
 
     const mergeProps = (propsToMerge: Partial<P>) => {
       setProps({ ...props, ...propsToMerge })
     }
 
-    hookRenderer()
+    doRender()
 
     return {
-      render: hookRenderer,
+      render: doRender,
       cleanup: () => hookRenderer.cleanup(),
       setProps,
       setRef: hookRenderer.setRef,
@@ -104,7 +140,17 @@ export const isolatedRenderer = (
       inlineAll: (selector: Selector) => {
         renderContext.addInlinedSelector(selector)
 
-        hookRenderer.wrapUpdates(tree.inlineAll)
+        hookRenderer.wrapUpdates(() => {
+          try {
+            tree.inlineAll()
+          } catch (e) {
+            const handleErrorResult = renderMethod.tryToHandleError(
+              e.originalError || e
+            )
+
+            if (!handleErrorResult.handled) throw e
+          }
+        })
       },
       waitForRender: () => hookRenderer.waitForUpdate().then(() => {}),
       debug: () => tree.debug(),

@@ -20,12 +20,15 @@ export const wrapReactMemo = (
 
   const renderMethod = getRenderMethod(t.type, onContextChange)
 
-  return (props: any) => {
-    if (cachedResult && compare(props, lastProps)) return cachedResult
-    lastProps = props
+  return {
+    render: (props: any) => {
+      if (cachedResult && compare(props, lastProps)) return cachedResult
+      lastProps = props
 
-    cachedResult = renderMethod(props)
+      cachedResult = renderMethod.render(props)
 
-    return cachedResult
+      return cachedResult
+    },
+    tryToHandleError: () => ({ handled: false } as const),
   }
 }

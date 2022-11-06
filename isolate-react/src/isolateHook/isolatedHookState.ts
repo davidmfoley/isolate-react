@@ -27,8 +27,11 @@ export const createIsolatedHookState = (options: IsolatedHookOptions) => {
   const invokeWhileDirty = (fn: () => void) => {
     do {
       updatableStates.startPass()
-      fn()
-      endPass()
+      try {
+        fn()
+      } finally {
+        endPass()
+      }
     } while (updatableStates.dirty())
   }
 

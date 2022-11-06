@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
+import { Renderer } from './renderMethod'
 
 export const wrapClassComponent = <P>(t: {
   new (props: P): React.Component<P, any>
-}): ((p: P) => any) => {
+  getDerivedStateFromError?: any
+}): Renderer<P> => {
   let first = true
   let lastResult: any = null
 
@@ -10,10 +12,14 @@ export const wrapClassComponent = <P>(t: {
   let prevState: any | null = null
   let setStateCallbacks: Function[] = []
 
+  let updateComponentState: Function = () => {}
+
   let instance: any
-  return (props: P) => {
+
+  const render = (props: P) => {
     instance = instance || (new t(props) as any)
     const [componentState, setComponentState] = useState(instance.state)
+    updateComponentState = setComponentState
 
     instance.setState = (s: any, cb: Function) => {
       if (cb) setStateCallbacks.push(cb)
@@ -24,6 +30,7 @@ export const wrapClassComponent = <P>(t: {
         setComponentState(nextState)
       }
     }
+
     const shouldRender =
       !!instance.shouldComponentUpdate && !first
         ? instance.shouldComponentUpdate(props, componentState)
@@ -33,9 +40,6 @@ export const wrapClassComponent = <P>(t: {
       prevProps = instance.props
       prevState = instance.state
     }
-
-    instance.props = props
-    instance.state = componentState
 
     useEffect(() => {
       if (instance.componentDidMount) {
@@ -48,18 +52,45 @@ export const wrapClassComponent = <P>(t: {
       }
     }, [])
 
+    instance.props = props
+    instance.state = componentState
+
     if (shouldRender) {
       let snapshot = undefined
       if (instance.getSnapshotBeforeUpdate && !first) {
         snapshot = instance.getSnapshotBeforeUpdate(prevProps, prevState)
       }
+
       lastResult = instance.render()
+
       if (instance.componentDidUpdate && !first)
         instance.componentDidUpdate(prevProps, prevState, snapshot)
+
       while (setStateCallbacks.length) setStateCallbacks.shift()()
     }
 
     first = false
     return lastResult
+  }
+  return {
+    render,
+    tryToHandleError: (error: Error) => {
+      if (
+        !instance ||
+        !(instance.componentDidCatch || t.getDerivedStateFromError)
+      )
+        return { handled: false }
+
+      if (instance.componentDidCatch) {
+        instance.componentDidCatch(error, {} as any)
+      }
+
+      if (t.getDerivedStateFromError) {
+        const derived = t.getDerivedStateFromError(error)
+        updateComponentState(derived)
+      }
+
+      return { handled: true, result: lastResult }
+    },
   }
 }

@@ -3,12 +3,17 @@ import { wrapContextConsumer } from './wrapContextConsumer'
 import { wrapContextProvider } from './wrapContextProvider'
 import { wrapReactMemo } from './wrapReactMemo'
 
-export type RenderMethod<P> = (props: P) => any
+export type Renderer<P> = {
+  render: (props: P) => any
+  tryToHandleError: (
+    err: Error
+  ) => { handled: false } | { handled: true; result: any }
+}
 
 type GetRenderMethod = <P>(
   t: any,
   onContextChange: OnContextChange
-) => RenderMethod<P>
+) => Renderer<P>
 
 type OnContextChange = (t: any, v: any) => void
 
@@ -26,14 +31,20 @@ const renderMethods: Record<
     t: any,
     onContextChange: OnContextChange,
     grm: GetRenderMethod
-  ) => RenderMethod<any>
+  ) => Renderer<any>
 > = {
   memo: wrapReactMemo,
-  forwardRef: (t) => t.render,
+  forwardRef: (t) => ({
+    render: t.render as any,
+    tryToHandleError: () => ({ handled: false }),
+  }),
   classComponent: wrapClassComponent,
   contextProvider: wrapContextProvider,
   contextConsumer: wrapContextConsumer,
-  functional: (t) => t,
+  functional: (t) => ({
+    render: t as any,
+    tryToHandleError: () => ({ handled: false }),
+  }),
 }
 
 export const categorizeComponent = (t: any): ComponentRenderType => {

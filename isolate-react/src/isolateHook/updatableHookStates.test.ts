@@ -12,7 +12,23 @@ describe('updatableHookStates', () => {
     assert.strictEqual(value, 42)
   })
 
-  test('update function is sable', () => {
+  test('update function is stable', () => {
+    const states = createUpdatableHookStates()
+    const [, first] = states.nextHookState({
+      type: 'useState',
+      create: () => 42,
+    })
+    states.endPass()
+
+    const [, second] = states.nextHookState({
+      type: 'useState',
+      create: () => 42,
+    })
+
+    assert.strictEqual(first, second)
+  })
+
+  test('update function is stable', () => {
     const states = createUpdatableHookStates()
     const [, first] = states.nextHookState({
       type: 'useState',

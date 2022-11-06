@@ -40,7 +40,7 @@ describe('reconcile', () => {
     assert.strictEqual(after, before)
   })
 
-  test('handles fragment reconciliaion', () => {
+  test('handles fragment reconciliation', () => {
     const Child = () => <div>child</div>
     const Parent = () => (
       <>

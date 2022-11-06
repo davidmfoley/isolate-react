@@ -323,4 +323,35 @@ describe('React class components', () => {
       ])
     })
   })
+
+  describe('counter button example', () => {
+    class CounterButton extends React.Component<{}, { count: number }> {
+      state = { count: 0 }
+
+      render() {
+        return (
+          <button
+            onClick={() => {
+              this.setState(({ count }) => ({ count: count + 1 }))
+            }}
+          >
+            {this.state.count}
+          </button>
+        )
+      }
+    }
+
+    it(' renders', () => {
+      const isolated = isolateComponent(<CounterButton />)
+      assert.equal(isolated.content(), '0')
+    })
+
+    it('increments upon click', () => {
+      const isolated = isolateComponent(<CounterButton />)
+
+      isolated.findOne('button').props.onClick()
+
+      assert.equal(isolated.content(), '1')
+    })
+  })
 })
