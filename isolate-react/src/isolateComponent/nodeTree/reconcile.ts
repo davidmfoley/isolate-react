@@ -29,6 +29,13 @@ export const reconcile = (
   }
 
   const matchedChildren = matchChildren(previous.children, next.children)
+  const matchedSet = new Set(matchedChildren.map(([p]) => p).filter((x) => !!x))
+  const unmatchedChildren = previous.children.filter((p) => !matchedSet.has(p))
+  for (let unmatchedChild of unmatchedChildren) {
+    if (unmatchedChild.componentInstance)
+      unmatchedChild.componentInstance.cleanup()
+  }
+
   const reconciledChildren = matchedChildren.map(([p, n]) => reconcile(p, n))
 
   if (previous.nodeType === 'html') {
