@@ -57,6 +57,7 @@ describe('inline effects', () => {
   })
 
   describe('without key prop', () => {
+    // suppress warning-keys
     const realError = console.error
     before(() => {
       console.error = () => {}
@@ -73,7 +74,6 @@ describe('inline effects', () => {
     test('no cleanup is run if not unmounted', () => {
       const isolated = isolateComponentTree(<UnkeyedWrapper tags={['a']} />)
       isolated.setProps({ tags: ['a', 'b'] })
-      console.log(isolated.content())
       assert.deepEqual(calls, ['mount a', 'mount b'])
       assert.equal(isolated.content(), '<div>a</div><div>b</div>')
     })
@@ -85,5 +85,38 @@ describe('inline effects', () => {
       assert.deepEqual(calls, ['mount a', 'mount b', 'unmount b'])
       console.error = realError
     })
+  })
+
+  test('child components', () => {
+    const DumbWrapper = ({ children }: { children?: React.ReactNode }) => (
+      <div>{children}</div>
+    )
+    const isolated = isolateComponentTree(<DumbWrapper />)
+
+    isolated.setProps({
+      children: (
+        <>
+          <EffectTracker tag="a" />
+        </>
+      ),
+    })
+    assert.deepEqual(calls, ['mount a'])
+
+    isolated.setProps({
+      children: (
+        <>
+          <EffectTracker tag="a" />
+          <EffectTracker tag="b" />
+        </>
+      ),
+    })
+
+    assert.deepEqual(calls, ['mount a', 'mount b'])
+
+    isolated.setProps({
+      children: <></>,
+    })
+
+    assert.deepEqual(calls, ['mount a', 'mount b', 'unmount a', 'unmount b'])
   })
 })
