@@ -33,6 +33,10 @@ describe('inline effects', () => {
     </div>
   )
 
+  const DumbWrapper = ({ children }: { children?: React.ReactNode }) => (
+    <div>{children}</div>
+  )
+
   beforeEach(() => {
     calls = []
   })
@@ -115,6 +119,30 @@ describe('inline effects', () => {
 
     isolated.setProps({
       children: <></>,
+    })
+
+    assert.deepEqual(calls, ['mount a', 'mount b', 'unmount a', 'unmount b'])
+  })
+
+  test('child components replaced by html', () => {
+    const isolated = isolateComponentTree(<DumbWrapper />)
+
+    isolated.setProps({
+      children: (
+        <>
+          <EffectTracker tag="a" />
+          <EffectTracker tag="b" />
+        </>
+      ),
+    })
+
+    isolated.setProps({
+      children: (
+        <>
+          <div />
+          <div />
+        </>
+      ),
     })
 
     assert.deepEqual(calls, ['mount a', 'mount b', 'unmount a', 'unmount b'])

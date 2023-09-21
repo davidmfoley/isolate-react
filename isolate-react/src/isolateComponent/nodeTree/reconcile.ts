@@ -21,7 +21,10 @@ export const reconcile = (
   next: TreeNode
 ): TreeNode => {
   if (!previous) return next
-  if (next.type !== previous.type) return next
+  if (next.type !== previous.type) {
+    if (previous.componentInstance) previous.componentInstance.cleanup()
+    return next
+  }
 
   if (previous.nodeType === 'isolated') {
     previous.componentInstance!.setProps(next.props)
