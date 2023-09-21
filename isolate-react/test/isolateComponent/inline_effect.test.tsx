@@ -92,9 +92,6 @@ describe('inline effects', () => {
   })
 
   test('child components', () => {
-    const DumbWrapper = ({ children }: { children?: React.ReactNode }) => (
-      <div>{children}</div>
-    )
     const isolated = isolateComponentTree(<DumbWrapper />)
 
     isolated.setProps({
@@ -143,6 +140,25 @@ describe('inline effects', () => {
           <div />
         </>
       ),
+    })
+
+    assert.deepEqual(calls, ['mount a', 'mount b', 'unmount a', 'unmount b'])
+  })
+
+  test('child components replaced by null', () => {
+    const isolated = isolateComponentTree(<DumbWrapper />)
+
+    isolated.setProps({
+      children: (
+        <>
+          <EffectTracker tag="a" />
+          <EffectTracker tag="b" />
+        </>
+      ),
+    })
+
+    isolated.setProps({
+      children: null,
     })
 
     assert.deepEqual(calls, ['mount a', 'mount b', 'unmount a', 'unmount b'])
