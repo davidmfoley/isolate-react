@@ -87,7 +87,7 @@ export const parseIsolated = (
 
 export const parse = (node: InputNode): ComponentNode => {
   const parsed = parseRawNode(node)
-  if (node) parsed.key = '' + node.key
+  if (node) parsed.key = '' + (node.key || '')
 
   const filter = (predicate: NodePredicate) =>
     allChildren(parsed).filter(predicate)
