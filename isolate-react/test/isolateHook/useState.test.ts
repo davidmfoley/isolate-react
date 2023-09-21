@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
 import assert from 'node:assert'
 import { isolateHook } from '../../src/isolateHook'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 describe('useState', () => {
   it('has initial value', () => {
@@ -59,7 +59,7 @@ describe('useState', () => {
 
   it('state setter is stable across invocations', () => {
     const useStability = () => {
-      const [state, setState] = useState('blah')
+      const [_, setState] = useState('blah')
       return setState
     }
 
@@ -110,5 +110,25 @@ describe('useState', () => {
       const value = isolated()
       assert.strictEqual(value, 'C8')
     })
+  })
+
+  it('can set same state with fns in two effects', () => {
+    const useDoubleTap = () => {
+      const [value, setValue] = useState(0)
+      const addOne = (x: number) => x + 1
+
+      useEffect(() => {
+        setValue(addOne)
+      }, [])
+
+      useEffect(() => {
+        setValue(addOne)
+      }, [])
+
+      return value
+    }
+
+    const isolated = isolateHook(useDoubleTap)
+    assert.strictEqual(isolated(), 2)
   })
 })

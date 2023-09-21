@@ -70,14 +70,14 @@ export const createUpdatableHookStates = () => {
     onCreated?: any,
     cleanup?: (value: T) => void
   ): HookState<T> => {
-    let newState = { value, type, cleanup }
+    let newState = { value, type, cleanup, pendingValue: value }
 
     const updater = updateValue
       ? (next: any) => {
-          const updateResult = updateValue(newState.value, next)
+          newState.pendingValue = updateValue(newState.pendingValue, next).value
 
           executeOutsideRenderPass(() => {
-            newState.value = updateResult.value
+            newState.value = newState.pendingValue
 
             dirty = true
             onUpdated()
